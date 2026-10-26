@@ -56,7 +56,8 @@ The build directory contains:
 | `weights.pl` | Every matrix and bias vector from the input |
 | `ops.pl` | Pure-Prolog `forward/3`, `trace/3`, and `explain/3` |
 | `provenance.pl` | Declared source metadata and input artifact SHA-256 |
-| `training_config.pl` | Unknown training details, without invented defaults |
+| `training_config.pl` | Training facts with explicit value and evidence tags |
+| `training_report.md` | Human-readable account of unknown training details and why they cannot be reconstructed |
 | `verification_cases.pl` | Input/output cases for the supplied validation inputs |
 | `verification.json` | Reference layer activations, comparison tolerances, and verification status |
 | `manifest.json` | SHA-256 hashes for every other generated artifact |
@@ -97,7 +98,7 @@ From the repository root:
 python3 -m unittest discover -s tests -v
 ```
 
-The suite covers parsing and shape validation, non-finite and invalid values, deterministic hashes/artifacts, manifest integrity and tampering, the Python reference calculation, and (when SWI-Prolog is installed) executing the generated Prolog and checking the validation cases.
+The suite covers parsing and shape validation, non-finite and invalid values, deterministic hashes/artifacts, manifest integrity and tampering, evidence-tagged training metadata, the Python reference calculation, and (when SWI-Prolog is installed) executing the generated Prolog and checking the validation cases.
 
 To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
 
@@ -109,7 +110,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - Strict layer dimensions, unique layer names, and finite-number validation; no checkpoint or repository code is loaded or executed.
 - `linear`, `relu`, `tanh`, and `sigmoid` layers.
 - Prolog architecture and complete weight/bias facts, plus pure-Prolog forward pass, intermediate trace, and a basic explanation result.
-- Input artifact hash, declared revision/license, explicit unknown training metadata, deterministic output hashes, and supplied-input differential cases.
+- Input artifact hash, declared revision/license, evidence-tagged unknown training facts and an underdetermination report, deterministic output hashes, and supplied-input differential cases.
 - CLI integrity verification of generated artifacts against the unsigned manifest.
 - GitHub Actions CI for the Python suite and SWI-Prolog integration tests.
 
@@ -119,7 +120,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - Safetensors, PyTorch, ONNX, GGUF, TensorFlow, Keras, convolutional/recurrent/transformer models, quantization, tokenizers, and large-model sidecars.
 - An independent reference-model runner, layer-wise framework comparisons, adversarial/statistical verification, byte-identical reproducible environments, and signed manifests.
 - Tier 1 circuit discovery/causal interventions, Tier 2 rule extraction, and evidence-backed explanations beyond the generated layer trace.
-- Training-configuration reconstruction, benchmark suite, and publication-grade evaluation.
+- Reconstructing training configuration or launch scripts from evidence, a benchmark suite, and publication-grade evaluation. The report documents what remains unknown rather than guessing.
 - Automatic branch creation and pull request creation by the CLI.
 
 The requirements and research acceptance criteria are maintained in [`pr1.md`](pr1.md). In particular, this prototype does not meet the stated acceptance criteria for transformer facsimiles, circuits, rule extraction, or publication results. The next implementation milestones are safe checkpoint ingestion and independent reference comparison for the reference MLP, then broader model operators and transformer support; interpretation and research benchmarks follow those foundations.

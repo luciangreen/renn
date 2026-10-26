@@ -39,12 +39,19 @@ class RENNBuildTests(unittest.TestCase):
         self.assertEqual(verification["cases"][0]["expected_output"], [-1.25])
         self.assertEqual(verification["cases"][0]["expected_trace"][0]["output"], [0.0, 1.75])
         self.assertEqual(verification["status"], result["verification_status"])
+        training_config = (self.output / "training_config.pl").read_text()
+        self.assertIn("training_fact(training_procedure, unknown, unknown).", training_config)
+        self.assertIn("training_fact(optimizer, unknown, unknown).", training_config)
+        self.assertIn("training_fact(training_data, unknown, unknown).", training_config)
+        training_report = (self.output / "training_report.md").read_text()
+        self.assertIn("underdetermined", training_report)
+        self.assertIn("no reconstructed launch command is emitted", training_report)
 
     def test_verify_artifacts_checks_manifest_hashes(self):
         build(EXAMPLE, self.output)
         result = verify_artifacts(self.output)
         self.assertEqual(result["model_id"], "tiny-mlp")
-        self.assertEqual(result["files_verified"], 7)
+        self.assertEqual(result["files_verified"], 8)
 
         (self.output / "ops.pl").write_text("modified")
         with self.assertRaisesRegex(BuildError, "SHA-256 mismatch"):
@@ -146,7 +153,7 @@ class RENNBuildTests(unittest.TestCase):
             check=False,
         )
         self.assertEqual(result.returncode, 0, result.stderr)
-        self.assertIn("Verified 7 artifact hashes", result.stdout)
+        self.assertIn("Verified 8 artifact hashes", result.stdout)
 
     @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
     def test_emitted_prolog_verification(self):
