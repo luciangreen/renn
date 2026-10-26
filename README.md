@@ -61,6 +61,14 @@ The build directory contains:
 
 Generated files are deterministic for identical input bytes in the same runtime environment. If SWI-Prolog is installed, the CLI runs the emitted verifier and records `passed`; otherwise it records `generated_not_executed`. The verifier checks every layer activation and final output. The approximation ledger is empty: this input format performs no deliberate compression or rounding, although normal conversion of JSON numbers to runtime floating-point values still applies.
 
+Check that build artifacts still match their manifest:
+
+```sh
+python3 -m renn verify build/tiny-mlp
+```
+
+This checks the SHA-256 digest of each listed artifact and fails if a file is missing, altered, or listed with an unsafe path. The manifest is unsigned, so this detects accidental changes but does not authenticate who created the files or prove their source.
+
 ### Run emitted Prolog
 
 From the output directory:
@@ -87,7 +95,7 @@ From the repository root:
 python3 -m unittest discover -s tests -v
 ```
 
-The suite covers parsing and shape validation, non-finite and invalid values, deterministic hashes/artifacts, the Python reference calculation, and (when SWI-Prolog is installed) executing the generated Prolog and checking the validation cases.
+The suite covers parsing and shape validation, non-finite and invalid values, deterministic hashes/artifacts, manifest integrity and tampering, the Python reference calculation, and (when SWI-Prolog is installed) executing the generated Prolog and checking the validation cases.
 
 To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
 
@@ -100,6 +108,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - `linear`, `relu`, `tanh`, and `sigmoid` layers.
 - Prolog architecture and complete weight/bias facts, plus pure-Prolog forward pass, intermediate trace, and a basic explanation result.
 - Input artifact hash, declared revision/license, explicit unknown training metadata, deterministic output hashes, and supplied-input differential cases.
+- CLI integrity verification of generated artifacts against the unsigned manifest.
 - GitHub Actions CI for the Python suite and SWI-Prolog integration tests.
 
 **Not implemented yet**

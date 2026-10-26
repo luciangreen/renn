@@ -7,7 +7,7 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from renn.generator import BuildError, build, load_model, reference_forward
+from renn.generator import BuildError, build, load_model, reference_forward, verify_artifacts
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -39,6 +39,25 @@ class RENNBuildTests(unittest.TestCase):
         self.assertEqual(verification["cases"][0]["expected_output"], [-1.25])
         self.assertEqual(verification["cases"][0]["expected_trace"][0]["output"], [0.0, 1.75])
         self.assertEqual(verification["status"], result["verification_status"])
+
+    def test_verify_artifacts_checks_manifest_hashes(self):
+        build(EXAMPLE, self.output)
+        result = verify_artifacts(self.output)
+        self.assertEqual(result["model_id"], "tiny-mlp")
+        self.assertEqual(result["files_verified"], 7)
+
+        (self.output / "ops.pl").write_text("modified")
+        with self.assertRaisesRegex(BuildError, "SHA-256 mismatch"):
+            verify_artifacts(self.output)
+
+    def test_verify_artifacts_rejects_unsafe_manifest_filename(self):
+        build(EXAMPLE, self.output)
+        manifest_path = self.output / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["files"]["../outside"] = "0" * 64
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(BuildError, "invalid artifact filename"):
+            verify_artifacts(self.output)
 
     def test_output_is_deterministic(self):
         first = self.output / "first"
@@ -108,6 +127,18 @@ class RENNBuildTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue((self.output / "ops.pl").exists())
+
+    def test_cli_verify(self):
+        build(EXAMPLE, self.output)
+        result = subprocess.run(
+            [sys.executable, "-m", "renn", "verify", str(self.output)],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("Verified 7 artifact hashes", result.stdout)
 
     @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
     def test_emitted_prolog_verification(self):

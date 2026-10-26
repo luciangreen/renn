@@ -274,6 +274,41 @@ def _json_bytes(value):
     return (json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n").encode()
 
 
+def verify_artifacts(build_path):
+    build_path = Path(build_path)
+    manifest_path = build_path / "manifest.json"
+    try:
+        with manifest_path.open(encoding="utf-8") as file:
+            manifest = json.load(file)
+    except json.JSONDecodeError as exc:
+        raise BuildError(f"invalid manifest JSON: {exc}") from exc
+    if not isinstance(manifest, dict):
+        raise BuildError("manifest must be a JSON object")
+    files = manifest.get("files")
+    if not isinstance(files, dict) or not files:
+        raise BuildError("manifest files must be a non-empty object")
+
+    for name, expected_hash in files.items():
+        if (
+            not isinstance(name, str)
+            or not name
+            or name in {".", "..", "manifest.json"}
+            or "/" in name
+            or "\\" in name
+        ):
+            raise BuildError(f"invalid artifact filename in manifest: {name!r}")
+        if not isinstance(expected_hash, str) or not re.fullmatch(r"[0-9a-f]{64}", expected_hash):
+            raise BuildError(f"invalid SHA-256 for artifact {name!r}")
+        artifact_path = build_path / name
+        if artifact_path.is_symlink() or not artifact_path.is_file():
+            raise BuildError(f"artifact {name!r} is missing or is not a regular file")
+        actual_hash = hashlib.sha256(artifact_path.read_bytes()).hexdigest()
+        if actual_hash != expected_hash:
+            raise BuildError(f"SHA-256 mismatch for artifact {name!r}")
+
+    return {"model_id": manifest.get("model_id"), "files_verified": len(files)}
+
+
 def build(input_path, output_path):
     input_path = Path(input_path)
     output_path = Path(output_path)
