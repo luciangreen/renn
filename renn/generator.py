@@ -4,6 +4,7 @@ import math
 import re
 import shutil
 import subprocess
+import tempfile
 from pathlib import Path
 
 
@@ -311,6 +312,146 @@ def verify_artifacts(build_path):
             raise BuildError(f"SHA-256 mismatch for artifact {name!r}")
 
     return {"model_id": manifest.get("model_id"), "files_verified": len(files)}
+
+
+def _load_reference(path, model_id):
+    try:
+        with Path(path).open(encoding="utf-8") as file:
+            reference = json.load(file)
+    except json.JSONDecodeError as exc:
+        raise BuildError(f"invalid reference JSON: {exc}") from exc
+    if not isinstance(reference, dict):
+        raise BuildError("reference data must be a JSON object")
+    if reference.get("model_id") != model_id:
+        raise BuildError(f"reference model_id must match {model_id!r}")
+    cases = reference.get("cases")
+    if not isinstance(cases, list) or not cases:
+        raise BuildError("reference cases must contain at least one case")
+
+    checked_cases = []
+    for index, case in enumerate(cases, start=1):
+        if not isinstance(case, dict):
+            raise BuildError(f"reference case {index} must be an object")
+        input_vector = _number_list(case.get("input"), f"reference case {index} input")
+        expected_output = _number_list(
+            case.get("expected_output"),
+            f"reference case {index} expected_output",
+        )
+        expected_trace = None
+        if "expected_trace" in case:
+            trace = case["expected_trace"]
+            if not isinstance(trace, list) or not trace:
+                raise BuildError(f"reference case {index} expected_trace must be a non-empty list")
+            expected_trace = []
+            for trace_index, layer in enumerate(trace, start=1):
+                if not isinstance(layer, dict):
+                    raise BuildError(
+                        f"reference case {index} trace layer {trace_index} must be an object"
+                    )
+                name = _identifier(
+                    layer.get("layer"),
+                    f"reference case {index} trace layer {trace_index} name",
+                )
+                values = _number_list(
+                    layer.get("output"),
+                    f"reference case {index} trace layer {trace_index} output",
+                )
+                expected_trace.append((name, values))
+        checked_cases.append((input_vector, expected_output, expected_trace))
+    return checked_cases
+
+
+def _reference_cases_pl(model_id, cases):
+    lines = [
+        ":- use_module('ops.pl').",
+        "",
+    ]
+    for index, (input_vector, expected_output, expected_trace) in enumerate(cases, start=1):
+        trace = "none"
+        if expected_trace is not None:
+            trace = "[" + ",".join(
+                f"layer({_atom(name)},{_prolog_list(values)})"
+                for name, values in expected_trace
+            ) + "]"
+        lines.append(
+            f"reference_case({index},{_prolog_list(input_vector)},"
+            f"{_prolog_list(expected_output)},{trace})."
+        )
+    lines.extend([
+        "",
+        ":- initialization(run_reference_comparison, main).",
+        "",
+        "run_reference_comparison :-",
+        "    forall(reference_case(Index, Input, Expected, ExpectedTrace),",
+        "        verify_reference_case(Index, Input, Expected, ExpectedTrace)),",
+        "    writeln('All independent reference cases passed.').",
+        "",
+        "verify_reference_case(_, Input, Expected, ExpectedTrace) :-",
+        f"    trace({_atom(model_id)}, Input, ActualTrace),",
+        "    ( ExpectedTrace = none -> true ; close_traces(ActualTrace, ExpectedTrace) ),",
+        f"    forward({_atom(model_id)}, Input, ActualOutput),",
+        "    close_lists(ActualOutput, Expected), !.",
+        "verify_reference_case(Index, _, _, _) :-",
+        "    format(user_error, 'Reference comparison case ~d failed.~n', [Index]),",
+        "    halt(1).",
+        "",
+        "close_traces([], []).",
+        "close_traces([layer(Name,Actual)|Actuals], [layer(Name,Expected)|Expecteds]) :-",
+        "    close_lists(Actual, Expected),",
+        "    close_traces(Actuals, Expecteds).",
+        "",
+        "close_lists([], []).",
+        "close_lists([Actual|Actuals], [Expected|Expecteds]) :-",
+        "    Difference is abs(Actual - Expected),",
+        "    Scale is max(abs(Actual), abs(Expected)),",
+        f"    Difference =< {ABS_TOLERANCE!r} + {REL_TOLERANCE!r} * Scale,",
+        "    close_lists(Actuals, Expecteds).",
+        "",
+    ])
+    return "\n".join(lines)
+
+
+def compare_reference(build_path, reference_path):
+    build_path = Path(build_path)
+    manifest = verify_artifacts(build_path)
+    model_id = _identifier(manifest["model_id"], "manifest model_id")
+    cases = _load_reference(reference_path, model_id)
+    for name in ("ops.pl", "architecture.pl", "weights.pl"):
+        artifact = build_path / name
+        if artifact.is_symlink() or not artifact.is_file():
+            raise BuildError(f"required artifact {name!r} is missing or is not a regular file")
+
+    swipl = shutil.which("swipl")
+    if not swipl:
+        raise BuildError("SWI-Prolog is required for independent reference comparison")
+
+    script = _reference_cases_pl(model_id, cases)
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            suffix=".pl",
+            prefix=".renn-reference-",
+            dir=build_path,
+            delete=False,
+        ) as file:
+            file.write(script)
+            script_path = Path(file.name)
+        result = subprocess.run(
+            [swipl, "-q", "-s", script_path.name],
+            cwd=build_path,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    finally:
+        if "script_path" in locals():
+            script_path.unlink(missing_ok=True)
+
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit code {result.returncode}"
+        raise BuildError(f"independent reference comparison failed: {detail}")
+    return {"model_id": model_id, "cases": len(cases), "stdout": result.stdout.strip()}
 
 
 def build(input_path, output_path):

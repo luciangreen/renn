@@ -7,7 +7,14 @@ import tempfile
 import unittest
 from pathlib import Path
 
-from renn.generator import BuildError, build, load_model, reference_forward, verify_artifacts
+from renn.generator import (
+    BuildError,
+    build,
+    compare_reference,
+    load_model,
+    reference_forward,
+    verify_artifacts,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -154,6 +161,81 @@ class RENNBuildTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("Verified 8 artifact hashes", result.stdout)
+
+    def _write_reference(self, data):
+        path = Path(self.tempdir.name) / "reference.json"
+        path.write_text(json.dumps(data))
+        return path
+
+    def test_compare_reference_rejects_mismatched_model_id(self):
+        build(EXAMPLE, self.output)
+        reference = self._write_reference({
+            "model_id": "other",
+            "cases": [{"input": [1], "expected_output": [1]}],
+        })
+        with self.assertRaisesRegex(BuildError, "model_id must match"):
+            compare_reference(self.output, reference)
+
+    def test_compare_reference_rejects_non_finite_outputs(self):
+        build(EXAMPLE, self.output)
+        reference = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [{"input": [1.0, 2.0], "expected_output": [float("nan")]}],
+        })
+        with self.assertRaisesRegex(BuildError, "finite numbers"):
+            compare_reference(self.output, reference)
+
+    @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
+    def test_compare_independent_reference_outputs_and_traces(self):
+        build(EXAMPLE, self.output)
+        reference = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [
+                {
+                    "input": [1.0, 2.0],
+                    "expected_output": [-1.25],
+                    "expected_trace": [
+                        {"layer": "hidden", "output": [0.0, 1.75]},
+                        {"layer": "output", "output": [-1.25]},
+                    ],
+                },
+                {"input": [0.0, 0.0], "expected_output": [0.25]},
+            ],
+        })
+        result = compare_reference(self.output, reference)
+        self.assertEqual(result["cases"], 2)
+        self.assertIn("All independent reference cases passed.", result["stdout"])
+        self.assertEqual(list(self.output.glob(".renn-reference-*.pl")), [])
+
+    @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
+    def test_compare_reference_reports_mismatch(self):
+        build(EXAMPLE, self.output)
+        reference = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [{"input": [1.0, 2.0], "expected_output": [123.0]}],
+        })
+        with self.assertRaisesRegex(BuildError, "reference comparison failed"):
+            compare_reference(self.output, reference)
+
+    def test_cli_compare_requires_reference_file(self):
+        build(EXAMPLE, self.output)
+        reference = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [{"input": [1.0, 2.0], "expected_output": [-1.25]}],
+        })
+        result = subprocess.run(
+            [sys.executable, "-m", "renn", "compare", str(self.output), str(reference)],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if shutil.which("swipl"):
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("Compared 1 independent reference cases", result.stdout)
+        else:
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("SWI-Prolog is required", result.stderr)
 
     @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
     def test_emitted_prolog_verification(self):
