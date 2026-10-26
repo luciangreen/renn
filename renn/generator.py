@@ -334,10 +334,25 @@ def build(input_path, output_path):
         "ops.pl": _ops_pl().encode(),
         "provenance.pl": provenance.encode(),
         "training_config.pl": (
-            ":- module(renn_training_config, [training_fact/2]).\n\n"
-            "training_fact(training_procedure, unknown).\n"
-            "training_fact(optimizer, unknown).\n"
-            "training_fact(training_data, unknown).\n"
+            ":- module(renn_training_config, [training_fact/3]).\n\n"
+            "training_fact(training_procedure, unknown, unknown).\n"
+            "training_fact(optimizer, unknown, unknown).\n"
+            "training_fact(training_data, unknown, unknown).\n"
+        ).encode(),
+        "training_report.md": (
+            "# Training configuration report\n\n"
+            f"Model: `{model['model_id']}`\n\n"
+            "The supplied model description contains no training-configuration evidence. "
+            "The facts below are therefore tagged `unknown`; no optimizer, procedure, "
+            "or dataset has been inferred from the weights.\n\n"
+            "| Claim | Value | Evidence |\n"
+            "| --- | --- | --- |\n"
+            "| Training procedure | unknown | unknown |\n"
+            "| Optimizer | unknown | unknown |\n"
+            "| Training data | unknown | unknown |\n\n"
+            "Many training procedures and datasets can produce the same parameter values. "
+            "They are underdetermined by this artifact, so no reconstructed launch command "
+            "is emitted.\n"
         ).encode(),
         "verification_cases.pl": _verification_cases_pl(model, cases).encode(),
     }
