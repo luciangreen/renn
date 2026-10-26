@@ -456,18 +456,23 @@ def compare_reference(build_path, reference_path):
 
 def build(input_path, output_path):
     input_path = Path(input_path)
-    output_path = Path(output_path)
     model = load_model(input_path)
     source_hash = hashlib.sha256(input_path.read_bytes()).hexdigest()
+    return _build_model(model, output_path, source_hash, source_hash)
+
+
+def _build_model(model, output_path, source_hash, architecture_hash):
+    output_path = Path(output_path)
     cases = []
     for vector in model["validation_inputs"]:
         expected_trace = reference_trace(model, vector)
         cases.append((vector, expected_trace[-1][1], expected_trace))
 
     provenance = (
-        ":- module(renn_provenance, [source/3, source_sha256/1]).\n\n"
+        ":- module(renn_provenance, [source/3, source_sha256/1, architecture_sha256/1]).\n\n"
         f"source({_atom(model['model_id'])},{_atom(model['source_revision'])},{_atom(model['license'])}).\n"
         f"source_sha256('{source_hash}').\n"
+        f"architecture_sha256('{architecture_hash}').\n"
     )
     artifacts = {
         "architecture.pl": _architecture_pl(model).encode(),
