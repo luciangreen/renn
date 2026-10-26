@@ -90,6 +90,34 @@ swipl -q -s verification_cases.pl -g run_verification -t halt
 
 The command exits with an error if any generated Prolog result differs from its Python reference by more than `1e-9` absolute or relative tolerance.
 
+### Compare with independent reference outputs
+
+To compare the generated Prolog with outputs from an independent implementation (for example, the original framework), provide JSON test cases and run:
+
+```sh
+python3 -m renn compare build/tiny-mlp examples/tiny-mlp-reference.json
+```
+
+The reference file identifies the model and lists finite numeric inputs and expected outputs. An optional `expected_trace` checks named layer outputs as well:
+
+```json
+{
+  "model_id": "tiny-mlp",
+  "cases": [
+    {
+      "input": [1.0, 2.0],
+      "expected_output": [-1.25],
+      "expected_trace": [
+        {"layer": "hidden", "output": [0.0, 1.75]},
+        {"layer": "output", "output": [-1.25]}
+      ]
+    }
+  ]
+}
+```
+
+Comparison first verifies the build manifest, then runs the emitted Prolog using SWI-Prolog and checks outputs with the same `1e-9` absolute and relative tolerances. It requires SWI-Prolog 9.x; a mismatch exits nonzero. Only compare build directories you trust: this command executes their Prolog artifacts, and the manifest is unsigned. The reference values must be obtained separately from the implementation being checked. `examples/tiny-mlp-reference.json` is a runnable format example, not an external framework result. This command compares supplied samples; it does not load checkpoints or run a framework itself.
+
 ## Tests
 
 From the repository root:
@@ -98,7 +126,7 @@ From the repository root:
 python3 -m unittest discover -s tests -v
 ```
 
-The suite covers parsing and shape validation, non-finite and invalid values, deterministic hashes/artifacts, manifest integrity and tampering, evidence-tagged training metadata, the Python reference calculation, and (when SWI-Prolog is installed) executing the generated Prolog and checking the validation cases.
+The suite covers parsing and shape validation, non-finite and invalid values, deterministic hashes/artifacts, manifest integrity and tampering, evidence-tagged training metadata, the Python reference calculation, independent reference-output comparison, and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
 
 To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
 
@@ -112,13 +140,14 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - Prolog architecture and complete weight/bias facts, plus pure-Prolog forward pass, intermediate trace, and a basic explanation result.
 - Input artifact hash, declared revision/license, evidence-tagged unknown training facts and an underdetermination report, deterministic output hashes, and supplied-input differential cases.
 - CLI integrity verification of generated artifacts against the unsigned manifest.
+- CLI comparison of emitted Prolog against independently supplied outputs and optional layer traces.
 - GitHub Actions CI for the Python suite and SWI-Prolog integration tests.
 
 **Not implemented yet**
 
 - GitHub/Hugging Face acquisition, revision pinning, checkpoint format detection, license-policy evaluation, and sandboxing.
 - Safetensors, PyTorch, ONNX, GGUF, TensorFlow, Keras, convolutional/recurrent/transformer models, quantization, tokenizers, and large-model sidecars.
-- An independent reference-model runner, layer-wise framework comparisons, adversarial/statistical verification, byte-identical reproducible environments, and signed manifests.
+- Automated execution of an independent framework reference model and checkpoint-to-framework layer-wise comparisons (sample-based external reference comparisons are supported as documented above), adversarial/statistical verification, byte-identical reproducible environments, and signed manifests.
 - Tier 1 circuit discovery/causal interventions, Tier 2 rule extraction, and evidence-backed explanations beyond the generated layer trace.
 - Reconstructing training configuration or launch scripts from evidence, a benchmark suite, and publication-grade evaluation. The report documents what remains unknown rather than guessing.
 - Automatic branch creation and pull request creation by the CLI.

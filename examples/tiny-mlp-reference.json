@@ -1,0 +1,17 @@
+{
+  "model_id": "tiny-mlp",
+  "cases": [
+    {
+      "input": [1.0, 2.0],
+      "expected_output": [-1.25],
+      "expected_trace": [
+        {"layer": "hidden", "output": [0.0, 1.75]},
+        {"layer": "output", "output": [-1.25]}
+      ]
+    },
+    {
+      "input": [0.0, 0.0],
+      "expected_output": [0.25]
+    }
+  ]
+}

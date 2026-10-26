@@ -3,7 +3,7 @@ import json
 import sys
 from pathlib import Path
 
-from renn.generator import BuildError, build, verify_artifacts
+from renn.generator import BuildError, build, compare_reference, verify_artifacts
 
 
 def main(argv=None):
@@ -14,11 +14,19 @@ def main(argv=None):
     build_parser.add_argument("--output", required=True, type=Path, help="output directory")
     verify_parser = subparsers.add_parser("verify", help="check generated files against their manifest")
     verify_parser.add_argument("directory", type=Path, help="generated build directory")
+    compare_parser = subparsers.add_parser(
+        "compare",
+        help="compare generated Prolog with independent reference outputs",
+    )
+    compare_parser.add_argument("directory", type=Path, help="generated build directory")
+    compare_parser.add_argument("reference", type=Path, help="JSON file containing reference cases")
     args = parser.parse_args(argv)
 
     try:
         if args.command == "verify":
             result = verify_artifacts(args.directory)
+        elif args.command == "compare":
+            result = compare_reference(args.directory, args.reference)
         else:
             result = build(args.model, args.output)
     except (BuildError, OSError, json.JSONDecodeError) as exc:
@@ -27,6 +35,10 @@ def main(argv=None):
     if args.command == "verify":
         print(f"Verified {result['files_verified']} artifact hashes for {result['model_id']}.")
         print("Manifest hashes detect accidental changes; they do not authenticate the source.")
+        return 0
+    if args.command == "compare":
+        print(f"Compared {result['cases']} independent reference cases for {result['model_id']}.")
+        print(result["stdout"])
         return 0
     print(f"Generated {len(result['files'])} files in {args.output}")
     print(f"Prolog verification: {result['verification_status']}")
