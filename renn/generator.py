@@ -59,10 +59,14 @@ def load_model(path):
 
     checked_layers = []
     expected_inputs = None
+    layer_names = set()
     for index, layer in enumerate(layers, start=1):
         if not isinstance(layer, dict):
             raise BuildError(f"layer {index} must be an object")
         name = _identifier(layer.get("name"), f"layer {index} name")
+        if name in layer_names:
+            raise BuildError(f"layer names must be unique; {name!r} is repeated")
+        layer_names.add(name)
         activation = layer.get("activation")
         if not isinstance(activation, str) or activation not in ACTIVATIONS:
             raise BuildError(f"layer {index} activation must be one of {', '.join(sorted(ACTIVATIONS))}")

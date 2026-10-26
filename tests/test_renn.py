@@ -99,6 +99,14 @@ class RENNBuildTests(unittest.TestCase):
         with self.assertRaisesRegex(BuildError, "previous layer produces"):
             load_model(path)
 
+    def test_rejects_duplicate_layer_names(self):
+        source = json.loads(EXAMPLE.read_text())
+        source["layers"][1]["name"] = source["layers"][0]["name"]
+        path = Path(self.tempdir.name) / "duplicate-names.json"
+        path.write_text(json.dumps(source))
+        with self.assertRaisesRegex(BuildError, "layer names must be unique"):
+            load_model(path)
+
     @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
     def test_tanh_and_sigmoid_prolog_verification(self):
         source = json.loads(EXAMPLE.read_text())
