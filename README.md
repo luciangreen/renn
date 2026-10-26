@@ -40,6 +40,8 @@ Create a JSON file such as `examples/tiny-mlp.json`:
 
 Each weight matrix is output-neuron first: `weights[output_index][input_index]`. Supported activations are `linear`, `relu`, `tanh`, and `sigmoid`. At least one finite numeric validation input is required; its width must match the first layer. The license and revision are recorded as supplied metadata, not legally verified.
 
+The JSON object requires `model_id`, `source_revision`, `license`, `layers`, and `validation_inputs`. Each layer requires a unique `name`, a non-empty rectangular `weights` matrix, a `bias` vector with one value per output row, and a supported `activation`. Layer dimensions must connect in order: each matrix column count equals the preceding layer's output count. Booleans are not accepted as numbers, and all weights, biases, and validation inputs must be finite.
+
 Run:
 
 ```sh
@@ -104,7 +106,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 **Implemented in this prototype**
 
 - User-provided JSON input for dense feed-forward networks.
-- Strict layer dimensions and finite-number validation; no checkpoint or repository code is loaded or executed.
+- Strict layer dimensions, unique layer names, and finite-number validation; no checkpoint or repository code is loaded or executed.
 - `linear`, `relu`, `tanh`, and `sigmoid` layers.
 - Prolog architecture and complete weight/bias facts, plus pure-Prolog forward pass, intermediate trace, and a basic explanation result.
 - Input artifact hash, declared revision/license, explicit unknown training metadata, deterministic output hashes, and supplied-input differential cases.
