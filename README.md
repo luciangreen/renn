@@ -89,6 +89,8 @@ python3 -m unittest discover -s tests -v
 
 The suite covers parsing and shape validation, non-finite and invalid values, deterministic hashes/artifacts, the Python reference calculation, and (when SWI-Prolog is installed) executing the generated Prolog and checking the validation cases.
 
+To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
+
 ## Feature status
 
 **Implemented in this prototype**
@@ -98,12 +100,13 @@ The suite covers parsing and shape validation, non-finite and invalid values, de
 - `linear`, `relu`, `tanh`, and `sigmoid` layers.
 - Prolog architecture and complete weight/bias facts, plus pure-Prolog forward pass, intermediate trace, and a basic explanation result.
 - Input artifact hash, declared revision/license, explicit unknown training metadata, deterministic output hashes, and supplied-input differential cases.
+- GitHub Actions CI for the Python suite and SWI-Prolog integration tests.
 
 **Not implemented yet**
 
 - GitHub/Hugging Face acquisition, revision pinning, checkpoint format detection, license-policy evaluation, and sandboxing.
 - Safetensors, PyTorch, ONNX, GGUF, TensorFlow, Keras, convolutional/recurrent/transformer models, quantization, tokenizers, and large-model sidecars.
-- An independent reference-model runner, layer-wise framework comparisons, adversarial/statistical verification, byte-identical reproducible environments, signed manifests, and continuous integration.
+- An independent reference-model runner, layer-wise framework comparisons, adversarial/statistical verification, byte-identical reproducible environments, and signed manifests.
 - Tier 1 circuit discovery/causal interventions, Tier 2 rule extraction, and evidence-backed explanations beyond the generated layer trace.
 - Training-configuration reconstruction, benchmark suite, and publication-grade evaluation.
 - Automatic branch creation and pull request creation by the CLI.
