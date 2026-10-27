@@ -297,6 +297,42 @@ class RENNBuildTests(unittest.TestCase):
         with self.assertRaisesRegex(BuildError, "references a missing tensor"):
             import_safetensors(checkpoint, descriptor, self.output)
 
+    def test_import_safetensors_rejects_unreferenced_checkpoint_tensors(self):
+        checkpoint = self._write_safetensors(
+            Path(self.tempdir.name) / "model.safetensors",
+            {
+                "hidden.weight": ([2, 2], [1.0, -1.0, 0.5, 0.5]),
+                "hidden.bias": ([2], [0.0, 0.25]),
+                "output.weight": ([1, 2], [2.0, -1.0]),
+                "output.bias": ([1], [0.5]),
+                "unused.weight": ([1], [99.0]),
+            },
+        )
+        descriptor = self._write_safetensors_descriptor(
+            Path(self.tempdir.name) / "architecture.json"
+        )
+        with self.assertRaisesRegex(BuildError, "tensors not mapped.*unused.weight"):
+            import_safetensors(checkpoint, descriptor, self.output)
+
+    def test_import_safetensors_rejects_duplicate_tensor_references(self):
+        checkpoint = self._write_safetensors(
+            Path(self.tempdir.name) / "model.safetensors",
+            {
+                "hidden.weight": ([2, 2], [1.0, -1.0, 0.5, 0.5]),
+                "hidden.bias": ([2], [0.0, 0.25]),
+                "output.weight": ([1, 2], [2.0, -1.0]),
+                "output.bias": ([1], [0.5]),
+            },
+        )
+        descriptor_path = self._write_safetensors_descriptor(
+            Path(self.tempdir.name) / "architecture.json"
+        )
+        descriptor = json.loads(descriptor_path.read_text())
+        descriptor["layers"][1]["weights_tensor"] = "hidden.weight"
+        descriptor_path.write_text(json.dumps(descriptor))
+        with self.assertRaisesRegex(BuildError, "references tensor 'hidden.weight' more than once"):
+            import_safetensors(checkpoint, descriptor_path, self.output)
+
     def test_import_safetensors_rejects_duplicate_descriptor_keys(self):
         checkpoint = self._write_safetensors(
             Path(self.tempdir.name) / "model.safetensors",
