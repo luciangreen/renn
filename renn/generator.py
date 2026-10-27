@@ -170,11 +170,30 @@ def reference_trace(model, input_vector):
 
 
 def _architecture_pl(model):
-    lines = [":- module(renn_architecture, [layer/6]).", ""]
+    lines = [":- module(renn_architecture, [layer/6, layer_evidence/5]).", ""]
     for index, layer in enumerate(model["layers"], start=1):
         lines.append(
             f"layer({_atom(model['model_id'])},{index},{_atom(layer['name'])},"
             f"{layer['input_size']},{layer['output_size']},{layer['activation']})."
+        )
+    lines.append("")
+    for index, layer in enumerate(model["layers"], start=1):
+        source = f"validated input description: layers[{index - 1}]"
+        lines.append(
+            f"layer_evidence({_atom(model['model_id'])},{index},name,stated,"
+            f"{_atom(source + '.name')})."
+        )
+        lines.append(
+            f"layer_evidence({_atom(model['model_id'])},{index},activation,stated,"
+            f"{_atom(source + '.activation')})."
+        )
+        lines.append(
+            f"layer_evidence({_atom(model['model_id'])},{index},input_size,derived,"
+            f"{_atom(source + '.weights shape')})."
+        )
+        lines.append(
+            f"layer_evidence({_atom(model['model_id'])},{index},output_size,derived,"
+            f"{_atom(source + '.weights shape')})."
         )
     return "\n".join(lines) + "\n"
 
