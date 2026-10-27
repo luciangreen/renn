@@ -14,6 +14,7 @@ from renn.generator import (
     compare_reference,
     load_model,
     reference_forward,
+    run_prolog_verification,
     verify_artifacts,
 )
 from renn.safetensors import _read_safetensors, import_safetensors
@@ -229,6 +230,38 @@ class RENNBuildTests(unittest.TestCase):
         )
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn("Verified 8 artifact hashes", result.stdout)
+
+    def test_cli_verify_runs_generated_prolog_cases(self):
+        build(EXAMPLE, self.output)
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "renn",
+                "verify",
+                str(self.output),
+                "--run-prolog",
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        if shutil.which("swipl"):
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertIn("All Prolog verification cases passed.", result.stdout)
+        else:
+            self.assertEqual(result.returncode, 1)
+            self.assertIn("SWI-Prolog is required", result.stderr)
+
+    def test_run_prolog_verification_requires_manifested_cases(self):
+        build(EXAMPLE, self.output)
+        manifest_path = self.output / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        del manifest["files"]["verification_cases.pl"]
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(BuildError, "manifest does not include"):
+            run_prolog_verification(self.output)
 
     def _write_reference(self, data):
         path = Path(self.tempdir.name) / "reference.json"
