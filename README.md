@@ -159,6 +159,20 @@ The reference file identifies the model and lists finite numeric inputs and expe
 
 Comparison first verifies the build manifest, then runs the emitted Prolog using SWI-Prolog and checks outputs with the same `1e-9` absolute and relative tolerances. It requires SWI-Prolog 9.x; a mismatch exits nonzero. Only compare build directories you trust: this command executes their Prolog artifacts, and the manifest is unsigned. The reference values must be obtained separately from the implementation being checked. `examples/tiny-mlp-reference.json` is a runnable format example, not an external framework result. This command compares supplied samples; it does not load checkpoints or run a framework itself.
 
+### Run an independent reference implementation
+
+`compare-runner` sends a JSON request to a user-supplied executable, reads a JSON response containing the reference outputs and optional layer traces, then compares them to the generated Prolog:
+
+```sh
+python3 -m renn compare-runner build/tiny-mlp examples/tiny-mlp-inputs.json \
+  --runner python3 \
+  --runner-arg examples/tiny-mlp-runner.py
+```
+
+The request contains `model_id` and `cases` with one `input` vector per case. The runner reads this JSON from standard input and writes a response in the `compare` reference format to standard output; standard output must contain only JSON. The `examples/tiny-mlp-runner.py` script demonstrates the protocol using the example model. A runner must preserve each input and return one case per request; output and optional `expected_trace` values are validated and checked with the same tolerances as `compare`.
+
+The executable and its arguments are run directly, without a shell, with a five-minute timeout. **Runner code is not sandboxed.** Only run an executable and its dependencies that you trust. This protocol does not download a checkpoint, load framework models automatically, or provide framework-specific reference adapters.
+
 ## Tests
 
 From the repository root:
@@ -167,7 +181,7 @@ From the repository root:
 python3 -m unittest discover -s tests -v
 ```
 
-The suite covers JSON parsing and shape validation, safe Safetensors import, exact tensor-to-layer coverage, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged architecture and training metadata; the Python reference calculation; independent reference-output comparison; CLI build/import/verify flows; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
+The suite covers JSON parsing and shape validation, safe Safetensors import, exact tensor-to-layer coverage, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged architecture and training metadata; the Python reference calculation; independent reference-output and runner-protocol comparison; CLI build/import/verify flows; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
 
 To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
 
@@ -186,15 +200,16 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - CLI integrity verification of generated artifacts against the unsigned manifest.
 - Optional `renn verify --run-prolog` execution of the generated differential cases after manifest verification.
 - CLI comparison of emitted Prolog against independently supplied outputs and optional layer traces.
+- CLI execution of a trusted user-supplied reference runner with output and layer-trace comparison.
 - GitHub Actions CI for the Python suite and SWI-Prolog integration tests.
 
 **Not implemented yet**
 
 - GitHub/Hugging Face acquisition, revision pinning, checkpoint format detection, license-policy evaluation, and sandboxing.
 - PyTorch, ONNX, GGUF, TensorFlow, Keras, convolutional/recurrent/transformer models, quantization, tokenizers, and large-model sidecars. Safetensors import is currently limited to small floating-point dense MLPs and reads the whole checkpoint into memory.
-- Automated execution of an independent framework reference model and checkpoint-to-framework layer-wise comparisons (sample-based external reference comparisons are supported as documented above), adversarial/statistical verification, byte-identical reproducible environments, and signed manifests.
+- Framework-specific reference adapters and checkpoint-to-framework layer mapping (the user-supplied reference runner protocol is available, but users must implement the framework integration); adversarial/statistical verification, byte-identical reproducible environments, and signed manifests.
 - Tier 1 circuit discovery/causal interventions, Tier 2 rule extraction, and evidence-backed explanations beyond the generated layer trace.
 - Reconstructing training configuration or launch scripts from evidence, a benchmark suite, and publication-grade evaluation. The report documents what remains unknown rather than guessing.
 - Automatic branch creation and pull request creation by the CLI.
 
-The requirements and research acceptance criteria are maintained in [`pr1.md`](pr1.md). In particular, this prototype does not meet the stated acceptance criteria for transformer facsimiles, circuits, rule extraction, or publication results. Remaining milestones are independent framework-run reference comparison; broader safe checkpoint support (large-model sidecars, quantization, and additional formats); additional operators, transformer support, and tokenizer reproduction; then circuit discovery, rule extraction, and benchmark/publication evaluation. Acquisition, revision/license-policy handling, and sandboxing are also unimplemented prerequisites for automatic model fetching or repository-code inspection.
+The requirements and research acceptance criteria are maintained in [`pr1.md`](pr1.md). In particular, this prototype does not meet the stated acceptance criteria for transformer facsimiles, circuits, rule extraction, or publication results. Remaining milestones are framework-specific independent reference adapters and checkpoint-to-framework layer mapping; broader safe checkpoint support (large-model sidecars, quantization, and additional formats); additional operators, transformer support, and tokenizer reproduction; then circuit discovery, rule extraction, and benchmark/publication evaluation. Acquisition, revision/license-policy handling, and sandboxing are also unimplemented prerequisites for automatic model fetching or repository-code inspection.

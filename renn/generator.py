@@ -439,6 +439,30 @@ def _load_reference(path, model_id):
     return checked_cases
 
 
+def _load_reference_inputs(path, model_id):
+    try:
+        with Path(path).open(encoding="utf-8") as file:
+            request = loads_strict_json(file.read())
+    except (json.JSONDecodeError, UnicodeDecodeError, ValueError) as exc:
+        raise BuildError(f"invalid reference input JSON: {exc}") from exc
+    if not isinstance(request, dict):
+        raise BuildError("reference inputs must be a JSON object")
+    if request.get("model_id") != model_id:
+        raise BuildError(f"reference input model_id must match {model_id!r}")
+    cases = request.get("cases")
+    if not isinstance(cases, list) or not cases:
+        raise BuildError("reference input cases must contain at least one case")
+
+    checked_cases = []
+    for index, case in enumerate(cases, start=1):
+        if not isinstance(case, dict):
+            raise BuildError(f"reference input case {index} must be an object")
+        checked_cases.append({
+            "input": _number_list(case.get("input"), f"reference input case {index} input")
+        })
+    return {"model_id": model_id, "cases": checked_cases}
+
+
 def _reference_cases_pl(model_id, cases):
     lines = [
         ":- use_module('ops.pl').",
@@ -530,6 +554,61 @@ def compare_reference(build_path, reference_path):
         detail = result.stderr.strip() or result.stdout.strip() or f"exit code {result.returncode}"
         raise BuildError(f"independent reference comparison failed: {detail}")
     return {"model_id": model_id, "cases": len(cases), "stdout": result.stdout.strip()}
+
+
+def compare_runner(build_path, inputs_path, runner, runner_args=()):
+    build_path = Path(build_path)
+    manifest = verify_artifacts(build_path)
+    model_id = _identifier(manifest["model_id"], "manifest model_id")
+    request = _load_reference_inputs(inputs_path, model_id)
+    if not isinstance(runner, str) or not runner:
+        raise BuildError("reference runner executable must be a non-empty string")
+    swipl = shutil.which("swipl")
+    if not swipl:
+        raise BuildError("SWI-Prolog is required for independent reference comparison")
+
+    try:
+        result = subprocess.run(
+            [runner, *runner_args],
+            input=_json_bytes(request).decode("utf-8"),
+            capture_output=True,
+            text=True,
+            check=False,
+            timeout=300,
+        )
+    except FileNotFoundError as exc:
+        raise BuildError(f"reference runner executable {runner!r} was not found") from exc
+    except subprocess.TimeoutExpired as exc:
+        raise BuildError("reference runner exceeded the 300-second timeout") from exc
+    except UnicodeDecodeError as exc:
+        raise BuildError("reference runner output is not valid UTF-8") from exc
+
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit code {result.returncode}"
+        raise BuildError(f"reference runner failed: {detail}")
+    try:
+        reference = loads_strict_json(result.stdout)
+    except (json.JSONDecodeError, ValueError) as exc:
+        raise BuildError(f"reference runner returned invalid JSON: {exc}") from exc
+    if not isinstance(reference, dict) or reference.get("model_id") != model_id:
+        raise BuildError(f"reference runner output model_id must match {model_id!r}")
+    cases = reference.get("cases")
+    if not isinstance(cases, list) or len(cases) != len(request["cases"]):
+        raise BuildError("reference runner must return one result case for each input case")
+    for index, (input_case, result_case) in enumerate(zip(request["cases"], cases), start=1):
+        if not isinstance(result_case, dict) or result_case.get("input") != input_case["input"]:
+            raise BuildError(f"reference runner changed or omitted input for case {index}")
+
+    try:
+        reference_json = json.dumps(reference, allow_nan=False)
+    except (TypeError, ValueError) as exc:
+        raise BuildError(f"reference runner returned invalid JSON: {exc}") from exc
+    with tempfile.TemporaryDirectory() as temporary_directory:
+        reference_path = Path(temporary_directory) / "reference.json"
+        reference_path.write_text(reference_json, encoding="utf-8")
+        comparison = compare_reference(build_path, reference_path)
+    comparison["runner"] = runner
+    return comparison
 
 
 def build(input_path, output_path):

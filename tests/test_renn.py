@@ -11,6 +11,7 @@ from pathlib import Path
 from renn.generator import (
     BuildError,
     build,
+    compare_runner,
     compare_reference,
     load_model,
     reference_forward,
@@ -480,6 +481,40 @@ class RENNBuildTests(unittest.TestCase):
         reference.write_text('{"model_id":"tiny-mlp","model_id":"tiny-mlp","cases":[]}')
         with self.assertRaisesRegex(BuildError, "duplicate JSON key 'model_id'"):
             compare_reference(self.output, reference)
+
+    def test_compare_runner_rejects_mismatched_model_id(self):
+        build(EXAMPLE, self.output)
+        inputs = self._write_reference({
+            "model_id": "other",
+            "cases": [{"input": [1.0, 2.0]}],
+        })
+        with self.assertRaisesRegex(BuildError, "input model_id must match"):
+            compare_runner(self.output, inputs, sys.executable)
+
+    @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
+    def test_compare_runner_cli_executes_reference_and_checks_traces(self):
+        build(EXAMPLE, self.output)
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "renn",
+                "compare-runner",
+                str(self.output),
+                str(ROOT / "examples" / "tiny-mlp-inputs.json"),
+                "--runner",
+                sys.executable,
+                "--runner-arg",
+                str(ROOT / "examples" / "tiny-mlp-runner.py"),
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn("compared 2 cases for tiny-mlp", result.stdout)
+        self.assertIn("All independent reference cases passed.", result.stdout)
 
     @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
     def test_compare_independent_reference_outputs_and_traces(self):
