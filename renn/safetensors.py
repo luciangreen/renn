@@ -124,6 +124,7 @@ def import_safetensors(checkpoint_path, descriptor_path, output_path):
         for key in ("model_id", "source_revision", "license", "validation_inputs")
     }
     model_layers = []
+    referenced_tensors = set()
     for index, layer in enumerate(layers, start=1):
         if not isinstance(layer, dict):
             raise BuildError(f"architecture descriptor layer {index} must be an object")
@@ -133,6 +134,12 @@ def import_safetensors(checkpoint_path, descriptor_path, output_path):
             raise BuildError(f"architecture descriptor layer {index} tensor names must be strings")
         if weights_name not in tensors or bias_name not in tensors:
             raise BuildError(f"architecture descriptor layer {index} references a missing tensor")
+        for tensor_name in (weights_name, bias_name):
+            if tensor_name in referenced_tensors:
+                raise BuildError(
+                    f"architecture descriptor references tensor {tensor_name!r} more than once"
+                )
+            referenced_tensors.add(tensor_name)
         weights_shape, weights_values = tensors[weights_name]
         bias_shape, bias_values = tensors[bias_name]
         if len(weights_shape) != 2 or len(bias_shape) != 1:
@@ -143,6 +150,12 @@ def import_safetensors(checkpoint_path, descriptor_path, output_path):
             "bias": bias_values,
             "activation": layer.get("activation"),
         })
+    unreferenced_tensors = sorted(set(tensors) - referenced_tensors)
+    if unreferenced_tensors:
+        raise BuildError(
+            "Safetensors checkpoint contains tensors not mapped by the architecture descriptor: "
+            + ", ".join(repr(name) for name in unreferenced_tensors)
+        )
     model["layers"] = model_layers
 
     from renn.generator import _build_model, load_model
