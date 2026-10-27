@@ -165,7 +165,7 @@ The reference file identifies the model and lists finite numeric inputs and expe
 }
 ```
 
-Comparison first verifies the build manifest, then runs the emitted Prolog using SWI-Prolog and checks outputs with the same `1e-9` absolute and relative tolerances. It requires SWI-Prolog 9.x; a mismatch exits nonzero. Only compare build directories you trust: this command executes their Prolog artifacts, and the manifest is unsigned. The reference values must be obtained separately from the implementation being checked. `examples/tiny-mlp-reference.json` is a runnable format example, not an external framework result. This command compares supplied samples; it does not load checkpoints or run a framework itself.
+Comparison first verifies the build manifest and checks input/output widths and, when supplied, the complete ordered layer trace against the generated verification schema. It then runs the emitted Prolog using SWI-Prolog and checks outputs with the same `1e-9` absolute and relative tolerances. Invalid dimensions or trace ordering are reported before Prolog is started. It requires SWI-Prolog 9.x; a numeric mismatch exits nonzero. Only compare build directories you trust: this command executes their Prolog artifacts, and the manifest is unsigned. The reference values must be obtained separately from the implementation being checked. `examples/tiny-mlp-reference.json` is a runnable format example, not an external framework result. This command compares supplied samples; it does not load checkpoints or run a framework itself.
 
 ### Run an independent reference implementation
 
@@ -189,7 +189,7 @@ From the repository root:
 python3 -m unittest discover -s tests -v
 ```
 
-The suite covers JSON parsing and shape validation, single-file and indexed/sharded Safetensors import, exact tensor-to-layer coverage, unsafe shard rejection, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged architecture and training metadata; the Python reference calculation; independent reference-output and runner-protocol comparison; CLI build/import/verify flows; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
+The suite covers JSON parsing and shape validation, single-file and indexed/sharded Safetensors import, exact tensor-to-layer coverage, unsafe shard rejection, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged architecture and training metadata; the Python reference calculation; independent reference-output and runner-protocol comparison (including preflight input/output widths and complete trace order); CLI build/import/verify flows; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
 
 To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
 

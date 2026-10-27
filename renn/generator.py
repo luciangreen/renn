@@ -439,6 +439,90 @@ def _load_reference(path, model_id):
     return checked_cases
 
 
+def _verification_schema(build_path, verified_files, model_id):
+    if "verification.json" not in verified_files:
+        raise BuildError("manifest does not include 'verification.json'")
+    try:
+        with (Path(build_path) / "verification.json").open(encoding="utf-8") as file:
+            verification = loads_strict_json(file.read())
+    except (OSError, json.JSONDecodeError, UnicodeDecodeError, ValueError) as exc:
+        raise BuildError(f"invalid verification JSON: {exc}") from exc
+    if not isinstance(verification, dict):
+        raise BuildError("verification data must be a JSON object")
+    if verification.get("model_id") != model_id:
+        raise BuildError(f"verification model_id must match {model_id!r}")
+    cases = verification.get("cases")
+    if not isinstance(cases, list) or not cases or not isinstance(cases[0], dict):
+        raise BuildError("verification cases must contain at least one valid case")
+
+    first_case = cases[0]
+    input_vector = first_case.get("input")
+    expected_output = first_case.get("expected_output")
+    expected_trace = first_case.get("expected_trace")
+    if not isinstance(input_vector, list) or not isinstance(expected_output, list):
+        raise BuildError("verification case must contain input and expected_output vectors")
+    if not isinstance(expected_trace, list) or not expected_trace:
+        raise BuildError("verification case must contain a non-empty expected_trace")
+
+    trace_schema = []
+    for index, layer in enumerate(expected_trace, start=1):
+        if (
+            not isinstance(layer, dict)
+            or not isinstance(layer.get("layer"), str)
+            or not isinstance(layer.get("output"), list)
+        ):
+            raise BuildError(f"verification trace layer {index} is invalid")
+        trace_schema.append((layer["layer"], len(layer["output"])))
+    return {
+        "input_size": len(input_vector),
+        "output_size": len(expected_output),
+        "trace": trace_schema,
+    }
+
+
+def _validate_reference_shapes(cases, schema):
+    for case_index, (input_vector, expected_output, expected_trace) in enumerate(cases, start=1):
+        if len(input_vector) != schema["input_size"]:
+            raise BuildError(
+                f"reference case {case_index} input must have width {schema['input_size']}"
+            )
+        if len(expected_output) != schema["output_size"]:
+            raise BuildError(
+                f"reference case {case_index} expected_output must have width "
+                f"{schema['output_size']}"
+            )
+        if expected_trace is None:
+            continue
+        if len(expected_trace) != len(schema["trace"]):
+            raise BuildError(
+                f"reference case {case_index} expected_trace must contain "
+                f"{len(schema['trace'])} layers"
+            )
+        for layer_index, ((name, values), (expected_name, expected_width)) in enumerate(
+            zip(expected_trace, schema["trace"]),
+            start=1,
+        ):
+            if name != expected_name:
+                raise BuildError(
+                    f"reference case {case_index} expected_trace layer {layer_index} "
+                    f"must be {expected_name!r}"
+                )
+            if len(values) != expected_width:
+                raise BuildError(
+                    f"reference case {case_index} expected_trace layer {layer_index} "
+                    f"output must have width {expected_width}"
+                )
+
+
+def _validate_input_shapes(cases, schema):
+    for case_index, case in enumerate(cases, start=1):
+        if len(case["input"]) != schema["input_size"]:
+            raise BuildError(
+                f"reference input case {case_index} input must have width "
+                f"{schema['input_size']}"
+            )
+
+
 def _load_reference_inputs(path, model_id):
     try:
         with Path(path).open(encoding="utf-8") as file:
@@ -518,6 +602,8 @@ def compare_reference(build_path, reference_path):
     manifest = verify_artifacts(build_path)
     model_id = _identifier(manifest["model_id"], "manifest model_id")
     cases = _load_reference(reference_path, model_id)
+    schema = _verification_schema(build_path, manifest["verified_files"], model_id)
+    _validate_reference_shapes(cases, schema)
     for name in ("ops.pl", "architecture.pl", "weights.pl"):
         artifact = build_path / name
         if artifact.is_symlink() or not artifact.is_file():
@@ -561,6 +647,8 @@ def compare_runner(build_path, inputs_path, runner, runner_args=()):
     manifest = verify_artifacts(build_path)
     model_id = _identifier(manifest["model_id"], "manifest model_id")
     request = _load_reference_inputs(inputs_path, model_id)
+    schema = _verification_schema(build_path, manifest["verified_files"], model_id)
+    _validate_input_shapes(request["cases"], schema)
     if not isinstance(runner, str) or not runner:
         raise BuildError("reference runner executable must be a non-empty string")
     swipl = shutil.which("swipl")
