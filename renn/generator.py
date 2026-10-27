@@ -7,6 +7,8 @@ import subprocess
 import tempfile
 from pathlib import Path
 
+from renn.jsonutil import loads_strict_json
+
 
 ACTIVATIONS = {"linear", "relu", "tanh", "sigmoid"}
 IDENTIFIER = re.compile(r"^[A-Za-z0-9_.-]+$")
@@ -42,8 +44,8 @@ def _number_list(values, label):
 def load_model(path):
     try:
         with path.open(encoding="utf-8") as file:
-            model = json.load(file)
-    except json.JSONDecodeError as exc:
+            model = loads_strict_json(file.read())
+    except (json.JSONDecodeError, UnicodeDecodeError, ValueError) as exc:
         raise BuildError(f"invalid JSON: {exc}") from exc
     if not isinstance(model, dict):
         raise BuildError("model description must be a JSON object")
@@ -284,8 +286,8 @@ def verify_artifacts(build_path):
     manifest_path = build_path / "manifest.json"
     try:
         with manifest_path.open(encoding="utf-8") as file:
-            manifest = json.load(file)
-    except json.JSONDecodeError as exc:
+            manifest = loads_strict_json(file.read())
+    except (json.JSONDecodeError, UnicodeDecodeError, ValueError) as exc:
         raise BuildError(f"invalid manifest JSON: {exc}") from exc
     if not isinstance(manifest, dict):
         raise BuildError("manifest must be a JSON object")
@@ -317,8 +319,8 @@ def verify_artifacts(build_path):
 def _load_reference(path, model_id):
     try:
         with Path(path).open(encoding="utf-8") as file:
-            reference = json.load(file)
-    except json.JSONDecodeError as exc:
+            reference = loads_strict_json(file.read())
+    except (json.JSONDecodeError, UnicodeDecodeError, ValueError) as exc:
         raise BuildError(f"invalid reference JSON: {exc}") from exc
     if not isinstance(reference, dict):
         raise BuildError("reference data must be a JSON object")

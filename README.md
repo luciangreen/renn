@@ -42,6 +42,8 @@ Each weight matrix is output-neuron first: `weights[output_index][input_index]`.
 
 The JSON object requires `model_id`, `source_revision`, `license`, `layers`, and `validation_inputs`. Each layer requires a unique `name`, a non-empty rectangular `weights` matrix, a `bias` vector with one value per output row, and a supported `activation`. Layer dimensions must connect in order: each matrix column count equals the preceding layer's output count. Booleans are not accepted as numbers, and all weights, biases, and validation inputs must be finite.
 
+All JSON inputs (model descriptions, Safetensors architecture descriptors, comparison references, and manifests) reject duplicate object keys and non-standard `NaN`/`Infinity` constants instead of silently choosing a value.
+
 ### Import a Safetensors checkpoint
 
 For dense MLPs stored in a Safetensors file, provide an architecture descriptor that maps each layer to its weight and bias tensor names:
@@ -166,6 +168,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - User-provided JSON input for dense feed-forward networks.
 - Safetensors import for dense MLPs using an explicit tensor-to-layer descriptor; only floating-point F16, BF16, F32, and F64 tensors are accepted.
 - Strict layer dimensions, unique layer names, and finite-number validation; checkpoint or repository code is not loaded or executed.
+- Strict JSON parsing rejects duplicate object keys and non-standard `NaN`/`Infinity` constants across inputs and generated manifests.
 - `linear`, `relu`, `tanh`, and `sigmoid` layers.
 - Prolog architecture and complete weight/bias facts, plus pure-Prolog forward pass, intermediate trace, and a basic explanation result.
 - Input/checkpoint and architecture descriptor hashes, declared revision/license, evidence-tagged unknown training facts and an underdetermination report, deterministic output hashes, and supplied-input differential cases.
