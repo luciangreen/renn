@@ -1,5 +1,6 @@
 import hashlib
 import json
+import struct
 import shutil
 import subprocess
 import sys
@@ -15,6 +16,7 @@ from renn.generator import (
     reference_forward,
     verify_artifacts,
 )
+from renn.safetensors import _read_safetensors, import_safetensors
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -166,6 +168,137 @@ class RENNBuildTests(unittest.TestCase):
         path = Path(self.tempdir.name) / "reference.json"
         path.write_text(json.dumps(data))
         return path
+
+    def _write_safetensors(self, path, tensors):
+        header = {}
+        chunks = []
+        offset = 0
+        for name, (shape, values) in tensors.items():
+            payload = struct.pack("<" + "f" * len(values), *values)
+            header[name] = {
+                "dtype": "F32",
+                "shape": shape,
+                "data_offsets": [offset, offset + len(payload)],
+            }
+            chunks.append(payload)
+            offset += len(payload)
+        encoded_header = json.dumps(header, separators=(",", ":")).encode()
+        path.write_bytes(struct.pack("<Q", len(encoded_header)) + encoded_header + b"".join(chunks))
+        return path
+
+    def _write_safetensors_descriptor(self, path):
+        descriptor = {
+            "model_id": "tiny-mlp",
+            "source_revision": "checkpoint-v1",
+            "license": "CC0-1.0",
+            "layers": [
+                {
+                    "name": "hidden",
+                    "weights_tensor": "hidden.weight",
+                    "bias_tensor": "hidden.bias",
+                    "activation": "relu",
+                },
+                {
+                    "name": "output",
+                    "weights_tensor": "output.weight",
+                    "bias_tensor": "output.bias",
+                    "activation": "linear",
+                },
+            ],
+            "validation_inputs": [[1.0, 2.0], [0.0, 0.0]],
+        }
+        path.write_text(json.dumps(descriptor), encoding="utf-8")
+        return path
+
+    def test_import_safetensors_builds_verified_dense_mlp(self):
+        checkpoint = self._write_safetensors(
+            Path(self.tempdir.name) / "model.safetensors",
+            {
+                "hidden.weight": ([2, 2], [1.0, -1.0, 0.5, 0.5]),
+                "hidden.bias": ([2], [0.0, 0.25]),
+                "output.weight": ([1, 2], [2.0, -1.0]),
+                "output.bias": ([1], [0.5]),
+            },
+        )
+        descriptor = self._write_safetensors_descriptor(
+            Path(self.tempdir.name) / "architecture.json"
+        )
+        result = import_safetensors(checkpoint, descriptor, self.output)
+        self.assertIn(result["verification_status"], {"generated_not_executed", "passed"})
+        self.assertEqual(verify_artifacts(self.output)["model_id"], "tiny-mlp")
+        self.assertIn("source_sha256", (self.output / "provenance.pl").read_text())
+        provenance = (self.output / "provenance.pl").read_text()
+        self.assertIn(hashlib.sha256(checkpoint.read_bytes()).hexdigest(), provenance)
+        self.assertIn(hashlib.sha256(descriptor.read_bytes()).hexdigest(), provenance)
+        self.assertIn("weights('tiny-mlp',1,[[1.0,-1.0],[0.5,0.5]]).", (self.output / "weights.pl").read_text())
+
+    def test_import_safetensors_rejects_missing_tensor(self):
+        checkpoint = self._write_safetensors(
+            Path(self.tempdir.name) / "model.safetensors",
+            {"hidden.weight": ([2, 2], [1.0, -1.0, 0.5, 0.5])},
+        )
+        descriptor = self._write_safetensors_descriptor(
+            Path(self.tempdir.name) / "architecture.json"
+        )
+        with self.assertRaisesRegex(BuildError, "references a missing tensor"):
+            import_safetensors(checkpoint, descriptor, self.output)
+
+    def test_import_safetensors_rejects_non_finite_tensor(self):
+        checkpoint = self._write_safetensors(
+            Path(self.tempdir.name) / "non-finite.safetensors",
+            {"tensor": ([1], [float("inf")])},
+        )
+        descriptor = self._write_safetensors_descriptor(
+            Path(self.tempdir.name) / "architecture.json"
+        )
+        with self.assertRaisesRegex(BuildError, "non-finite"):
+            import_safetensors(checkpoint, descriptor, self.output)
+
+    def test_safetensors_reads_f16_and_bf16(self):
+        path = Path(self.tempdir.name) / "low-precision.safetensors"
+        header = {
+            "half": {"dtype": "F16", "shape": [1], "data_offsets": [0, 2]},
+            "bfloat": {"dtype": "BF16", "shape": [1], "data_offsets": [2, 4]},
+        }
+        encoded_header = json.dumps(header, separators=(",", ":")).encode()
+        path.write_bytes(
+            struct.pack("<Q", len(encoded_header))
+            + encoded_header
+            + struct.pack("<eH", 1.5, 0xC010)
+        )
+        self.assertEqual(_read_safetensors(path), {"half": ([1], [1.5]), "bfloat": ([1], [-2.25])})
+
+    def test_cli_import_safetensors(self):
+        checkpoint = self._write_safetensors(
+            Path(self.tempdir.name) / "model.safetensors",
+            {
+                "hidden.weight": ([2, 2], [1.0, -1.0, 0.5, 0.5]),
+                "hidden.bias": ([2], [0.0, 0.25]),
+                "output.weight": ([1, 2], [2.0, -1.0]),
+                "output.bias": ([1], [0.5]),
+            },
+        )
+        descriptor = self._write_safetensors_descriptor(
+            Path(self.tempdir.name) / "architecture.json"
+        )
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-m",
+                "renn",
+                "import-safetensors",
+                str(checkpoint),
+                str(descriptor),
+                "--output",
+                str(self.output),
+            ],
+            cwd=ROOT,
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue((self.output / "manifest.json").exists())
 
     def test_compare_reference_rejects_mismatched_model_id(self):
         build(EXAMPLE, self.output)

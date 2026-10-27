@@ -4,6 +4,7 @@ import sys
 from pathlib import Path
 
 from renn.generator import BuildError, build, compare_reference, verify_artifacts
+from renn.safetensors import import_safetensors
 
 
 def main(argv=None):
@@ -20,6 +21,13 @@ def main(argv=None):
     )
     compare_parser.add_argument("directory", type=Path, help="generated build directory")
     compare_parser.add_argument("reference", type=Path, help="JSON file containing reference cases")
+    import_parser = subparsers.add_parser(
+        "import-safetensors",
+        help="build a dense MLP from a Safetensors checkpoint and architecture descriptor",
+    )
+    import_parser.add_argument("checkpoint", type=Path, help="Safetensors checkpoint file")
+    import_parser.add_argument("descriptor", type=Path, help="JSON architecture descriptor")
+    import_parser.add_argument("--output", required=True, type=Path, help="output directory")
     args = parser.parse_args(argv)
 
     try:
@@ -27,6 +35,8 @@ def main(argv=None):
             result = verify_artifacts(args.directory)
         elif args.command == "compare":
             result = compare_reference(args.directory, args.reference)
+        elif args.command == "import-safetensors":
+            result = import_safetensors(args.checkpoint, args.descriptor, args.output)
         else:
             result = build(args.model, args.output)
     except (BuildError, OSError, json.JSONDecodeError) as exc:
@@ -39,6 +49,10 @@ def main(argv=None):
     if args.command == "compare":
         print(f"Compared {result['cases']} independent reference cases for {result['model_id']}.")
         print(result["stdout"])
+        return 0
+    if args.command == "import-safetensors":
+        print(f"Generated {len(result['files'])} files in {args.output}")
+        print(f"Prolog verification: {result['verification_status']}")
         return 0
     print(f"Generated {len(result['files'])} files in {args.output}")
     print(f"Prolog verification: {result['verification_status']}")

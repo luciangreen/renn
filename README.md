@@ -42,6 +42,35 @@ Each weight matrix is output-neuron first: `weights[output_index][input_index]`.
 
 The JSON object requires `model_id`, `source_revision`, `license`, `layers`, and `validation_inputs`. Each layer requires a unique `name`, a non-empty rectangular `weights` matrix, a `bias` vector with one value per output row, and a supported `activation`. Layer dimensions must connect in order: each matrix column count equals the preceding layer's output count. Booleans are not accepted as numbers, and all weights, biases, and validation inputs must be finite.
 
+### Import a Safetensors checkpoint
+
+For dense MLPs stored in a Safetensors file, provide an architecture descriptor that maps each layer to its weight and bias tensor names:
+
+```json
+{
+  "model_id": "tiny-mlp",
+  "source_revision": "checkpoint-commit-or-revision",
+  "license": "CC0-1.0",
+  "layers": [
+    {
+      "name": "hidden",
+      "weights_tensor": "hidden.weight",
+      "bias_tensor": "hidden.bias",
+      "activation": "relu"
+    }
+  ],
+  "validation_inputs": [[1.0, 2.0]]
+}
+```
+
+The weight tensors must be two-dimensional with output neurons first; biases must be one-dimensional. Layer dimensions, names, activations, and validation inputs are checked by the same model validator as JSON builds. Import and build with:
+
+```sh
+python3 -m renn import-safetensors model.safetensors architecture.json --output build/model
+```
+
+The importer safely parses the tensor data without loading or executing checkpoint code. It currently accepts `F16`, `BF16`, `F32`, and `F64` tensors for dense MLP weights and biases; integer/quantized formats, other architectures, and automatic architecture discovery are not supported. It reads the checkpoint into memory, so it is intended for small models. `provenance.pl` and `manifest.json` record the checkpoint and architecture-descriptor SHA-256 values. The revision and license are recorded from the descriptor and are not independently validated.
+
 Run:
 
 ```sh
@@ -126,7 +155,7 @@ From the repository root:
 python3 -m unittest discover -s tests -v
 ```
 
-The suite covers parsing and shape validation, non-finite and invalid values, deterministic hashes/artifacts, manifest integrity and tampering, evidence-tagged training metadata, the Python reference calculation, independent reference-output comparison, and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
+The suite covers JSON parsing and shape validation, safe Safetensors import and tensor validation, deterministic hashes/artifacts, manifest integrity and tampering, evidence-tagged training metadata, the Python reference calculation, independent reference-output comparison, and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
 
 To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
 
@@ -135,10 +164,11 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 **Implemented in this prototype**
 
 - User-provided JSON input for dense feed-forward networks.
-- Strict layer dimensions, unique layer names, and finite-number validation; no checkpoint or repository code is loaded or executed.
+- Safetensors import for dense MLPs using an explicit tensor-to-layer descriptor; only floating-point F16, BF16, F32, and F64 tensors are accepted.
+- Strict layer dimensions, unique layer names, and finite-number validation; checkpoint or repository code is not loaded or executed.
 - `linear`, `relu`, `tanh`, and `sigmoid` layers.
 - Prolog architecture and complete weight/bias facts, plus pure-Prolog forward pass, intermediate trace, and a basic explanation result.
-- Input artifact hash, declared revision/license, evidence-tagged unknown training facts and an underdetermination report, deterministic output hashes, and supplied-input differential cases.
+- Input/checkpoint and architecture descriptor hashes, declared revision/license, evidence-tagged unknown training facts and an underdetermination report, deterministic output hashes, and supplied-input differential cases.
 - CLI integrity verification of generated artifacts against the unsigned manifest.
 - CLI comparison of emitted Prolog against independently supplied outputs and optional layer traces.
 - GitHub Actions CI for the Python suite and SWI-Prolog integration tests.
@@ -146,10 +176,10 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 **Not implemented yet**
 
 - GitHub/Hugging Face acquisition, revision pinning, checkpoint format detection, license-policy evaluation, and sandboxing.
-- Safetensors, PyTorch, ONNX, GGUF, TensorFlow, Keras, convolutional/recurrent/transformer models, quantization, tokenizers, and large-model sidecars.
+- PyTorch, ONNX, GGUF, TensorFlow, Keras, convolutional/recurrent/transformer models, quantization, tokenizers, and large-model sidecars. Safetensors import is currently limited to small floating-point dense MLPs and reads the whole checkpoint into memory.
 - Automated execution of an independent framework reference model and checkpoint-to-framework layer-wise comparisons (sample-based external reference comparisons are supported as documented above), adversarial/statistical verification, byte-identical reproducible environments, and signed manifests.
 - Tier 1 circuit discovery/causal interventions, Tier 2 rule extraction, and evidence-backed explanations beyond the generated layer trace.
 - Reconstructing training configuration or launch scripts from evidence, a benchmark suite, and publication-grade evaluation. The report documents what remains unknown rather than guessing.
 - Automatic branch creation and pull request creation by the CLI.
 
-The requirements and research acceptance criteria are maintained in [`pr1.md`](pr1.md). In particular, this prototype does not meet the stated acceptance criteria for transformer facsimiles, circuits, rule extraction, or publication results. The next implementation milestones are safe checkpoint ingestion and independent reference comparison for the reference MLP, then broader model operators and transformer support; interpretation and research benchmarks follow those foundations.
+The requirements and research acceptance criteria are maintained in [`pr1.md`](pr1.md). In particular, this prototype does not meet the stated acceptance criteria for transformer facsimiles, circuits, rule extraction, or publication results. The next implementation milestones are independent framework-run reference comparison and broader safe checkpoint support (large-model sidecars, quantization, and additional formats), followed by broader model operators and transformer support; interpretation and research benchmarks follow those foundations.
