@@ -594,6 +594,64 @@ class RENNBuildTests(unittest.TestCase):
         with self.assertRaisesRegex(BuildError, "invalid JSON constant NaN"):
             compare_reference(self.output, reference)
 
+    def test_compare_reference_rejects_invalid_vector_and_trace_shapes(self):
+        build(EXAMPLE, self.output)
+        reference = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [{"input": [1.0], "expected_output": [-1.25]}],
+        })
+        with self.assertRaisesRegex(BuildError, "input must have width 2"):
+            compare_reference(self.output, reference)
+
+        reference = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [{
+                "input": [1.0, 2.0],
+                "expected_output": [-1.25, 0.0],
+            }],
+        })
+        with self.assertRaisesRegex(BuildError, "expected_output must have width 1"):
+            compare_reference(self.output, reference)
+
+        reference = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [{
+                "input": [1.0, 2.0],
+                "expected_output": [-1.25],
+                "expected_trace": [
+                    {"layer": "output", "output": [-1.25]},
+                    {"layer": "hidden", "output": [0.0, 1.75]},
+                ],
+            }],
+        })
+        with self.assertRaisesRegex(BuildError, "layer 1 must be 'hidden'"):
+            compare_reference(self.output, reference)
+
+        reference = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [{
+                "input": [1.0, 2.0],
+                "expected_output": [-1.25],
+                "expected_trace": [
+                    {"layer": "hidden", "output": [0.0]},
+                    {"layer": "output", "output": [-1.25]},
+                ],
+            }],
+        })
+        with self.assertRaisesRegex(BuildError, "trace layer 1 output must have width 2"):
+            compare_reference(self.output, reference)
+
+        reference = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [{
+                "input": [1.0, 2.0],
+                "expected_output": [-1.25],
+                "expected_trace": [{"layer": "hidden", "output": [0.0, 1.75]}],
+            }],
+        })
+        with self.assertRaisesRegex(BuildError, "expected_trace must contain 2 layers"):
+            compare_reference(self.output, reference)
+
     def test_compare_reference_rejects_duplicate_keys(self):
         build(EXAMPLE, self.output)
         reference = Path(self.tempdir.name) / "reference.json"
@@ -609,6 +667,15 @@ class RENNBuildTests(unittest.TestCase):
         })
         with self.assertRaisesRegex(BuildError, "input model_id must match"):
             compare_runner(self.output, inputs, sys.executable)
+
+    def test_compare_runner_rejects_invalid_input_width_before_execution(self):
+        build(EXAMPLE, self.output)
+        inputs = self._write_reference({
+            "model_id": "tiny-mlp",
+            "cases": [{"input": [1.0]}],
+        })
+        with self.assertRaisesRegex(BuildError, "input must have width 2"):
+            compare_runner(self.output, inputs, "runner-that-must-not-be-invoked")
 
     @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
     def test_compare_runner_cli_executes_reference_and_checks_traces(self):
