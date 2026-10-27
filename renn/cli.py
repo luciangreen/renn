@@ -6,6 +6,7 @@ from pathlib import Path
 from renn.generator import (
     BuildError,
     build,
+    compare_runner,
     compare_reference,
     run_prolog_verification,
     verify_artifacts,
@@ -32,6 +33,23 @@ def main(argv=None):
     )
     compare_parser.add_argument("directory", type=Path, help="generated build directory")
     compare_parser.add_argument("reference", type=Path, help="JSON file containing reference cases")
+    runner_parser = subparsers.add_parser(
+        "compare-runner",
+        help="run an independent reference implementation and compare its outputs",
+    )
+    runner_parser.add_argument("directory", type=Path, help="generated build directory")
+    runner_parser.add_argument("inputs", type=Path, help="JSON file containing model inputs")
+    runner_parser.add_argument(
+        "--runner",
+        required=True,
+        help="trusted executable that implements the reference-runner JSON protocol",
+    )
+    runner_parser.add_argument(
+        "--runner-arg",
+        action="append",
+        default=[],
+        help="argument passed to the runner executable; may be repeated",
+    )
     import_parser = subparsers.add_parser(
         "import-safetensors",
         help="build a dense MLP from a Safetensors checkpoint and architecture descriptor",
@@ -50,6 +68,8 @@ def main(argv=None):
             )
         elif args.command == "compare":
             result = compare_reference(args.directory, args.reference)
+        elif args.command == "compare-runner":
+            result = compare_runner(args.directory, args.inputs, args.runner, args.runner_arg)
         elif args.command == "import-safetensors":
             result = import_safetensors(args.checkpoint, args.descriptor, args.output)
         else:
@@ -65,6 +85,10 @@ def main(argv=None):
         return 0
     if args.command == "compare":
         print(f"Compared {result['cases']} independent reference cases for {result['model_id']}.")
+        print(result["stdout"])
+        return 0
+    if args.command == "compare-runner":
+        print(f"Ran {result['runner']!r} and compared {result['cases']} cases for {result['model_id']}.")
         print(result["stdout"])
         return 0
     if args.command == "import-safetensors":

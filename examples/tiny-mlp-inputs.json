@@ -1,0 +1,7 @@
+{
+  "model_id": "tiny-mlp",
+  "cases": [
+    {"input": [1.0, 2.0]},
+    {"input": [0.0, 0.0]}
+  ]
+}
