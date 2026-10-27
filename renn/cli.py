@@ -52,7 +52,7 @@ def main(argv=None):
     )
     import_parser = subparsers.add_parser(
         "import-safetensors",
-        help="build a dense MLP from a Safetensors checkpoint and architecture descriptor",
+        help="build a dense MLP from a Safetensors file or shard index and architecture descriptor",
     )
     import_parser.add_argument("checkpoint", type=Path, help="Safetensors checkpoint file")
     import_parser.add_argument("descriptor", type=Path, help="JSON architecture descriptor")

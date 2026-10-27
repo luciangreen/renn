@@ -71,6 +71,14 @@ The weight tensors must be two-dimensional with output neurons first; biases mus
 python3 -m renn import-safetensors model.safetensors architecture.json --output build/model
 ```
 
+For a sharded checkpoint, pass its Safetensors index JSON (for example `model.safetensors.index.json`) instead of an individual shard:
+
+```sh
+python3 -m renn import-safetensors model.safetensors.index.json architecture.json --output build/model
+```
+
+The importer reads every shard named by `weight_map`, rejects unsafe paths, symlinked shards, missing or extra tensors, and verifies that each shard's tensor names match the index. The provenance `source_sha256` for a sharded import is a SHA-256 digest of a canonical record containing the index and each shard filename and content hash. Sharded import still loads the complete checkpoint into memory; it is not large-model streaming or sidecar support.
+
 Every checkpoint tensor must be mapped exactly once as a layer's weights or bias; unused tensors and duplicate mappings are rejected rather than silently omitted or reused. The importer safely parses the tensor data without loading or executing checkpoint code. It currently accepts `F16`, `BF16`, `F32`, and `F64` tensors for dense MLP weights and biases; integer/quantized formats, other architectures, and automatic architecture discovery are not supported. It reads the checkpoint into memory, so it is intended for small models. `provenance.pl` and `manifest.json` record the checkpoint and architecture-descriptor SHA-256 values. The revision and license are recorded from the descriptor and are not independently validated.
 
 Run:
@@ -181,7 +189,7 @@ From the repository root:
 python3 -m unittest discover -s tests -v
 ```
 
-The suite covers JSON parsing and shape validation, safe Safetensors import, exact tensor-to-layer coverage, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged architecture and training metadata; the Python reference calculation; independent reference-output and runner-protocol comparison; CLI build/import/verify flows; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
+The suite covers JSON parsing and shape validation, single-file and indexed/sharded Safetensors import, exact tensor-to-layer coverage, unsafe shard rejection, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged architecture and training metadata; the Python reference calculation; independent reference-output and runner-protocol comparison; CLI build/import/verify flows; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
 
 To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
 
@@ -190,7 +198,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 **Implemented in this prototype**
 
 - User-provided JSON input for dense feed-forward networks.
-- Safetensors import for dense MLPs using an explicit, one-to-one tensor-to-layer descriptor; only floating-point F16, BF16, F32, and F64 tensors are accepted.
+- Safetensors import for dense MLPs using an explicit, one-to-one tensor-to-layer descriptor, for single-file or indexed sharded checkpoints; only floating-point F16, BF16, F32, and F64 tensors are accepted.
 - Strict layer dimensions, unique layer names, and finite-number validation; checkpoint or repository code is not loaded or executed.
 - Architecture facts retain the compatible `layer/6` interface and include `layer_evidence/5` facts tagging names and activations as stated and layer dimensions as derived from weight shapes.
 - Strict JSON parsing rejects duplicate object keys and non-standard `NaN`/`Infinity` constants across inputs and generated manifests.
@@ -206,7 +214,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 **Not implemented yet**
 
 - GitHub/Hugging Face acquisition, revision pinning, checkpoint format detection, license-policy evaluation, and sandboxing.
-- PyTorch, ONNX, GGUF, TensorFlow, Keras, convolutional/recurrent/transformer models, quantization, tokenizers, and large-model sidecars. Safetensors import is currently limited to small floating-point dense MLPs and reads the whole checkpoint into memory.
+- PyTorch, ONNX, GGUF, TensorFlow, Keras, convolutional/recurrent/transformer models, quantization, tokenizers, and large-model sidecars. Safetensors import is currently limited to small floating-point dense MLPs and reads all checkpoint shards into memory.
 - Framework-specific reference adapters and checkpoint-to-framework layer mapping (the user-supplied reference runner protocol is available, but users must implement the framework integration); adversarial/statistical verification, byte-identical reproducible environments, and signed manifests.
 - Tier 1 circuit discovery/causal interventions, Tier 2 rule extraction, and evidence-backed explanations beyond the generated layer trace.
 - Reconstructing training configuration or launch scripts from evidence, a benchmark suite, and publication-grade evaluation. The report documents what remains unknown rather than guessing.
