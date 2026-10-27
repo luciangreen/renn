@@ -50,6 +50,7 @@ class RENNBuildTests(unittest.TestCase):
         outputs = reference_forward(model, [1000.0, -1000.0])
         self.assertEqual(outputs, [1.0, 0.0])
         self.assertAlmostEqual(sum(outputs), 1.0)
+        self.assertEqual(reference_forward(model, [0.0, 0.0]), [0.5, 0.5])
 
         build(path, self.output)
         self.assertIn("activate_layer(softmax, Values, Outputs)", (self.output / "ops.pl").read_text())
