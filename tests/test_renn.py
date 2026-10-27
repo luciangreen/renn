@@ -34,6 +34,26 @@ class RENNBuildTests(unittest.TestCase):
         self.assertEqual(reference_forward(model, [1.0, 2.0]), [-1.25])
         self.assertEqual(reference_forward(model, [0.0, 0.0]), [0.25])
 
+    def test_softmax_is_layer_wise_and_numerically_stable(self):
+        source = json.loads(EXAMPLE.read_text())
+        source["layers"] = [{
+            "name": "probabilities",
+            "weights": [[1.0, 0.0], [0.0, 1.0]],
+            "bias": [0.0, 0.0],
+            "activation": "softmax",
+        }]
+        source["validation_inputs"] = [[1000.0, -1000.0]]
+        path = Path(self.tempdir.name) / "softmax.json"
+        path.write_text(json.dumps(source))
+
+        model = load_model(path)
+        outputs = reference_forward(model, [1000.0, -1000.0])
+        self.assertEqual(outputs, [1.0, 0.0])
+        self.assertAlmostEqual(sum(outputs), 1.0)
+
+        build(path, self.output)
+        self.assertIn("activate_layer(softmax, Values, Outputs)", (self.output / "ops.pl").read_text())
+
     def test_build_emits_hashed_artifacts(self):
         result = build(EXAMPLE, self.output)
         self.assertIn(result["verification_status"], {"generated_not_executed", "passed"})
@@ -147,6 +167,22 @@ class RENNBuildTests(unittest.TestCase):
         source["layers"][1]["activation"] = "sigmoid"
         path = Path(self.tempdir.name) / "nonlinear.json"
         path.write_text(json.dumps(source))
+        result = build(path, self.output)
+        self.assertEqual(result["verification_status"], "passed")
+
+    @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
+    def test_softmax_prolog_verification(self):
+        source = json.loads(EXAMPLE.read_text())
+        source["layers"] = [{
+            "name": "probabilities",
+            "weights": [[1.0, 0.0], [0.0, 1.0]],
+            "bias": [0.0, 0.0],
+            "activation": "softmax",
+        }]
+        source["validation_inputs"] = [[1000.0, -1000.0], [0.0, 0.0]]
+        path = Path(self.tempdir.name) / "softmax.json"
+        path.write_text(json.dumps(source))
+
         result = build(path, self.output)
         self.assertEqual(result["verification_status"], "passed")
 

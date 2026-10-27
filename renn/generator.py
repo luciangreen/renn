@@ -10,7 +10,7 @@ from pathlib import Path
 from renn.jsonutil import loads_strict_json
 
 
-ACTIVATIONS = {"linear", "relu", "tanh", "sigmoid"}
+ACTIVATIONS = {"linear", "relu", "tanh", "sigmoid", "softmax"}
 IDENTIFIER = re.compile(r"^[A-Za-z0-9_.-]+$")
 ABS_TOLERANCE = 1e-9
 REL_TOLERANCE = 1e-9
@@ -136,6 +136,15 @@ def _activate(value, activation):
     return exp_value / (1.0 + exp_value)
 
 
+def _activate_layer(values, activation):
+    if activation != "softmax":
+        return [_activate(value, activation) for value in values]
+    maximum = max(values)
+    exponentials = [math.exp(value - maximum) for value in values]
+    total = sum(exponentials)
+    return [value / total for value in exponentials]
+
+
 def reference_forward(model, input_vector):
     return reference_trace(model, input_vector)[-1][1]
 
@@ -144,17 +153,17 @@ def reference_trace(model, input_vector):
     values = list(input_vector)
     trace = []
     for layer in model["layers"]:
-        outputs = []
+        sums = []
         for row, bias in zip(layer["weights"], layer["bias"]):
             total = bias
             for weight, value in zip(row, values):
                 total += weight * value
             if not math.isfinite(total):
                 raise BuildError("reference calculation produced a non-finite value")
-            activated = _activate(total, layer["activation"])
-            if not math.isfinite(activated):
-                raise BuildError("reference calculation produced a non-finite value")
-            outputs.append(activated)
+            sums.append(total)
+        outputs = _activate_layer(sums, layer["activation"])
+        if not all(math.isfinite(value) for value in outputs):
+            raise BuildError("reference calculation produced a non-finite value")
         values = outputs
         trace.append((layer["name"], values))
     return trace
@@ -182,7 +191,7 @@ def _weights_pl(model):
 
 
 def _ops_pl():
-    return """:- module(renn_ops, [forward/3, trace/3, explain/3]).
+    return r""":- module(renn_ops, [forward/3, trace/3, explain/3]).
 :- use_module('architecture.pl').
 :- use_module('weights.pl').
 
@@ -202,21 +211,36 @@ trace_layers(Model, Index, Input, [layer(Name, Output)|Rest]) :-
     biases(Model, Index, Bias),
     length(Matrix, OutputSize),
     length(Bias, OutputSize),
-    maplist(neuron(Input, Activation), Matrix, Bias, Output),
+    maplist(neuron(Input), Matrix, Bias, Sums),
+    activate_layer(Activation, Sums, Output),
     Next is Index + 1,
     ( layer(Model, Next, _, _, _, _) ->
         trace_layers(Model, Next, Output, Rest)
     ; Rest = []
     ).
 
-neuron(Input, Activation, Weights, Bias, Output) :-
-    dot(Weights, Input, Bias, Sum),
-    activate(Activation, Sum, Output).
+neuron(Input, Weights, Bias, Sum) :-
+    dot(Weights, Input, Bias, Sum).
 
 dot([], [], Sum, Sum).
 dot([Weight|Weights], [Value|Values], Accumulator, Result) :-
     Next is Accumulator + Weight * Value,
     dot(Weights, Values, Next, Result).
+
+activate_layer(softmax, Values, Outputs) :-
+    max_list(Values, Maximum),
+    maplist(exp_shifted(Maximum), Values, Exponentials),
+    sum_list(Exponentials, Total),
+    maplist(divide_by(Total), Exponentials, Outputs).
+activate_layer(Activation, Values, Outputs) :-
+    Activation \= softmax,
+    maplist(activate(Activation), Values, Outputs).
+
+exp_shifted(Maximum, Value, Exponential) :-
+    Exponential is exp(Value - Maximum).
+
+divide_by(Total, Value, Result) :-
+    Result is Value / Total.
 
 activate(linear, Value, Value).
 activate(relu, Value, Output) :- Output is max(0.0, Value).
