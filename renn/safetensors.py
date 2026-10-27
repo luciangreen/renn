@@ -95,6 +95,70 @@ def _read_safetensors(path):
     return tensors
 
 
+def _read_safetensors_index(index_path):
+    index_path = Path(index_path)
+    if index_path.is_symlink() or not index_path.is_file():
+        raise BuildError("Safetensors index must be a regular file")
+    try:
+        index_bytes = index_path.read_bytes()
+        index = loads_strict_json(index_bytes.decode("utf-8"))
+    except (OSError, UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
+        raise BuildError(f"invalid Safetensors index JSON: {exc}") from exc
+    if not isinstance(index, dict) or not isinstance(index.get("weight_map"), dict):
+        raise BuildError("Safetensors index must contain a weight_map object")
+    weight_map = index["weight_map"]
+    if not weight_map:
+        raise BuildError("Safetensors index weight_map must not be empty")
+
+    shards = {}
+    for tensor_name, filename in weight_map.items():
+        if not isinstance(tensor_name, str) or not tensor_name:
+            raise BuildError("Safetensors index tensor names must be non-empty strings")
+        if (
+            not isinstance(filename, str)
+            or not filename
+            or filename in {".", ".."}
+            or "/" in filename
+            or "\\" in filename
+            or any(ord(char) < 32 for char in filename)
+        ):
+            raise BuildError(f"invalid Safetensors shard filename for tensor {tensor_name!r}")
+        shards.setdefault(filename, set()).add(tensor_name)
+
+    tensors = {}
+    shard_hashes = []
+    for filename, expected_names in sorted(shards.items()):
+        shard_path = index_path.parent / filename
+        if shard_path.is_symlink() or not shard_path.is_file():
+            raise BuildError(f"Safetensors shard {filename!r} is missing or is not a regular file")
+        shard_tensors = _read_safetensors(shard_path)
+        actual_names = set(shard_tensors)
+        if actual_names != expected_names:
+            missing = sorted(expected_names - actual_names)
+            unexpected = sorted(actual_names - expected_names)
+            raise BuildError(
+                f"Safetensors shard {filename!r} does not match index weight_map "
+                f"(missing: {missing!r}, unexpected: {unexpected!r})"
+            )
+        tensors.update(shard_tensors)
+        shard_hashes.append({
+            "filename": filename,
+            "sha256": hashlib.sha256(shard_path.read_bytes()).hexdigest(),
+        })
+
+    source_files = {
+        "index": {
+            "filename": index_path.name,
+            "sha256": hashlib.sha256(index_bytes).hexdigest(),
+        },
+        "shards": shard_hashes,
+    }
+    source_hash = hashlib.sha256(
+        json.dumps(source_files, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    ).hexdigest()
+    return tensors, source_hash
+
+
 def _reshape(values, shape):
     if len(shape) == 1:
         return values
@@ -118,7 +182,11 @@ def import_safetensors(checkpoint_path, descriptor_path, output_path):
     if not isinstance(layers, list) or not layers:
         raise BuildError("architecture descriptor layers must be a non-empty list")
 
-    tensors = _read_safetensors(checkpoint_path)
+    if checkpoint_path.name.endswith(".safetensors.index.json"):
+        tensors, checkpoint_hash = _read_safetensors_index(checkpoint_path)
+    else:
+        tensors = _read_safetensors(checkpoint_path)
+        checkpoint_hash = hashlib.sha256(checkpoint_path.read_bytes()).hexdigest()
     model = {
         key: descriptor.get(key)
         for key in ("model_id", "source_revision", "license", "validation_inputs")
@@ -167,6 +235,6 @@ def import_safetensors(checkpoint_path, descriptor_path, output_path):
     return _build_model(
         checked_model,
         output_path,
-        hashlib.sha256(checkpoint_path.read_bytes()).hexdigest(),
+        checkpoint_hash,
         hashlib.sha256(descriptor_path.read_bytes()).hexdigest(),
     )

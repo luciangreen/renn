@@ -310,6 +310,14 @@ class RENNBuildTests(unittest.TestCase):
         path.write_text(json.dumps(descriptor), encoding="utf-8")
         return path
 
+    def _write_safetensors_index(self, path, shards):
+        weight_map = {}
+        for filename, tensors in shards.items():
+            for name in tensors:
+                weight_map[name] = filename
+        path.write_text(json.dumps({"weight_map": weight_map}), encoding="utf-8")
+        return path
+
     def test_import_safetensors_builds_verified_dense_mlp(self):
         checkpoint = self._write_safetensors(
             Path(self.tempdir.name) / "model.safetensors",
@@ -331,6 +339,99 @@ class RENNBuildTests(unittest.TestCase):
         self.assertIn(hashlib.sha256(checkpoint.read_bytes()).hexdigest(), provenance)
         self.assertIn(hashlib.sha256(descriptor.read_bytes()).hexdigest(), provenance)
         self.assertIn("weights('tiny-mlp',1,[[1.0,-1.0],[0.5,0.5]]).", (self.output / "weights.pl").read_text())
+
+    def test_import_sharded_safetensors_builds_and_hashes_all_sources(self):
+        shard_dir = Path(self.tempdir.name)
+        first_shard = self._write_safetensors(
+            shard_dir / "model-00001-of-00002.safetensors",
+            {
+                "hidden.weight": ([2, 2], [1.0, -1.0, 0.5, 0.5]),
+                "hidden.bias": ([2], [0.0, 0.25]),
+            },
+        )
+        second_shard = self._write_safetensors(
+            shard_dir / "model-00002-of-00002.safetensors",
+            {
+                "output.weight": ([1, 2], [2.0, -1.0]),
+                "output.bias": ([1], [0.5]),
+            },
+        )
+        index = self._write_safetensors_index(
+            shard_dir / "model.safetensors.index.json",
+            {
+                first_shard.name: {
+                    "hidden.weight": None,
+                    "hidden.bias": None,
+                },
+                second_shard.name: {
+                    "output.weight": None,
+                    "output.bias": None,
+                },
+            },
+        )
+        descriptor = self._write_safetensors_descriptor(shard_dir / "architecture.json")
+
+        result = import_safetensors(index, descriptor, self.output)
+
+        self.assertIn(result["verification_status"], {"generated_not_executed", "passed"})
+        self.assertEqual(verify_artifacts(self.output)["model_id"], "tiny-mlp")
+        provenance = (self.output / "provenance.pl").read_text()
+        source_files = {
+            "index": {
+                "filename": index.name,
+                "sha256": hashlib.sha256(index.read_bytes()).hexdigest(),
+            },
+            "shards": [
+                {
+                    "filename": shard.name,
+                    "sha256": hashlib.sha256(shard.read_bytes()).hexdigest(),
+                }
+                for shard in sorted((first_shard, second_shard), key=lambda path: path.name)
+            ],
+        }
+        source_hash = hashlib.sha256(
+            json.dumps(source_files, sort_keys=True, separators=(",", ":")).encode("utf-8")
+        ).hexdigest()
+        self.assertIn(source_hash, provenance)
+        self.assertIn("weights('tiny-mlp',2,[[2.0,-1.0]]).", (self.output / "weights.pl").read_text())
+
+    def test_import_sharded_safetensors_rejects_unsafe_shard_path(self):
+        index = Path(self.tempdir.name) / "model.safetensors.index.json"
+        index.write_text(
+            json.dumps({"weight_map": {"hidden.weight": "../outside.safetensors"}}),
+            encoding="utf-8",
+        )
+        descriptor = self._write_safetensors_descriptor(Path(self.tempdir.name) / "architecture.json")
+        with self.assertRaisesRegex(BuildError, "invalid Safetensors shard filename"):
+            import_safetensors(index, descriptor, self.output)
+
+    def test_import_sharded_safetensors_rejects_index_shard_mismatch(self):
+        shard = self._write_safetensors(
+            Path(self.tempdir.name) / "model-00001-of-00001.safetensors",
+            {"actual.weight": ([1], [1.0])},
+        )
+        index = self._write_safetensors_index(
+            Path(self.tempdir.name) / "model.safetensors.index.json",
+            {shard.name: {"expected.weight": None}},
+        )
+        descriptor = self._write_safetensors_descriptor(Path(self.tempdir.name) / "architecture.json")
+        with self.assertRaisesRegex(BuildError, "does not match index weight_map"):
+            import_safetensors(index, descriptor, self.output)
+
+    def test_import_sharded_safetensors_rejects_symlinked_shard(self):
+        target = self._write_safetensors(
+            Path(self.tempdir.name) / "target.safetensors",
+            {"tensor": ([1], [1.0])},
+        )
+        shard_link = Path(self.tempdir.name) / "linked.safetensors"
+        shard_link.symlink_to(target)
+        index = self._write_safetensors_index(
+            Path(self.tempdir.name) / "model.safetensors.index.json",
+            {shard_link.name: {"tensor": None}},
+        )
+        descriptor = self._write_safetensors_descriptor(Path(self.tempdir.name) / "architecture.json")
+        with self.assertRaisesRegex(BuildError, "not a regular file"):
+            import_safetensors(index, descriptor, self.output)
 
     def test_import_safetensors_rejects_missing_tensor(self):
         checkpoint = self._write_safetensors(
@@ -426,13 +527,31 @@ class RENNBuildTests(unittest.TestCase):
                 _read_safetensors(path)
 
     def test_cli_import_safetensors(self):
-        checkpoint = self._write_safetensors(
-            Path(self.tempdir.name) / "model.safetensors",
+        first_shard = self._write_safetensors(
+            Path(self.tempdir.name) / "model-00001-of-00002.safetensors",
             {
                 "hidden.weight": ([2, 2], [1.0, -1.0, 0.5, 0.5]),
                 "hidden.bias": ([2], [0.0, 0.25]),
+            },
+        )
+        second_shard = self._write_safetensors(
+            Path(self.tempdir.name) / "model-00002-of-00002.safetensors",
+            {
                 "output.weight": ([1, 2], [2.0, -1.0]),
                 "output.bias": ([1], [0.5]),
+            },
+        )
+        checkpoint = self._write_safetensors_index(
+            Path(self.tempdir.name) / "model.safetensors.index.json",
+            {
+                first_shard.name: {
+                    "hidden.weight": None,
+                    "hidden.bias": None,
+                },
+                second_shard.name: {
+                    "output.weight": None,
+                    "output.bias": None,
+                },
             },
         )
         descriptor = self._write_safetensors_descriptor(
