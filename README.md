@@ -105,6 +105,14 @@ python3 -m renn verify build/tiny-mlp
 
 This checks the SHA-256 digest of each listed artifact and fails if a file is missing, altered, or listed with an unsafe path. The manifest is unsigned, so this detects accidental changes but does not authenticate who created the files or prove their source.
 
+To also execute the generated differential cases again after checking the hashes:
+
+```sh
+python3 -m renn verify build/tiny-mlp --run-prolog
+```
+
+This requires SWI-Prolog 9.x and executes `verification_cases.pl` from the build directory. Only run it on build directories you trust; a valid unsigned manifest does not make Prolog code safe.
+
 ### Run emitted Prolog
 
 From the output directory:
@@ -159,7 +167,7 @@ From the repository root:
 python3 -m unittest discover -s tests -v
 ```
 
-The suite covers JSON parsing and shape validation, safe Safetensors import, exact tensor-to-layer coverage, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged architecture and training metadata; the Python reference calculation; independent reference-output comparison; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
+The suite covers JSON parsing and shape validation, safe Safetensors import, exact tensor-to-layer coverage, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged architecture and training metadata; the Python reference calculation; independent reference-output comparison; CLI build/import/verify flows; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
 
 To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
 
@@ -176,6 +184,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - Prolog architecture and complete weight/bias facts, plus pure-Prolog forward pass, intermediate trace, and a basic explanation result.
 - Input/checkpoint and architecture descriptor hashes, declared revision/license, evidence-tagged unknown training facts and an underdetermination report, deterministic output hashes, and supplied-input differential cases.
 - CLI integrity verification of generated artifacts against the unsigned manifest.
+- Optional `renn verify --run-prolog` execution of the generated differential cases after manifest verification.
 - CLI comparison of emitted Prolog against independently supplied outputs and optional layer traces.
 - GitHub Actions CI for the Python suite and SWI-Prolog integration tests.
 
@@ -188,4 +197,4 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - Reconstructing training configuration or launch scripts from evidence, a benchmark suite, and publication-grade evaluation. The report documents what remains unknown rather than guessing.
 - Automatic branch creation and pull request creation by the CLI.
 
-The requirements and research acceptance criteria are maintained in [`pr1.md`](pr1.md). In particular, this prototype does not meet the stated acceptance criteria for transformer facsimiles, circuits, rule extraction, or publication results. The next implementation milestones are independent framework-run reference comparison and broader safe checkpoint support (large-model sidecars, quantization, and additional formats), followed by broader model operators and transformer support; interpretation and research benchmarks follow those foundations.
+The requirements and research acceptance criteria are maintained in [`pr1.md`](pr1.md). In particular, this prototype does not meet the stated acceptance criteria for transformer facsimiles, circuits, rule extraction, or publication results. Remaining milestones are independent framework-run reference comparison; broader safe checkpoint support (large-model sidecars, quantization, and additional formats); additional operators, transformer support, and tokenizer reproduction; then circuit discovery, rule extraction, and benchmark/publication evaluation. Acquisition, revision/license-policy handling, and sandboxing are also unimplemented prerequisites for automatic model fetching or repository-code inspection.

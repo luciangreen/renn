@@ -3,7 +3,13 @@ import json
 import sys
 from pathlib import Path
 
-from renn.generator import BuildError, build, compare_reference, verify_artifacts
+from renn.generator import (
+    BuildError,
+    build,
+    compare_reference,
+    run_prolog_verification,
+    verify_artifacts,
+)
 from renn.safetensors import import_safetensors
 
 
@@ -15,6 +21,11 @@ def main(argv=None):
     build_parser.add_argument("--output", required=True, type=Path, help="output directory")
     verify_parser = subparsers.add_parser("verify", help="check generated files against their manifest")
     verify_parser.add_argument("directory", type=Path, help="generated build directory")
+    verify_parser.add_argument(
+        "--run-prolog",
+        action="store_true",
+        help="execute the generated differential verification cases (requires SWI-Prolog)",
+    )
     compare_parser = subparsers.add_parser(
         "compare",
         help="compare generated Prolog with independent reference outputs",
@@ -32,7 +43,11 @@ def main(argv=None):
 
     try:
         if args.command == "verify":
-            result = verify_artifacts(args.directory)
+            result = (
+                run_prolog_verification(args.directory)
+                if args.run_prolog
+                else verify_artifacts(args.directory)
+            )
         elif args.command == "compare":
             result = compare_reference(args.directory, args.reference)
         elif args.command == "import-safetensors":
@@ -45,6 +60,8 @@ def main(argv=None):
     if args.command == "verify":
         print(f"Verified {result['files_verified']} artifact hashes for {result['model_id']}.")
         print("Manifest hashes detect accidental changes; they do not authenticate the source.")
+        if args.run_prolog:
+            print(result["stdout"])
         return 0
     if args.command == "compare":
         print(f"Compared {result['cases']} independent reference cases for {result['model_id']}.")

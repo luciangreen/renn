@@ -356,7 +356,40 @@ def verify_artifacts(build_path):
         if actual_hash != expected_hash:
             raise BuildError(f"SHA-256 mismatch for artifact {name!r}")
 
-    return {"model_id": manifest.get("model_id"), "files_verified": len(files)}
+    return {
+        "model_id": manifest.get("model_id"),
+        "files_verified": len(files),
+        "verified_files": sorted(files),
+    }
+
+
+def run_prolog_verification(build_path):
+    build_path = Path(build_path)
+    manifest = verify_artifacts(build_path)
+    verification_file = build_path / "verification_cases.pl"
+    if "verification_cases.pl" not in manifest["verified_files"]:
+        raise BuildError("manifest does not include 'verification_cases.pl'")
+    if verification_file.is_symlink() or not verification_file.is_file():
+        raise BuildError("'verification_cases.pl' is missing or is not a regular file")
+
+    swipl = shutil.which("swipl")
+    if not swipl:
+        raise BuildError("SWI-Prolog is required to run generated verification cases")
+    result = subprocess.run(
+        [swipl, "-q", "-s", "verification_cases.pl", "-g", "run_verification", "-t", "halt"],
+        cwd=build_path,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    if result.returncode != 0:
+        detail = result.stderr.strip() or result.stdout.strip() or f"exit code {result.returncode}"
+        raise BuildError(f"generated Prolog verification failed: {detail}")
+    return {
+        "model_id": manifest["model_id"],
+        "files_verified": manifest["files_verified"],
+        "stdout": result.stdout.strip(),
+    }
 
 
 def _load_reference(path, model_id):
