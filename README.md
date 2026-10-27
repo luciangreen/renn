@@ -83,7 +83,7 @@ The build directory contains:
 
 | File | Purpose |
 | --- | --- |
-| `architecture.pl` | Layer order, sizes, names, and activations |
+| `architecture.pl` | Layer order, sizes, names, and activations; `layer_evidence/5` records whether each field was stated in the input description or derived from the weight shape |
 | `weights.pl` | Every matrix and bias vector from the input |
 | `ops.pl` | Pure-Prolog `forward/3`, `trace/3`, and `explain/3` |
 | `provenance.pl` | Declared source metadata and input artifact SHA-256 |
@@ -92,6 +92,8 @@ The build directory contains:
 | `verification_cases.pl` | Input/output cases for the supplied validation inputs |
 | `verification.json` | Reference layer activations, comparison tolerances, and verification status |
 | `manifest.json` | SHA-256 hashes for every other generated artifact |
+
+`architecture.pl` exports `layer/6` for the network structure and `layer_evidence/5` for audit metadata. The latter is shaped as `layer_evidence(Model, Index, Attribute, Tag, Source)`: layer names and activations are `stated` from the validated input description, while input and output sizes are `derived` from its weight-matrix shape. The existing `layer/6` predicate remains available to generated operators and downstream consumers.
 
 Generated files are deterministic for identical input bytes in the same runtime environment. If SWI-Prolog is installed, the CLI runs the emitted verifier and records `passed`; otherwise it records `generated_not_executed`. The verifier checks every layer activation and final output. The approximation ledger is empty: this input format performs no deliberate compression or rounding, although normal conversion of JSON numbers to runtime floating-point values still applies.
 
@@ -157,7 +159,7 @@ From the repository root:
 python3 -m unittest discover -s tests -v
 ```
 
-The suite covers JSON parsing and shape validation, safe Safetensors import, exact tensor-to-layer coverage, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged training metadata; the Python reference calculation; independent reference-output comparison; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
+The suite covers JSON parsing and shape validation, safe Safetensors import, exact tensor-to-layer coverage, and tensor validation; deterministic hashes/artifacts; manifest integrity and tampering; evidence-tagged architecture and training metadata; the Python reference calculation; independent reference-output comparison; and (when SWI-Prolog is installed) executing the generated Prolog and checking both generated and supplied cases.
 
 To run the full suite locally, install SWI-Prolog 9.x first; without it, the Prolog integration tests are skipped. GitHub Actions installs SWI-Prolog and runs this same command on every push and pull request, so the Prolog integration tests run in CI.
 
@@ -168,6 +170,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - User-provided JSON input for dense feed-forward networks.
 - Safetensors import for dense MLPs using an explicit, one-to-one tensor-to-layer descriptor; only floating-point F16, BF16, F32, and F64 tensors are accepted.
 - Strict layer dimensions, unique layer names, and finite-number validation; checkpoint or repository code is not loaded or executed.
+- Architecture facts retain the compatible `layer/6` interface and include `layer_evidence/5` facts tagging names and activations as stated and layer dimensions as derived from weight shapes.
 - Strict JSON parsing rejects duplicate object keys and non-standard `NaN`/`Infinity` constants across inputs and generated manifests.
 - `linear`, `relu`, `tanh`, `sigmoid`, and numerically stable layer-wise `softmax` activations.
 - Prolog architecture and complete weight/bias facts, plus pure-Prolog forward pass, intermediate trace, and a basic explanation result.

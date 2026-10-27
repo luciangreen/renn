@@ -58,6 +58,18 @@ class RENNBuildTests(unittest.TestCase):
     def test_build_emits_hashed_artifacts(self):
         result = build(EXAMPLE, self.output)
         self.assertIn(result["verification_status"], {"generated_not_executed", "passed"})
+        architecture = (self.output / "architecture.pl").read_text()
+        self.assertIn("layer_evidence/5", architecture)
+        self.assertIn(
+            "layer_evidence('tiny-mlp',1,name,stated,"
+            "'validated input description: layers[0].name').",
+            architecture,
+        )
+        self.assertIn(
+            "layer_evidence('tiny-mlp',1,input_size,derived,"
+            "'validated input description: layers[0].weights shape').",
+            architecture,
+        )
         manifest = json.loads((self.output / "manifest.json").read_text())
         for name, expected_hash in manifest["files"].items():
             self.assertEqual(
