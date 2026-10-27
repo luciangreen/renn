@@ -6,6 +6,7 @@ import tempfile
 from pathlib import Path
 
 from renn.generator import BuildError
+from renn.jsonutil import loads_strict_json
 
 
 _FORMATS = {
@@ -17,15 +18,6 @@ _FORMATS = {
 _MAX_HEADER_SIZE = 100 * 1024 * 1024
 
 
-def _unique_pairs(pairs):
-    result = {}
-    for key, value in pairs:
-        if key in result:
-            raise ValueError(f"duplicate JSON key {key!r}")
-        result[key] = value
-    return result
-
-
 def _read_safetensors(path):
     data = Path(path).read_bytes()
     if len(data) < 8:
@@ -34,7 +26,7 @@ def _read_safetensors(path):
     if header_size > _MAX_HEADER_SIZE or 8 + header_size > len(data):
         raise BuildError("Safetensors header has an invalid size")
     try:
-        header = json.loads(data[8:8 + header_size], object_pairs_hook=_unique_pairs)
+        header = loads_strict_json(data[8:8 + header_size])
     except (UnicodeDecodeError, json.JSONDecodeError, ValueError) as exc:
         raise BuildError(f"invalid Safetensors header: {exc}") from exc
     if not isinstance(header, dict):
@@ -117,8 +109,8 @@ def import_safetensors(checkpoint_path, descriptor_path, output_path):
     checkpoint_path = Path(checkpoint_path)
     descriptor_path = Path(descriptor_path)
     try:
-        descriptor = json.loads(descriptor_path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as exc:
+        descriptor = loads_strict_json(descriptor_path.read_text(encoding="utf-8"))
+    except (json.JSONDecodeError, UnicodeDecodeError, ValueError) as exc:
         raise BuildError(f"invalid architecture descriptor JSON: {exc}") from exc
     if not isinstance(descriptor, dict):
         raise BuildError("architecture descriptor must be a JSON object")

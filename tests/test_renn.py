@@ -75,6 +75,12 @@ class RENNBuildTests(unittest.TestCase):
         with self.assertRaisesRegex(BuildError, "invalid artifact filename"):
             verify_artifacts(self.output)
 
+    def test_verify_artifacts_rejects_duplicate_manifest_keys(self):
+        build(EXAMPLE, self.output)
+        (self.output / "manifest.json").write_text('{"files":{},"files":{}}')
+        with self.assertRaisesRegex(BuildError, "duplicate JSON key 'files'"):
+            verify_artifacts(self.output)
+
     def test_output_is_deterministic(self):
         first = self.output / "first"
         second = self.output / "second"
@@ -89,9 +95,20 @@ class RENNBuildTests(unittest.TestCase):
         source["layers"][0]["weights"][0][0] = float("nan")
         path = Path(self.tempdir.name) / "invalid.json"
         path.write_text(json.dumps(source))
-        with self.assertRaisesRegex(BuildError, "finite numbers"):
+        with self.assertRaisesRegex(BuildError, "invalid JSON constant NaN"):
             load_model(path)
 
+    def test_rejects_duplicate_keys_and_nonstandard_json_constants(self):
+        path = Path(self.tempdir.name) / "invalid.json"
+        path.write_text('{"model_id":"first","model_id":"second"}')
+        with self.assertRaisesRegex(BuildError, "duplicate JSON key 'model_id'"):
+            load_model(path)
+
+        path.write_text(EXAMPLE.read_text().replace('"weights": [[1.0, -1.0]', '"weights": [[NaN, -1.0]'))
+        with self.assertRaisesRegex(BuildError, "invalid JSON constant NaN"):
+            load_model(path)
+
+        source = json.loads(EXAMPLE.read_text())
         source["layers"][0]["weights"][0][0] = True
         path.write_text(json.dumps(source))
         with self.assertRaisesRegex(BuildError, "finite numbers"):
@@ -243,6 +260,16 @@ class RENNBuildTests(unittest.TestCase):
         with self.assertRaisesRegex(BuildError, "references a missing tensor"):
             import_safetensors(checkpoint, descriptor, self.output)
 
+    def test_import_safetensors_rejects_duplicate_descriptor_keys(self):
+        checkpoint = self._write_safetensors(
+            Path(self.tempdir.name) / "model.safetensors",
+            {"hidden.weight": ([2, 2], [1.0, -1.0, 0.5, 0.5])},
+        )
+        descriptor = Path(self.tempdir.name) / "architecture.json"
+        descriptor.write_text('{"model_id":"first","model_id":"second"}')
+        with self.assertRaisesRegex(BuildError, "duplicate JSON key 'model_id'"):
+            import_safetensors(checkpoint, descriptor, self.output)
+
     def test_import_safetensors_rejects_non_finite_tensor(self):
         checkpoint = self._write_safetensors(
             Path(self.tempdir.name) / "non-finite.safetensors",
@@ -267,6 +294,17 @@ class RENNBuildTests(unittest.TestCase):
             + struct.pack("<eH", 1.5, 0xC010)
         )
         self.assertEqual(_read_safetensors(path), {"half": ([1], [1.5]), "bfloat": ([1], [-2.25])})
+
+    def test_safetensors_rejects_duplicate_header_keys_and_nonstandard_constants(self):
+        path = Path(self.tempdir.name) / "invalid-header.safetensors"
+        for header, expected_error in (
+            ('{"tensor":{},"tensor":{}}', "duplicate JSON key 'tensor'"),
+            ('{"__metadata__":{"value":NaN}}', "invalid JSON constant NaN"),
+        ):
+            encoded_header = header.encode()
+            path.write_bytes(struct.pack("<Q", len(encoded_header)) + encoded_header)
+            with self.assertRaisesRegex(BuildError, expected_error):
+                _read_safetensors(path)
 
     def test_cli_import_safetensors(self):
         checkpoint = self._write_safetensors(
@@ -315,7 +353,14 @@ class RENNBuildTests(unittest.TestCase):
             "model_id": "tiny-mlp",
             "cases": [{"input": [1.0, 2.0], "expected_output": [float("nan")]}],
         })
-        with self.assertRaisesRegex(BuildError, "finite numbers"):
+        with self.assertRaisesRegex(BuildError, "invalid JSON constant NaN"):
+            compare_reference(self.output, reference)
+
+    def test_compare_reference_rejects_duplicate_keys(self):
+        build(EXAMPLE, self.output)
+        reference = Path(self.tempdir.name) / "reference.json"
+        reference.write_text('{"model_id":"tiny-mlp","model_id":"tiny-mlp","cases":[]}')
+        with self.assertRaisesRegex(BuildError, "duplicate JSON key 'model_id'"):
             compare_reference(self.output, reference)
 
     @unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is not installed")
