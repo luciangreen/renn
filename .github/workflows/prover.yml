@@ -1,0 +1,31 @@
+name: Prover tests
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  prover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check out pl2ann (pinned)
+        uses: actions/checkout@v4
+        with:
+          repository: luciangreen/pl2ann
+          ref: 995c64b5f642f31f0ac2a58481599874a51c687e
+          path: pl2ann
+      - name: Install SWI-Prolog
+        run: |
+          sudo apt-get update
+          sudo apt-get install --yes swi-prolog-nox
+      - name: Show SWI-Prolog version
+        run: swipl --version
+      - name: Run the prover's 14 tests
+        env:
+          PL2ANN_DIR: ${{ github.workspace }}/pl2ann
+        run: renn_pipeline/prover/run_tests.sh

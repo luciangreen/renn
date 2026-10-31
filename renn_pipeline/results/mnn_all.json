@@ -1,0 +1,1501 @@
+{
+ "s2a": {
+  "rule": "s2a",
+  "title": "Spec to Algorithm: generalise examples into address mappings",
+  "original": [
+   "in1(e1,1)",
+   "in1(e2,3)",
+   "in2(e1,2)",
+   "in2(e2,4)",
+   "out1(e1,2)",
+   "out1(e2,4)",
+   "out2(e1,1)",
+   "out2(e2,3)"
+  ],
+  "optimised_rules": [
+   "out1(E,V) :- in2(E,V)",
+   "out2(E,V) :- in1(E,V)"
+  ],
+  "net": {
+   "atoms": 8,
+   "hidden": 8,
+   "edges": 8,
+   "input_preds": [
+    "in1/2",
+    "in2/2",
+    "out1/2",
+    "out2/2"
+   ],
+   "match": "proved(same_ground_clauses(8))"
+  },
+  "net_opt": {
+   "atoms": 144,
+   "hidden": 76,
+   "edges": 148,
+   "match": "proved(same_ground_clauses(76))"
+  },
+  "inverse": {
+   "observed_true": [
+    "out1(e1,2)",
+    "out1(e2,4)",
+    "out2(e1,1)",
+    "out2(e2,3)"
+   ],
+   "n_observed": 4,
+   "original_input": [
+    "in1(e1,1)",
+    "in1(e2,3)",
+    "in2(e1,2)",
+    "in2(e2,4)",
+    "out1(e1,2)",
+    "out1(e2,4)",
+    "out2(e1,1)",
+    "out2(e2,3)"
+   ],
+   "recovered": [
+    "out1(e1,2)",
+    "out1(e2,4)",
+    "out2(e1,1)",
+    "out2(e2,3)"
+   ],
+   "n_minimal": 1,
+   "capped": false,
+   "min_size": 4,
+   "orig_size": 8,
+   "original_is_minimal": false,
+   "proof": "proved(all_observed_literals_hold(4))"
+  },
+  "popper": [
+   {
+    "label": "out1",
+    "input": "recovered",
+    "head": "out1/2",
+    "body": [
+     "in1/2",
+     "in2/2"
+    ],
+    "code": null,
+    "n_pos": 2,
+    "n_neg": 34
+   },
+   {
+    "label": "out1",
+    "input": "original",
+    "head": "out1/2",
+    "body": [
+     "in1/2",
+     "in2/2"
+    ],
+    "code": [
+     "out1(A,B):- in2(A,B)"
+    ],
+    "n_pos": 2,
+    "n_neg": 34,
+    "reproduces_recovered": "proved(all_observed_literals_hold(36))",
+    "vs_optimised": "proved(exhaustive(256))"
+   },
+   {
+    "label": "out2",
+    "input": "recovered",
+    "head": "out2/2",
+    "body": [
+     "in1/2",
+     "in2/2"
+    ],
+    "code": null,
+    "n_pos": 2,
+    "n_neg": 34
+   },
+   {
+    "label": "out2",
+    "input": "original",
+    "head": "out2/2",
+    "body": [
+     "in1/2",
+     "in2/2"
+    ],
+    "code": [
+     "out2(A,B):- in1(A,B)"
+    ],
+    "n_pos": 2,
+    "n_neg": 34,
+    "reproduces_recovered": "proved(all_observed_literals_hold(36))",
+    "vs_optimised": "proved(exhaustive(256))"
+   }
+  ],
+  "proof_original_vs_optimised": "refuted(input([in1(e1,e1),in1(e1,e2),in1(e2,e1),in1(e2,e2),in2(e1,e1),in2(e1,e2),in2(e2,e1),in2(e2,e2)]),only_in_a([out1(e1,2),out1(e2,4),out2(e1,1),out2(e2,3)]),only_in_b([out1(e1,e1),out1(e1,e2),out1(e2,e1),out1(e2,e2),out2(e1,e1),out2(e1,e2),out2(e2,e1),out2(e2,e2)]))",
+  "s2a": null
+ },
+ "starlog": {
+  "rule": "starlog",
+  "title": "Starlog: nest single-use intermediate results",
+  "original": [
+   "f(a,b)",
+   "f(b,c)",
+   "f(c,d)",
+   "g(b,x)",
+   "g(c,y)",
+   "g(d,z)",
+   "h(x,ok)",
+   "h(z,ok)",
+   "t1(X,Y) :- f(X,Y)",
+   "t2(X,Z) :- t1(X,Y), g(Y,Z)",
+   "r(X,W)  :- t2(X,Z), h(Z,W)"
+  ],
+  "optimised_rules": [
+   "r(X,W) :- f(X,Y), g(Y,Z), h(Z,W)"
+  ],
+  "net": {
+   "atoms": 384,
+   "hidden": 1096,
+   "edges": 3208,
+   "input_preds": [
+    "f/2",
+    "g/2",
+    "h/2"
+   ],
+   "match": "proved(same_ground_clauses(1096))"
+  },
+  "net_opt": {
+   "atoms": 256,
+   "hidden": 4104,
+   "edges": 16392,
+   "match": "proved(same_ground_clauses(4104))"
+  },
+  "inverse": {
+   "observed_true": [
+    "r(a,ok)",
+    "r(c,ok)"
+   ],
+   "n_observed": 64,
+   "original_input": [
+    "f(a,b)",
+    "f(b,c)",
+    "f(c,d)",
+    "g(b,x)",
+    "g(c,y)",
+    "g(d,z)",
+    "h(x,ok)",
+    "h(z,ok)"
+   ],
+   "recovered": [
+    "f(a,y)",
+    "f(c,y)",
+    "g(y,b)",
+    "h(b,ok)"
+   ],
+   "n_minimal": 64,
+   "capped": false,
+   "min_size": 4,
+   "orig_size": 8,
+   "original_is_minimal": false,
+   "proof": "proved(all_observed_literals_hold(64))"
+  },
+  "popper": [
+   {
+    "label": "base predicates",
+    "input": "recovered",
+    "head": "r/2",
+    "body": [
+     "f/2",
+     "g/2",
+     "h/2"
+    ],
+    "code": [
+     "r(A,B):- g(D,C),h(C,B),f(A,D)"
+    ],
+    "n_pos": 2,
+    "n_neg": 62,
+    "reproduces_recovered": "proved(all_observed_literals_hold(64))",
+    "vs_optimised": "proved(syntactic([]))"
+   },
+   {
+    "label": "base predicates",
+    "input": "original",
+    "head": "r/2",
+    "body": [
+     "f/2",
+     "g/2",
+     "h/2"
+    ],
+    "code": [
+     "r(A,B):- h(D,B),g(C,D),f(A,C)"
+    ],
+    "n_pos": 2,
+    "n_neg": 62,
+    "reproduces_recovered": "proved(all_observed_literals_hold(64))",
+    "vs_optimised": "proved(syntactic([]))"
+   }
+  ],
+  "proof_original_vs_optimised": "passed_sample(2000)",
+  "s2a": {
+   "literal": {
+    "algorithm": "\"opt_starlog_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C3','C1','C4',\\\"]\\\",\\\"[\\\",'C5','C3','C6',\\\"]\\\"],[output,[[\\\"[\\\",'C5','C2','C4','C6',\\\"]\\\"]]]]],[[[[1,3],[[1,3]]],[[1,8],[[1,4]]],[[1,11],[[1,2]]],[[1,13],[[1,5]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "t1_c(X,Y) :- f_c(X,Y)",
+       "t2_c(X,Z) :- t1_c(X,Y), g_c(Y,Z)",
+       "r_c(X,W)  :- t2_c(X,Z), h_c(Z,W)"
+      ],
+      "output": [
+       "r_c(X,W):-f_c(X,Y),g_c(Y,Z),h_c(Z,W)"
+      ],
+      "expected": [
+       "r_c(X,W) :- f_c(X,Y), g_c(Y,Z), h_c(Z,W)"
+      ],
+      "exact": true,
+      "proof": "passed_sample(2000)"
+     },
+     {
+      "input": [
+       "t1_d(X,Y) :- f_d(X,Y)",
+       "t2_d(X,Z) :- t1_d(X,Y), g_d(Y,Z)",
+       "r_d(X,W)  :- t2_d(X,Z), h_d(Z,W)"
+      ],
+      "output": [
+       "r_d(X,W):-f_d(X,Y),g_d(Y,Z),h_d(Z,W)"
+      ],
+      "expected": [
+       "r_d(X,W) :- f_d(X,Y), g_d(Y,Z), h_d(Z,W)"
+      ],
+      "exact": true,
+      "proof": "passed_sample(2000)"
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_starlog_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C3',vx,vz,'C1',vx,vy,'C4',vy,vz,\\\"]\\\",\\\"[\\\",'C5',vx,vw,'C3',vx,vz,'C6',vz,vw,\\\"]\\\"],[output,[[\\\"[\\\",'C5',vx,vw,'C2',vx,vy,'C4',vy,vz,'C6',vz,vw,\\\"]\\\"]]]]],[[[[1,5],[[1,5]]],[[1,16],[[1,8]]],[[1,21],[[1,2]]],[[1,27],[[1,11]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "t1_c(X,Y) :- f_c(X,Y)",
+       "t2_c(X,Z) :- t1_c(X,Y), g_c(Y,Z)",
+       "r_c(X,W)  :- t2_c(X,Z), h_c(Z,W)"
+      ],
+      "output": [
+       "r_c(X,W):-f_c(X,Y),g_c(Y,Z),h_c(Z,W)"
+      ],
+      "expected": [
+       "r_c(X,W) :- f_c(X,Y), g_c(Y,Z), h_c(Z,W)"
+      ],
+      "exact": true,
+      "proof": "passed_sample(2000)"
+     },
+     {
+      "input": [
+       "t1_d(X,Y) :- f_d(X,Y)",
+       "t2_d(X,Z) :- t1_d(X,Y), g_d(Y,Z)",
+       "r_d(X,W)  :- t2_d(X,Z), h_d(Z,W)"
+      ],
+      "output": [
+       "r_d(X,W):-f_d(X,Y),g_d(Y,Z),h_d(Z,W)"
+      ],
+      "expected": [
+       "r_d(X,W) :- f_d(X,Y), g_d(Y,Z), h_d(Z,W)"
+      ],
+      "exact": true,
+      "proof": "passed_sample(2000)"
+     }
+    ]
+   }
+  }
+ },
+ "pid": {
+  "rule": "pid",
+  "title": "Prolog Inductive Debugger: drop no-progress recursion, recurse after progress",
+  "original": [
+   "edge(a,b)",
+   "edge(b,c)",
+   "edge(c,d)",
+   "path(X,Y) :- edge(X,Y)",
+   "path(X,Y) :- path(X,Z), edge(Z,Y)",
+   "path(X,Y) :- path(X,Y)"
+  ],
+  "optimised_rules": [
+   "path(X,Y) :- edge(X,Y)",
+   "path(X,Y) :- edge(X,Z), path(Z,Y)"
+  ],
+  "net": {
+   "atoms": 32,
+   "hidden": 99,
+   "edges": 259,
+   "input_preds": [
+    "edge/2"
+   ],
+   "match": "proved(same_ground_clauses(99))"
+  },
+  "net_opt": {
+   "atoms": 32,
+   "hidden": 83,
+   "edges": 227,
+   "match": "proved(same_ground_clauses(83))"
+  },
+  "inverse": {
+   "observed_true": [
+    "path(a,b)",
+    "path(a,c)",
+    "path(a,d)",
+    "path(b,c)",
+    "path(b,d)",
+    "path(c,d)"
+   ],
+   "n_observed": 16,
+   "original_input": [
+    "edge(a,b)",
+    "edge(b,c)",
+    "edge(c,d)"
+   ],
+   "recovered": [
+    "edge(a,b)",
+    "edge(b,c)",
+    "edge(c,d)"
+   ],
+   "n_minimal": 1,
+   "capped": false,
+   "min_size": 3,
+   "orig_size": 3,
+   "original_is_minimal": true,
+   "proof": "proved(all_observed_literals_hold(16))"
+  },
+  "popper": [
+   {
+    "label": "recursive",
+    "input": "recovered",
+    "head": "path/2",
+    "body": [
+     "edge/2"
+    ],
+    "code": [
+     "path(A,B):- edge(A,B)",
+     "path(A,B):- edge(C,B),path(A,C)"
+    ],
+    "n_pos": 6,
+    "n_neg": 10,
+    "reproduces_recovered": "proved(all_observed_literals_hold(16))",
+    "vs_optimised": "proved(exhaustive(512))"
+   },
+   {
+    "label": "recursive",
+    "input": "original",
+    "head": "path/2",
+    "body": [
+     "edge/2"
+    ],
+    "code": [
+     "path(A,B):- edge(A,B)",
+     "path(A,B):- edge(C,B),path(A,C)"
+    ],
+    "n_pos": 6,
+    "n_neg": 10,
+    "reproduces_recovered": "proved(all_observed_literals_hold(16))",
+    "vs_optimised": "proved(exhaustive(512))"
+   }
+  ],
+  "proof_original_vs_optimised": "proved(exhaustive(512))",
+  "s2a": {
+   "literal": {
+    "algorithm": "\"opt_pid_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\",\\\"[\\\",['&r',['C1']],\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C5','C6',\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,6]]],[[1,3],[[1,3]]],[[1,6],[[1,2],[1,6]]],[[1,11,2,1],[[1,2],[1,6]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "path_c(X,Y) :- edge_c(X,Y)",
+       "path_c(X,Y) :- path_c(X,Z), edge_c(Z,Y)",
+       "path_c(X,Y) :- path_c(X,Y)"
+      ],
+      "output": null,
+      "expected": [
+       "path_c(X,Y) :- edge_c(X,Y)",
+       "path_c(X,Y) :- edge_c(X,Z), path_c(Z,Y)"
+      ],
+      "exact": false
+     },
+     {
+      "input": [
+       "path_d(X,Y) :- edge_d(X,Y)",
+       "path_d(X,Y) :- path_d(X,Z), edge_d(Z,Y)",
+       "path_d(X,Y) :- path_d(X,Y)"
+      ],
+      "output": null,
+      "expected": [
+       "path_d(X,Y) :- edge_d(X,Y)",
+       "path_d(X,Y) :- edge_d(X,Z), path_d(Z,Y)"
+      ],
+      "exact": false
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_pid_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C1',vx,vz,'C2',vz,vy,\\\"]\\\",\\\"[\\\",['&r',['C1',vx,vy]],\\\"]\\\"],[output,[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,10],[1,16]]],[[1,5],[[1,5],[1,13]]],[[1,10],[[1,2],[1,10],[1,16]]],[[1,13],[[1,2],[1,10],[1,16]]],[[1,16],[[1,5],[1,13]]],[[1,21,2,1],[[1,2],[1,10],[1,16]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "path_c(X,Y) :- edge_c(X,Y)",
+       "path_c(X,Y) :- path_c(X,Z), edge_c(Z,Y)",
+       "path_c(X,Y) :- path_c(X,Y)"
+      ],
+      "output": [
+       "path_c(X,Y):-edge_c(X,Y)",
+       "path_c(X,Y):-edge_c(X,Z),path_c(Z,Y)"
+      ],
+      "expected": [
+       "path_c(X,Y) :- edge_c(X,Y)",
+       "path_c(X,Y) :- edge_c(X,Z), path_c(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(exhaustive(512))"
+     },
+     {
+      "input": [
+       "path_d(X,Y) :- edge_d(X,Y)",
+       "path_d(X,Y) :- path_d(X,Z), edge_d(Z,Y)",
+       "path_d(X,Y) :- path_d(X,Y)"
+      ],
+      "output": [
+       "path_d(X,Y):-edge_d(X,Y)",
+       "path_d(X,Y):-edge_d(X,Z),path_d(Z,Y)"
+      ],
+      "expected": [
+       "path_d(X,Y) :- edge_d(X,Y)",
+       "path_d(X,Y) :- edge_d(X,Z), path_d(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(exhaustive(512))"
+     }
+    ]
+   }
+  }
+ },
+ "loop2b": {
+  "rule": "loop2b",
+  "title": "loop2: splice the generator into its caller",
+  "original": [
+   "colour(red)",
+   "colour(blue)",
+   "q(X) :- colour(X)",
+   "col(X) :- q(X)"
+  ],
+  "optimised_rules": [
+   "q(X) :- colour(X)",
+   "col(X) :- colour(X)"
+  ],
+  "net": {
+   "atoms": 6,
+   "hidden": 6,
+   "edges": 10,
+   "input_preds": [
+    "colour/1"
+   ],
+   "match": "proved(same_ground_clauses(6))"
+  },
+  "net_opt": {
+   "atoms": 6,
+   "hidden": 6,
+   "edges": 10,
+   "match": "proved(same_ground_clauses(6))"
+  },
+  "inverse": {
+   "observed_true": [
+    "col(blue)",
+    "col(red)"
+   ],
+   "n_observed": 2,
+   "original_input": [
+    "colour(blue)",
+    "colour(red)"
+   ],
+   "recovered": [
+    "colour(blue)",
+    "colour(red)"
+   ],
+   "n_minimal": 1,
+   "capped": false,
+   "min_size": 2,
+   "orig_size": 2,
+   "original_is_minimal": true,
+   "proof": "proved(all_observed_literals_hold(2))"
+  },
+  "popper": [
+   {
+    "label": "generator and wrapper available",
+    "input": "recovered",
+    "head": "col/1",
+    "body": [
+     "colour/1",
+     "q/1"
+    ],
+    "code": [
+     "col(A):- q(A)"
+    ],
+    "n_pos": 2,
+    "n_neg": 0,
+    "reproduces_recovered": "proved(all_observed_literals_hold(2))",
+    "vs_optimised": "proved(exhaustive(8))"
+   },
+   {
+    "label": "generator and wrapper available",
+    "input": "original",
+    "head": "col/1",
+    "body": [
+     "colour/1",
+     "q/1"
+    ],
+    "code": [
+     "col(A):- q(A)"
+    ],
+    "n_pos": 2,
+    "n_neg": 0,
+    "reproduces_recovered": "proved(all_observed_literals_hold(2))",
+    "vs_optimised": "proved(exhaustive(8))"
+   },
+   {
+    "label": "generator only",
+    "input": "recovered",
+    "head": "col/1",
+    "body": [
+     "colour/1"
+    ],
+    "code": [
+     "col(A):- colour(A)"
+    ],
+    "n_pos": 2,
+    "n_neg": 0,
+    "reproduces_recovered": "proved(all_observed_literals_hold(2))",
+    "vs_optimised": "proved(exhaustive(8))"
+   },
+   {
+    "label": "generator only",
+    "input": "original",
+    "head": "col/1",
+    "body": [
+     "colour/1"
+    ],
+    "code": [
+     "col(A):- colour(A)"
+    ],
+    "n_pos": 2,
+    "n_neg": 0,
+    "reproduces_recovered": "proved(all_observed_literals_hold(2))",
+    "vs_optimised": "proved(exhaustive(8))"
+   }
+  ],
+  "proof_original_vs_optimised": "proved(exhaustive(8))",
+  "s2a": {
+   "literal": {
+    "algorithm": "\"opt_loop2b_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C3','C1',\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C3','C2',\\\"]\\\"]]]]],[[[[1,2],[[1,2]]],[[1,3],[[1,3],[1,7]]],[[1,6],[[1,6]]],[[1,7],[[1,2]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "q_c(X) :- colour_c(X)",
+       "col_c(X) :- q_c(X)"
+      ],
+      "output": [
+       "q_c(X):-colour_c(X)",
+       "col_c(X):-colour_c(X)"
+      ],
+      "expected": [
+       "q_c(X) :- colour_c(X)",
+       "col_c(X) :- colour_c(X)"
+      ],
+      "exact": true,
+      "proof": "proved(exhaustive(8))"
+     },
+     {
+      "input": [
+       "q_d(X) :- colour_d(X)",
+       "col_d(X) :- q_d(X)"
+      ],
+      "output": [
+       "q_d(X):-colour_d(X)",
+       "col_d(X):-colour_d(X)"
+      ],
+      "expected": [
+       "q_d(X) :- colour_d(X)",
+       "col_d(X) :- colour_d(X)"
+      ],
+      "exact": true,
+      "proof": "proved(exhaustive(8))"
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_loop2b_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,'C2',vx,\\\"]\\\",\\\"[\\\",'C3',vx,'C1',vx,\\\"]\\\"],[output,[[\\\"[\\\",'C1',vx,'C2',vx,\\\"]\\\",\\\"[\\\",'C3',vx,'C2',vx,\\\"]\\\"]]]]],[[[[1,2],[[1,2]]],[[1,4],[[1,4],[1,10]]],[[1,8],[[1,8]]],[[1,10],[[1,2]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "q_c(X) :- colour_c(X)",
+       "col_c(X) :- q_c(X)"
+      ],
+      "output": [
+       "q_c(X):-colour_c(X)",
+       "col_c(X):-colour_c(X)"
+      ],
+      "expected": [
+       "q_c(X) :- colour_c(X)",
+       "col_c(X) :- colour_c(X)"
+      ],
+      "exact": true,
+      "proof": "proved(exhaustive(8))"
+     },
+     {
+      "input": [
+       "q_d(X) :- colour_d(X)",
+       "col_d(X) :- q_d(X)"
+      ],
+      "output": [
+       "q_d(X):-colour_d(X)",
+       "col_d(X):-colour_d(X)"
+      ],
+      "expected": [
+       "q_d(X) :- colour_d(X)",
+       "col_d(X) :- colour_d(X)"
+      ],
+      "exact": true,
+      "proof": "proved(exhaustive(8))"
+     }
+    ]
+   }
+  }
+ },
+ "plop": {
+  "rule": "plop",
+  "title": "PLOp: unfold helpers and compute the shared call once",
+  "original": [
+   "sub(a,s1)",
+   "sub(b,s2)",
+   "sub(c,s3)",
+   "fin(s1,v1)",
+   "fin(s2,v2)",
+   "fin(s3,v3)",
+   "good(v1)",
+   "good(v3)",
+   "lab(v1,red)",
+   "lab(v2,green)",
+   "lab(v3,blue)",
+   "exp(X,A)  :- sub(X,S), fin(S,A)",
+   "row1(X,A) :- exp(X,A), good(A)",
+   "row2(X,L) :- exp(X,A), lab(A,L)",
+   "report(X,L) :- row1(X,_), row2(X,L)"
+  ],
+  "optimised_rules": [
+   "exp(X,A)  :- sub(X,S), fin(S,A)",
+   "row1(X,A) :- exp(X,A), good(A)",
+   "row2(X,L) :- exp(X,A), lab(A,L)",
+   "report(X,L) :- sub(X,S), fin(S,A), good(A), lab(A,L)"
+  ],
+  "net": {
+   "atoms": 1020,
+   "hidden": 5339,
+   "edges": 15995,
+   "input_preds": [
+    "fin/2",
+    "good/1",
+    "lab/2",
+    "sub/2"
+   ],
+   "match": "proved(same_ground_clauses(5339))"
+  },
+  "net_opt": {
+   "atoms": 1020,
+   "hidden": 24347,
+   "edges": 114491,
+   "match": "proved(same_ground_clauses(24347))"
+  },
+  "inverse": {
+   "observed_true": [
+    "report(a,red)",
+    "report(c,blue)"
+   ],
+   "n_observed": 144,
+   "original_input": [
+    "fin(s1,v1)",
+    "fin(s2,v2)",
+    "fin(s3,v3)",
+    "good(v1)",
+    "good(v3)",
+    "lab(v1,red)",
+    "lab(v2,green)",
+    "lab(v3,blue)",
+    "sub(a,s1)",
+    "sub(b,s2)",
+    "sub(c,s3)"
+   ],
+   "recovered": [
+    "fin(s2,blue)",
+    "fin(v3,s1)",
+    "good(blue)",
+    "good(s1)",
+    "lab(blue,blue)",
+    "lab(s1,red)",
+    "sub(a,v3)",
+    "sub(c,s2)"
+   ],
+   "n_minimal": 200,
+   "capped": true,
+   "min_size": 8,
+   "orig_size": 11,
+   "original_is_minimal": false,
+   "proof": "proved(all_observed_literals_hold(144))"
+  },
+  "popper": [
+   {
+    "label": "base predicates only",
+    "input": "recovered",
+    "head": "report/2",
+    "body": [
+     "sub/2",
+     "fin/2",
+     "good/1",
+     "lab/2"
+    ],
+    "code": [
+     "report(A,B):- lab(C,B),sub(A,D),fin(D,C)"
+    ],
+    "n_pos": 2,
+    "n_neg": 142,
+    "reproduces_recovered": "proved(all_observed_literals_hold(144))",
+    "vs_optimised": "refuted(input([sub(s1,s1),sub(v1,s1),fin(a,v1),fin(s1,a),fin(s1,v1),fin(v1,v1),good(s1),lab(a,s1),lab(v1,v1)]),only_in_a([]),only_in_b([report(s1,s1),report(s1,v1),report(v1,s1),report(v1,v1)]))"
+   },
+   {
+    "label": "base predicates only",
+    "input": "original",
+    "head": "report/2",
+    "body": [
+     "sub/2",
+     "fin/2",
+     "good/1",
+     "lab/2"
+    ],
+    "code": [
+     "report(A,B):- sub(A,D),lab(C,B),fin(D,C),good(C)"
+    ],
+    "n_pos": 2,
+    "n_neg": 142,
+    "reproduces_recovered": "proved(all_observed_literals_hold(144))",
+    "vs_optimised": "passed_sample(2000)"
+   },
+   {
+    "label": "helpers also available",
+    "input": "recovered",
+    "head": "report/2",
+    "body": [
+     "sub/2",
+     "fin/2",
+     "good/1",
+     "lab/2",
+     "exp/2",
+     "row1/2",
+     "row2/2"
+    ],
+    "code": [
+     "report(A,B):- row2(A,B)"
+    ],
+    "n_pos": 2,
+    "n_neg": 142,
+    "reproduces_recovered": "proved(all_observed_literals_hold(144))",
+    "vs_optimised": "refuted(input([sub(s1,s1),sub(v1,s1),fin(a,v1),fin(s1,a),fin(s1,v1),fin(v1,v1),good(s1),lab(a,s1),lab(v1,v1)]),only_in_a([]),only_in_b([report(s1,s1),report(s1,v1),report(v1,s1),report(v1,v1)]))"
+   },
+   {
+    "label": "helpers also available",
+    "input": "original",
+    "head": "report/2",
+    "body": [
+     "sub/2",
+     "fin/2",
+     "good/1",
+     "lab/2",
+     "exp/2",
+     "row1/2",
+     "row2/2"
+    ],
+    "code": [
+     "report(A,B):- row1(A,C),lab(C,B)"
+    ],
+    "n_pos": 2,
+    "n_neg": 142,
+    "reproduces_recovered": "proved(all_observed_literals_hold(144))",
+    "vs_optimised": "passed_sample(2000)"
+   }
+  ],
+  "proof_original_vs_optimised": "refuted(input([sub(a,a),sub(s1,a),sub(v1,v1),fin(s1,a),fin(v1,a),fin(v1,s1),good(s1),good(v1),lab(a,a),lab(s1,s1),lab(s1,v1)]),only_in_a([report(v1,a)]),only_in_b([]))",
+  "s2a": {
+   "literal": {
+    "algorithm": "\"opt_plop_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2','C3',\\\"]\\\",\\\"[\\\",'C4','C1','C5',\\\"]\\\",\\\"[\\\",'C6','C1','C7',\\\"]\\\",\\\"[\\\",'C8','C9','C6',\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2','C3',\\\"]\\\",\\\"[\\\",'C4','C1','C5',\\\"]\\\",\\\"[\\\",'C6','C1','C7',\\\"]\\\",\\\"[\\\",'C8','C2','C3','C5','C7',\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,8],[1,13]]],[[1,3],[[1,3],[1,18]]],[[1,4],[[1,4],[1,19]]],[[1,7],[[1,7]]],[[1,8],[[1,2],[1,8],[1,13]]],[[1,9],[[1,9],[1,20]]],[[1,12],[[1,12]]],[[1,13],[[1,2],[1,8],[1,13]]],[[1,14],[[1,14],[1,21]]],[[1,17],[[1,17]]],[[1,19],[[1,12]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "exp_c(X,A)  :- sub_c(X,S), fin_c(S,A)",
+       "row1_c(X,A) :- exp_c(X,A), good_c(A)",
+       "row2_c(X,L) :- exp_c(X,A), lab_c(A,L)",
+       "report_c(X,L) :- row1_c(X,_), row2_c(X,L)"
+      ],
+      "output": [
+       "exp_c(X,A):-sub_c(X,S),fin_c(S,A)",
+       "row1_c(X,A):-exp_c(X,A),good_c(A)",
+       "row2_c(X,L):-exp_c(X,A),lab_c(A,L)",
+       "report_c(X,L):-sub_c(X,S),fin_c(S,A),good_c(A),lab_c(A,L)"
+      ],
+      "expected": [
+       "exp_c(X,A)  :- sub_c(X,S), fin_c(S,A)",
+       "row1_c(X,A) :- exp_c(X,A), good_c(A)",
+       "row2_c(X,L) :- exp_c(X,A), lab_c(A,L)",
+       "report_c(X,L) :- sub_c(X,S), fin_c(S,A), good_c(A), lab_c(A,L)"
+      ],
+      "exact": true,
+      "proof": "refuted(input([sub_c(a,a),sub_c(s1,a),sub_c(v1,v1),fin_c(s1,a),fin_c(v1,a),fin_c(v1,s1),good_c(s1),good_c(v1),lab_c(a,a),lab_c(s1,s1),lab_c(s1,v1)]),only_in_a([report_c(v1,a)]),only_in_b([]))"
+     },
+     {
+      "input": [
+       "exp_d(X,A)  :- sub_d(X,S), fin_d(S,A)",
+       "row1_d(X,A) :- exp_d(X,A), good_d(A)",
+       "row2_d(X,L) :- exp_d(X,A), lab_d(A,L)",
+       "report_d(X,L) :- row1_d(X,_), row2_d(X,L)"
+      ],
+      "output": [
+       "exp_d(X,A):-sub_d(X,S),fin_d(S,A)",
+       "row1_d(X,A):-exp_d(X,A),good_d(A)",
+       "row2_d(X,L):-exp_d(X,A),lab_d(A,L)",
+       "report_d(X,L):-sub_d(X,S),fin_d(S,A),good_d(A),lab_d(A,L)"
+      ],
+      "expected": [
+       "exp_d(X,A)  :- sub_d(X,S), fin_d(S,A)",
+       "row1_d(X,A) :- exp_d(X,A), good_d(A)",
+       "row2_d(X,L) :- exp_d(X,A), lab_d(A,L)",
+       "report_d(X,L) :- sub_d(X,S), fin_d(S,A), good_d(A), lab_d(A,L)"
+      ],
+      "exact": true,
+      "proof": "refuted(input([sub_d(a,a),sub_d(s1,a),sub_d(v1,v1),fin_d(s1,a),fin_d(v1,a),fin_d(v1,s1),good_d(s1),good_d(v1),lab_d(a,a),lab_d(s1,s1),lab_d(s1,v1)]),only_in_a([report_d(v1,a)]),only_in_b([]))"
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_plop_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,va,'C2',vx,vs,'C3',vs,va,\\\"]\\\",\\\"[\\\",'C4',vx,va,'C1',vx,va,'C5',va,\\\"]\\\",\\\"[\\\",'C6',vx,vl,'C1',vx,va,'C7',va,vl,\\\"]\\\",\\\"[\\\",'C8',vx,vl,'C4',vx,v_,'C6',vx,vl,\\\"]\\\"],[output,[[\\\"[\\\",'C1',vx,va,'C2',vx,vs,'C3',vs,va,\\\"]\\\",\\\"[\\\",'C4',vx,va,'C1',vx,va,'C5',va,\\\"]\\\",\\\"[\\\",'C6',vx,vl,'C1',vx,va,'C7',va,vl,\\\"]\\\",\\\"[\\\",'C8',vx,vl,'C2',vx,vs,'C3',vs,va,'C5',va,'C7',va,vl,\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,16],[1,26]]],[[1,5],[[1,5],[1,37]]],[[1,8],[[1,8],[1,40]]],[[1,13],[[1,13]]],[[1,16],[[1,2],[1,16],[1,26]]],[[1,19],[[1,19],[1,43]]],[[1,23],[[1,23]]],[[1,26],[[1,2],[1,16],[1,26]]],[[1,29],[[1,29],[1,45]]],[[1,34],[[1,34]]],[[1,37],[[1,13]]],[[1,40],[[1,23]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "exp_c(X,A)  :- sub_c(X,S), fin_c(S,A)",
+       "row1_c(X,A) :- exp_c(X,A), good_c(A)",
+       "row2_c(X,L) :- exp_c(X,A), lab_c(A,L)",
+       "report_c(X,L) :- row1_c(X,_), row2_c(X,L)"
+      ],
+      "output": [
+       "exp_c(X,A):-sub_c(X,S),fin_c(S,A)",
+       "row1_c(X,A):-exp_c(X,A),good_c(A)",
+       "row2_c(X,L):-exp_c(X,A),lab_c(A,L)",
+       "report_c(X,L):-sub_c(X,S),fin_c(S,A),good_c(A),lab_c(A,L)"
+      ],
+      "expected": [
+       "exp_c(X,A)  :- sub_c(X,S), fin_c(S,A)",
+       "row1_c(X,A) :- exp_c(X,A), good_c(A)",
+       "row2_c(X,L) :- exp_c(X,A), lab_c(A,L)",
+       "report_c(X,L) :- sub_c(X,S), fin_c(S,A), good_c(A), lab_c(A,L)"
+      ],
+      "exact": true,
+      "proof": "refuted(input([sub_c(a,a),sub_c(s1,a),sub_c(v1,v1),fin_c(s1,a),fin_c(v1,a),fin_c(v1,s1),good_c(s1),good_c(v1),lab_c(a,a),lab_c(s1,s1),lab_c(s1,v1)]),only_in_a([report_c(v1,a)]),only_in_b([]))"
+     },
+     {
+      "input": [
+       "exp_d(X,A)  :- sub_d(X,S), fin_d(S,A)",
+       "row1_d(X,A) :- exp_d(X,A), good_d(A)",
+       "row2_d(X,L) :- exp_d(X,A), lab_d(A,L)",
+       "report_d(X,L) :- row1_d(X,_), row2_d(X,L)"
+      ],
+      "output": [
+       "exp_d(X,A):-sub_d(X,S),fin_d(S,A)",
+       "row1_d(X,A):-exp_d(X,A),good_d(A)",
+       "row2_d(X,L):-exp_d(X,A),lab_d(A,L)",
+       "report_d(X,L):-sub_d(X,S),fin_d(S,A),good_d(A),lab_d(A,L)"
+      ],
+      "expected": [
+       "exp_d(X,A)  :- sub_d(X,S), fin_d(S,A)",
+       "row1_d(X,A) :- exp_d(X,A), good_d(A)",
+       "row2_d(X,L) :- exp_d(X,A), lab_d(A,L)",
+       "report_d(X,L) :- sub_d(X,S), fin_d(S,A), good_d(A), lab_d(A,L)"
+      ],
+      "exact": true,
+      "proof": "refuted(input([sub_d(a,a),sub_d(s1,a),sub_d(v1,v1),fin_d(s1,a),fin_d(v1,a),fin_d(v1,s1),good_d(s1),good_d(v1),lab_d(a,a),lab_d(s1,s1),lab_d(s1,v1)]),only_in_a([report_d(v1,a)]),only_in_b([]))"
+     }
+    ]
+   }
+  }
+ },
+ "algebraplop": {
+  "rule": "algebraplop",
+  "title": "AlgebraPLOp: replace a recurrence by its closed form and inverse",
+  "original": [
+   "pos(0)",
+   "pos(1)",
+   "pos(2)",
+   "pos(3)",
+   "pos(4)",
+   "val(0,1)",
+   "val(I,V) :- pos(I), I > 0, J is I-1, val(J,W), V is W+2",
+   "at(V,I) :- val(I,V)"
+  ],
+  "optimised_rules": [
+   "val(I,V) :- pos(I), V is 1+2*I",
+   "at(V,I) :- out(V), 0 =:= (V-1) mod 2, I is (V-1)//2, pos(I)"
+  ],
+  "net": {
+   "atoms": 210,
+   "hidden": 178,
+   "edges": 422,
+   "input_preds": [
+    "pos/1"
+   ],
+   "match": "proved(same_ground_clauses(178))"
+  },
+  "net_opt": {
+   "atoms": 24,
+   "hidden": 24,
+   "edges": 39,
+   "match": "proved(same_ground_clauses(24))"
+  },
+  "inverse": {
+   "observed_true": [
+    "at(1,0)",
+    "at(3,1)",
+    "at(5,2)",
+    "at(7,3)",
+    "at(9,4)",
+    "val(0,1)",
+    "val(1,3)",
+    "val(2,5)",
+    "val(3,7)",
+    "val(4,9)"
+   ],
+   "n_observed": 200,
+   "original_input": [
+    "pos(0)",
+    "pos(1)",
+    "pos(2)",
+    "pos(3)",
+    "pos(4)"
+   ],
+   "recovered": [
+    "pos(1)",
+    "pos(2)",
+    "pos(3)",
+    "pos(4)"
+   ],
+   "n_minimal": 1,
+   "capped": false,
+   "min_size": 4,
+   "orig_size": 5,
+   "original_is_minimal": false,
+   "proof": "proved(all_observed_literals_hold(200))"
+  },
+  "popper": [
+   {
+    "label": "val without arithmetic",
+    "input": "recovered",
+    "head": "val/2",
+    "body": [
+     "pos/1"
+    ],
+    "code": null,
+    "n_pos": 5,
+    "n_neg": 95
+   },
+   {
+    "label": "val without arithmetic",
+    "input": "original",
+    "head": "val/2",
+    "body": [
+     "pos/1"
+    ],
+    "code": null,
+    "n_pos": 5,
+    "n_neg": 95
+   },
+   {
+    "label": "at from val",
+    "input": "recovered",
+    "head": "at/2",
+    "body": [
+     "val/2",
+     "pos/1"
+    ],
+    "code": [
+     "at(A,B):- val(B,A)"
+    ],
+    "n_pos": 5,
+    "n_neg": 95,
+    "reproduces_recovered": "proved(all_observed_literals_hold(100))",
+    "vs_optimised": "proved(exhaustive(8))"
+   },
+   {
+    "label": "at from val",
+    "input": "original",
+    "head": "at/2",
+    "body": [
+     "val/2",
+     "pos/1"
+    ],
+    "code": [
+     "at(A,B):- val(B,A)"
+    ],
+    "n_pos": 5,
+    "n_neg": 95,
+    "reproduces_recovered": "proved(all_observed_literals_hold(100))",
+    "vs_optimised": "proved(exhaustive(8))"
+   }
+  ],
+  "proof_original_vs_optimised": "proved(exhaustive(8))",
+  "s2a": {
+   "literal": {
+    "algorithm": "\"opt_algebraplop_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2','C3','C4','C5','C6',\\\"]\\\",\\\"[\\\",'C7','C1',\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2','C8',\\\"]\\\",\\\"[\\\",'C7','C9','C10','C11','C2',\\\"]\\\"]]]]],[[[[1,2],[[1,2]]],[[1,3],[[1,3],[1,11]]],[[1,10],[[1,7]]],[[1,11],[[1,2]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "val_c(I,V) :- pos_c(I), I > 0, J is I-1, val_c(J,W), V is W+2",
+       "at_c(V,I) :- val_c(I,V)"
+      ],
+      "output": null,
+      "expected": [
+       "val_c(I,V) :- pos_c(I), V is 1+2*I",
+       "at_c(V,I) :- out(V), 0 =:= (V-1) mod 2, I is (V-1)//2, pos_c(I)"
+      ],
+      "exact": false
+     },
+     {
+      "input": [
+       "val_d(I,V) :- pos_d(I), I > 0, J is I-1, val_d(J,W), V is W+2",
+       "at_d(V,I) :- val_d(I,V)"
+      ],
+      "output": null,
+      "expected": [
+       "val_d(I,V) :- pos_d(I), V is 1+2*I",
+       "at_d(V,I) :- out(V), 0 =:= (V-1) mod 2, I is (V-1)//2, pos_d(I)"
+      ],
+      "exact": false
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_algebraplop_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vi,vv,'C2',vi,'C3','C4','C1',vj,vw,'C5',\\\"]\\\",\\\"[\\\",'C6',vv,vi,'C1',vi,vv,\\\"]\\\"],[output,[[\\\"[\\\",'C1',vi,vv,'C2',vi,'C7',\\\"]\\\",\\\"[\\\",'C6',vv,vi,'C8',vv,'C9','C10','C2',vi,\\\"]\\\"]]]]],[[[[1,2],[[1,2]]],[[1,5],[[1,5],[1,17]]],[[1,9],[[1,2]]],[[1,15],[[1,10]]],[[1,18],[[1,2]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "val_c(I,V) :- pos_c(I), I > 0, J is I-1, val_c(J,W), V is W+2",
+       "at_c(V,I) :- val_c(I,V)"
+      ],
+      "output": null,
+      "expected": [
+       "val_c(I,V) :- pos_c(I), V is 1+2*I",
+       "at_c(V,I) :- out(V), 0 =:= (V-1) mod 2, I is (V-1)//2, pos_c(I)"
+      ],
+      "exact": false
+     },
+     {
+      "input": [
+       "val_d(I,V) :- pos_d(I), I > 0, J is I-1, val_d(J,W), V is W+2",
+       "at_d(V,I) :- val_d(I,V)"
+      ],
+      "output": null,
+      "expected": [
+       "val_d(I,V) :- pos_d(I), V is 1+2*I",
+       "at_d(V,I) :- out(V), 0 =:= (V-1) mod 2, I is (V-1)//2, pos_d(I)"
+      ],
+      "exact": false
+     }
+    ]
+   }
+  }
+ },
+ "detlog": {
+  "rule": "detlog",
+  "title": "Detlog: turn the cut's otherwise-branch into an explicit guard",
+  "original": [
+   "num(-2)",
+   "num(-1)",
+   "num(0)",
+   "num(1)",
+   "num(2)",
+   "pos(X) :- num(X), X > 0",
+   "cls(X,pos)    :- pos(X)",
+   "cls(X,nonpos) :- num(X), \\+ pos(X)"
+  ],
+  "optimised_rules": [
+   "pos(X) :- num(X), X > 0",
+   "cls(X,pos)    :- pos(X)",
+   "cls(X,nonpos) :- num(X), X =< 0"
+  ],
+  "net": {
+   "atoms": 28,
+   "hidden": 21,
+   "edges": 44,
+   "input_preds": [
+    "num/1"
+   ],
+   "match": "proved(same_ground_clauses(21))"
+  },
+  "net_opt": {
+   "atoms": 22,
+   "hidden": 17,
+   "edges": 29,
+   "match": "proved(same_ground_clauses(17))"
+  },
+  "inverse": {
+   "observed_true": [
+    "cls(-1,nonpos)",
+    "cls(-2,nonpos)",
+    "cls(0,nonpos)",
+    "cls(1,pos)",
+    "cls(2,pos)"
+   ],
+   "n_observed": 14,
+   "original_input": [
+    "num(-1)",
+    "num(-2)",
+    "num(0)",
+    "num(1)",
+    "num(2)"
+   ],
+   "recovered": [
+    "num(-1)",
+    "num(-2)",
+    "num(0)",
+    "num(1)",
+    "num(2)"
+   ],
+   "n_minimal": 1,
+   "capped": false,
+   "min_size": 5,
+   "orig_size": 5,
+   "original_is_minimal": true,
+   "proof": "proved(all_observed_literals_hold(14))"
+  },
+  "popper": [
+   {
+    "label": "with comparison stand-ins gt0/le0",
+    "input": "recovered",
+    "head": "cls/2",
+    "body": [
+     "num/1",
+     "pos/1",
+     "gt0/1",
+     "le0/1",
+     "lbl_pos/1",
+     "lbl_nonpos/1"
+    ],
+    "code": [
+     "cls(A,B):- pos(A),lbl_pos(B)",
+     "cls(A,B):- le0(A),lbl_nonpos(B)"
+    ],
+    "n_pos": 5,
+    "n_neg": 44,
+    "reproduces_recovered": "proved(all_observed_literals_hold(49))",
+    "vs_optimised": "refuted(input([num(-2),num(0),num(2)]),only_in_a([cls(-2,nonpos),cls(0,nonpos)]),only_in_b([]))",
+    "vs_optimised_with_bk": "refuted(input([num(-2),num(0),num(2)]),only_in_a([]),only_in_b([cls(-1,nonpos)]))"
+   },
+   {
+    "label": "with comparison stand-ins gt0/le0",
+    "input": "original",
+    "head": "cls/2",
+    "body": [
+     "num/1",
+     "pos/1",
+     "gt0/1",
+     "le0/1",
+     "lbl_pos/1",
+     "lbl_nonpos/1"
+    ],
+    "code": [
+     "cls(A,B):- lbl_nonpos(B),le0(A)",
+     "cls(A,B):- pos(A),lbl_pos(B)"
+    ],
+    "n_pos": 5,
+    "n_neg": 44,
+    "reproduces_recovered": "proved(all_observed_literals_hold(49))",
+    "vs_optimised": "refuted(input([num(-2),num(0),num(2)]),only_in_a([cls(-2,nonpos),cls(0,nonpos)]),only_in_b([]))",
+    "vs_optimised_with_bk": "refuted(input([num(-2),num(0),num(2)]),only_in_a([]),only_in_b([cls(-1,nonpos)]))"
+   }
+  ],
+  "proof_original_vs_optimised": "proved(exhaustive(8))",
+  "s2a": {
+   "literal": {
+    "algorithm": "\"opt_detlog_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2','C3',\\\"]\\\",\\\"[\\\",'C4','C1',\\\"]\\\",\\\"[\\\",'C5','C2','C6',\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2','C3',\\\"]\\\",\\\"[\\\",'C4','C1',\\\"]\\\",\\\"[\\\",'C5','C2','C7',\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,8]]],[[1,3],[[1,3],[1,12]]],[[1,4],[[1,4]]],[[1,7],[[1,7]]],[[1,8],[[1,2],[1,8]]],[[1,11],[[1,11]]],[[1,12],[[1,3],[1,12]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "pos_c(X) :- num_c(X), X > 0",
+       "cls_c(X,pos)    :- pos_c(X)",
+       "cls_c(X,nonpos) :- num_c(X), \\+ pos_c(X)"
+      ],
+      "output": null,
+      "expected": [
+       "pos_c(X) :- num_c(X), X > 0",
+       "cls_c(X,pos)    :- pos_c(X)",
+       "cls_c(X,nonpos) :- num_c(X), X =< 0"
+      ],
+      "exact": false
+     },
+     {
+      "input": [
+       "pos_d(X) :- num_d(X), X > 0",
+       "cls_d(X,pos)    :- pos_d(X)",
+       "cls_d(X,nonpos) :- num_d(X), \\+ pos_d(X)"
+      ],
+      "output": null,
+      "expected": [
+       "pos_d(X) :- num_d(X), X > 0",
+       "cls_d(X,pos)    :- pos_d(X)",
+       "cls_d(X,nonpos) :- num_d(X), X =< 0"
+      ],
+      "exact": false
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_detlog_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,'C2',vx,'C3',\\\"]\\\",\\\"[\\\",'C4',vx,pos,'C1',vx,\\\"]\\\",\\\"[\\\",'C4',vx,nonpos,'C2',vx,'C5',\\\"]\\\"],[output,[[\\\"[\\\",'C1',vx,'C2',vx,'C3',\\\"]\\\",\\\"[\\\",'C4',vx,pos,'C1',vx,\\\"]\\\",\\\"[\\\",'C4',vx,nonpos,'C2',vx,'C6',\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,12]]],[[1,4],[[1,4],[1,19]]],[[1,6],[[1,6]]],[[1,9],[[1,9],[1,16]]],[[1,12],[[1,2],[1,12]]],[[1,16],[[1,9],[1,16]]],[[1,19],[[1,4],[1,19]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "pos_c(X) :- num_c(X), X > 0",
+       "cls_c(X,pos)    :- pos_c(X)",
+       "cls_c(X,nonpos) :- num_c(X), \\+ pos_c(X)"
+      ],
+      "output": null,
+      "expected": [
+       "pos_c(X) :- num_c(X), X > 0",
+       "cls_c(X,pos)    :- pos_c(X)",
+       "cls_c(X,nonpos) :- num_c(X), X =< 0"
+      ],
+      "exact": false
+     },
+     {
+      "input": [
+       "pos_d(X) :- num_d(X), X > 0",
+       "cls_d(X,pos)    :- pos_d(X)",
+       "cls_d(X,nonpos) :- num_d(X), \\+ pos_d(X)"
+      ],
+      "output": null,
+      "expected": [
+       "pos_d(X) :- num_d(X), X > 0",
+       "cls_d(X,pos)    :- pos_d(X)",
+       "cls_d(X,nonpos) :- num_d(X), X =< 0"
+      ],
+      "exact": false
+     }
+    ]
+   }
+  }
+ },
+ "piglog2": {
+  "rule": "piglog2",
+  "title": "Piglog2: group independent goals so they can run concurrently",
+  "original": [
+   "src(s1)",
+   "src(s2)",
+   "src(s3)",
+   "wcheck(s1,w1)",
+   "wcheck(s2,w2)",
+   "wcheck(s3,w3)",
+   "nccheck(s1,n1)",
+   "nccheck(s2,n1)",
+   "nccheck(s3,n3)",
+   "wgood(w1)",
+   "wgood(w3)",
+   "ngood(n1)",
+   "ok(S) :- src(S), wcheck(S,W), wgood(W), nccheck(S,N), ngood(N)"
+  ],
+  "optimised_rules": [
+   "words_ok(S) :- wcheck(S,W), wgood(W)",
+   "nums_ok(S)  :- nccheck(S,N), ngood(N)",
+   "ok(S) :- src(S), words_ok(S), nums_ok(S)"
+  ],
+  "net": {
+   "atoms": 160,
+   "hidden": 524,
+   "edges": 3084,
+   "input_preds": [
+    "nccheck/2",
+    "ngood/1",
+    "src/1",
+    "wcheck/2",
+    "wgood/1"
+   ],
+   "match": "proved(same_ground_clauses(524))"
+  },
+  "net_opt": {
+   "atoms": 176,
+   "hidden": 148,
+   "edges": 428,
+   "match": "proved(same_ground_clauses(148))"
+  },
+  "inverse": {
+   "observed_true": [
+    "ok(s1)"
+   ],
+   "n_observed": 8,
+   "original_input": [
+    "nccheck(s1,n1)",
+    "nccheck(s2,n1)",
+    "nccheck(s3,n3)",
+    "ngood(n1)",
+    "src(s1)",
+    "src(s2)",
+    "src(s3)",
+    "wcheck(s1,w1)",
+    "wcheck(s2,w2)",
+    "wcheck(s3,w3)",
+    "wgood(w1)",
+    "wgood(w3)"
+   ],
+   "recovered": [
+    "nccheck(s1,w3)",
+    "ngood(w3)",
+    "src(s1)",
+    "wcheck(s1,s2)",
+    "wgood(s2)"
+   ],
+   "n_minimal": 64,
+   "capped": false,
+   "min_size": 5,
+   "orig_size": 12,
+   "original_is_minimal": false,
+   "proof": "proved(all_observed_literals_hold(8))"
+  },
+  "popper": [
+   {
+    "label": "single rule",
+    "input": "recovered",
+    "head": "ok/1",
+    "body": [
+     "src/1",
+     "wcheck/2",
+     "wgood/1",
+     "nccheck/2",
+     "ngood/1"
+    ],
+    "code": [
+     "ok(A):- src(A)"
+    ],
+    "n_pos": 1,
+    "n_neg": 7,
+    "reproduces_recovered": "proved(all_observed_literals_hold(8))",
+    "vs_optimised": "refuted(input([src(w1),src(n1),wcheck(w1,s1),wgood(w1),wgood(n1),nccheck(s1,s1),nccheck(s1,w1),nccheck(w1,w1),nccheck(w1,n1),nccheck(n1,n1),ngood(s1),ngood(n1)]),only_in_a([]),only_in_b([ok(n1),ok(w1)]))"
+   },
+   {
+    "label": "single rule",
+    "input": "original",
+    "head": "ok/1",
+    "body": [
+     "src/1",
+     "wcheck/2",
+     "wgood/1",
+     "nccheck/2",
+     "ngood/1"
+    ],
+    "code": [
+     "ok(A):- nccheck(A,B),wgood(C),wcheck(A,C),ngood(B)"
+    ],
+    "n_pos": 1,
+    "n_neg": 7,
+    "reproduces_recovered": "proved(all_observed_literals_hold(8))",
+    "vs_optimised": "refuted(input([src(s1),wcheck(s1,n1),wcheck(w1,s1),wcheck(n1,s1),wgood(s1),nccheck(s1,s1),nccheck(s1,w1),nccheck(s1,n1),nccheck(w1,s1),nccheck(n1,w1),nccheck(n1,n1),ngood(n1)]),only_in_a([]),only_in_b([ok(n1)]))"
+   },
+   {
+    "label": "predicate invention on",
+    "input": "recovered",
+    "head": "ok/1",
+    "body": [
+     "src/1",
+     "wcheck/2",
+     "wgood/1",
+     "nccheck/2",
+     "ngood/1"
+    ],
+    "code": [
+     "ok(A):- src(A)"
+    ],
+    "n_pos": 1,
+    "n_neg": 7,
+    "reproduces_recovered": "proved(all_observed_literals_hold(8))",
+    "vs_optimised": "refuted(input([src(w1),src(n1),wcheck(w1,s1),wgood(w1),wgood(n1),nccheck(s1,s1),nccheck(s1,w1),nccheck(w1,w1),nccheck(w1,n1),nccheck(n1,n1),ngood(s1),ngood(n1)]),only_in_a([]),only_in_b([ok(n1),ok(w1)]))"
+   },
+   {
+    "label": "predicate invention on",
+    "input": "original",
+    "head": "ok/1",
+    "body": [
+     "src/1",
+     "wcheck/2",
+     "wgood/1",
+     "nccheck/2",
+     "ngood/1"
+    ],
+    "code": [
+     "inv1(A):- nccheck(A,B),ngood(B)",
+     "ok(A):- wgood(B),wcheck(A,B),inv1(A)"
+    ],
+    "n_pos": 1,
+    "n_neg": 7,
+    "reproduces_recovered": "proved(all_observed_literals_hold(8))",
+    "vs_optimised": "refuted(input([src(s1),wcheck(s1,n1),wcheck(w1,s1),wcheck(n1,s1),wgood(s1),nccheck(s1,s1),nccheck(s1,w1),nccheck(s1,n1),nccheck(w1,s1),nccheck(n1,w1),nccheck(n1,n1),ngood(n1)]),only_in_a([]),only_in_b([ok(n1)]))"
+   }
+  ],
+  "proof_original_vs_optimised": "passed_sample(2000)",
+  "s2a": {
+   "literal": {
+    "algorithm": "\"opt_piglog2_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2','C3','C4','C5','C6',\\\"]\\\"],[output,[[\\\"[\\\",'C7','C3','C4',\\\"]\\\",\\\"[\\\",'C8','C5','C6',\\\"]\\\",\\\"[\\\",'C1','C2','C7','C8',\\\"]\\\"]]]]],[[[[1,2],[[1,12]]],[[1,3],[[1,13]]],[[1,4],[[1,3]]],[[1,5],[[1,4]]],[[1,6],[[1,8]]],[[1,7],[[1,9]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "ok_c(S) :- src_c(S), wcheck_c(S,W), wgood_c(W), nccheck_c(S,N), ngood_c(N)"
+      ],
+      "output": null,
+      "expected": [
+       "words_ok_c(S) :- wcheck_c(S,W), wgood_c(W)",
+       "nums_ok_c(S)  :- nccheck_c(S,N), ngood_c(N)",
+       "ok_c(S) :- src_c(S), words_ok_c(S), nums_ok_c(S)"
+      ],
+      "exact": false
+     },
+     {
+      "input": [
+       "ok_d(S) :- src_d(S), wcheck_d(S,W), wgood_d(W), nccheck_d(S,N), ngood_d(N)"
+      ],
+      "output": null,
+      "expected": [
+       "words_ok_d(S) :- wcheck_d(S,W), wgood_d(W)",
+       "nums_ok_d(S)  :- nccheck_d(S,N), ngood_d(N)",
+       "ok_d(S) :- src_d(S), words_ok_d(S), nums_ok_d(S)"
+      ],
+      "exact": false
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_piglog2_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vs,'C2',vs,'C3',vs,vw,'C4',vw,'C5',vs,vn,'C6',vn,\\\"]\\\"],[output,[[\\\"[\\\",'C7',vs,'C3',vs,vw,'C4',vw,\\\"]\\\",\\\"[\\\",'C8',vs,'C5',vs,vn,'C6',vn,\\\"]\\\",\\\"[\\\",'C1',vs,'C2',vs,'C7',vs,'C8',vs,\\\"]\\\"]]]]],[[[[1,2],[[1,20]]],[[1,4],[[1,22]]],[[1,6],[[1,4]]],[[1,9],[[1,7]]],[[1,11],[[1,13]]],[[1,14],[[1,16]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "input": [
+       "ok_c(S) :- src_c(S), wcheck_c(S,W), wgood_c(W), nccheck_c(S,N), ngood_c(N)"
+      ],
+      "output": null,
+      "expected": [
+       "words_ok_c(S) :- wcheck_c(S,W), wgood_c(W)",
+       "nums_ok_c(S)  :- nccheck_c(S,N), ngood_c(N)",
+       "ok_c(S) :- src_c(S), words_ok_c(S), nums_ok_c(S)"
+      ],
+      "exact": false
+     },
+     {
+      "input": [
+       "ok_d(S) :- src_d(S), wcheck_d(S,W), wgood_d(W), nccheck_d(S,N), ngood_d(N)"
+      ],
+      "output": null,
+      "expected": [
+       "words_ok_d(S) :- wcheck_d(S,W), wgood_d(W)",
+       "nums_ok_d(S)  :- nccheck_d(S,N), ngood_d(N)",
+       "ok_d(S) :- src_d(S), words_ok_d(S), nums_ok_d(S)"
+      ],
+      "exact": false
+     }
+    ]
+   }
+  }
+ }
+}

@@ -1,0 +1,5970 @@
+[
+ {
+  "id": 1,
+  "title": "Transitive closure over a 3-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(a, b).\nedge(b, a).\nedge(c, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b)]"
+   },
+   {
+    "query": "reach(b, a)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, b)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "39",
+   "edges": "102",
+   "strata": "1",
+   "active": "9",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 2,
+  "title": "Transitive closure over a 4-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, d).\nedge(c, d).\nedge(d, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,b),reach(a,d)]"
+   },
+   {
+    "query": "reach(b, a)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(a, b)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "83",
+   "edges": "227",
+   "strata": "1",
+   "active": "8",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 3,
+  "title": "Transitive closure over a 6-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, e).\nedge(a, f).\nedge(b, d).\nedge(c, b).\nedge(e, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,b),reach(a,d),reach(a,e),reach(a,f)]"
+   },
+   {
+    "query": "reach(b, f)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(f, b)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "257",
+   "edges": "725",
+   "strata": "1",
+   "active": "14",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 4,
+  "title": "Transitive closure over a 6-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(b, d).\nedge(b, f).\nedge(c, d).\nedge(c, f).\nedge(f, d).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(c, a)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(a, c)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "85",
+   "edges": "229",
+   "strata": "1",
+   "active": "10",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 5,
+  "title": "Transitive closure over a 5-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(a, c).\nedge(a, d).\nedge(b, a).\nedge(b, c).\nedge(d, a).\nedge(e, a).\nedge(e, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,c),reach(a,d)]"
+   },
+   {
+    "query": "reach(a, e)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(e, a)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "157",
+   "edges": "432",
+   "strata": "1",
+   "active": "19",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 6,
+  "title": "Transitive closure over a 5-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, c).\nedge(b, d).\nedge(c, b).\nedge(d, c).\nedge(e, b).\nedge(e, c).\nedge(e, d).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,b),reach(a,c),reach(a,d)]"
+   },
+   {
+    "query": "reach(d, a)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(a, d)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "157",
+   "edges": "432",
+   "strata": "1",
+   "active": "22",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 7,
+  "title": "Transitive closure over a 5-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, e).\nedge(b, c).\nedge(b, d).\nedge(e, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,e)]"
+   },
+   {
+    "query": "reach(c, d)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(d, c)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "154",
+   "edges": "429",
+   "strata": "1",
+   "active": "10",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 8,
+  "title": "Transitive closure over a 5-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, b).\nedge(b, d).\nedge(b, e).\nedge(c, a).\nedge(d, a).\nedge(e, a).\nedge(e, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b),reach(a,c),reach(a,d),reach(a,e)]"
+   },
+   {
+    "query": "reach(c, b)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(b, c)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "157",
+   "edges": "432",
+   "strata": "1",
+   "active": "32",
+   "rounds": "6",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 9,
+  "title": "Transitive closure over a 4-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(a, d).\nedge(b, a).\nedge(c, b).\nedge(d, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,d)]"
+   },
+   {
+    "query": "reach(a, b)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(b, a)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "84",
+   "edges": "228",
+   "strata": "1",
+   "active": "13",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 10,
+  "title": "Transitive closure over a 4-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(b, a).\nedge(b, c).\nedge(c, d).\nedge(d, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(d, b)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(b, d)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "84",
+   "edges": "228",
+   "strata": "1",
+   "active": "11",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 11,
+  "title": "Transitive closure over a 4-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(b, a).\nedge(c, b).\nedge(d, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(d, a)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, d)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "83",
+   "edges": "227",
+   "strata": "1",
+   "active": "7",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 12,
+  "title": "Transitive closure over a 6-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, d).\nedge(c, d).\nedge(e, a).\nedge(f, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,d)]"
+   },
+   {
+    "query": "reach(d, e)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(e, d)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "256",
+   "edges": "724",
+   "strata": "1",
+   "active": "9",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 13,
+  "title": "Transitive closure over a 5-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(b, a).\nedge(c, a).\nedge(d, a).\nedge(d, e).\nedge(e, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(d, c)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(c, d)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "155",
+   "edges": "430",
+   "strata": "1",
+   "active": "10",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 14,
+  "title": "Transitive closure over a 6-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, f).\nedge(b, f).\nedge(c, e).\nedge(c, f).\nedge(f, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,c),reach(a,e),reach(a,f)]"
+   },
+   {
+    "query": "reach(d, e)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(e, d)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "155",
+   "edges": "430",
+   "strata": "1",
+   "active": "17",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 15,
+  "title": "Transitive closure over a 3-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(b, c).\nedge(c, a).\nedge(c, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(b, c)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(c, b)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "39",
+   "edges": "102",
+   "strata": "1",
+   "active": "9",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 16,
+  "title": "Transitive closure over a 6-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(b, e).\nedge(c, a).\nedge(c, b).\nedge(c, f).\nedge(d, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(e, b)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(b, e)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "257",
+   "edges": "725",
+   "strata": "1",
+   "active": "15",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 17,
+  "title": "Transitive closure over a 4-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(a, b).\nedge(a, c).\nedge(b, c).\nedge(d, a).\nedge(d, b).\nedge(d, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,b),reach(a,c)]"
+   },
+   {
+    "query": "reach(c, d)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(d, c)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "86",
+   "edges": "230",
+   "strata": "1",
+   "active": "12",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 18,
+  "title": "Transitive closure over a 5-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, c).\nedge(a, d).\nedge(c, e).\nedge(d, b).\nedge(e, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b),reach(a,c),reach(a,d),reach(a,e)]"
+   },
+   {
+    "query": "reach(c, d)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(d, c)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "155",
+   "edges": "430",
+   "strata": "1",
+   "active": "21",
+   "rounds": "6",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 19,
+  "title": "Transitive closure over a 3-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, b).\nedge(b, a).\nedge(b, c).\nedge(c, a).\nedge(c, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b),reach(a,c)]"
+   },
+   {
+    "query": "reach(a, b)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(b, a)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "41",
+   "edges": "104",
+   "strata": "1",
+   "active": "14",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 20,
+  "title": "Transitive closure over a 4-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, b).\nedge(b, d).\nedge(c, a).\nedge(d, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b),reach(a,d)]"
+   },
+   {
+    "query": "reach(a, d)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(d, a)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "84",
+   "edges": "228",
+   "strata": "1",
+   "active": "16",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 21,
+  "title": "Transitive closure over a 6-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(b, c).\nedge(b, d).\nedge(b, e).\nedge(c, b).\nedge(c, f).\nedge(d, e).\nedge(f, a).\nedge(f, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(f, b)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(b, f)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "260",
+   "edges": "728",
+   "strata": "1",
+   "active": "27",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 22,
+  "title": "Transitive closure over a 6-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, e).\nedge(b, a).\nedge(c, b).\nedge(c, f).\nedge(d, c).\nedge(d, e).\nedge(d, f).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,e)]"
+   },
+   {
+    "query": "reach(f, b)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(b, f)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "259",
+   "edges": "727",
+   "strata": "1",
+   "active": "19",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 23,
+  "title": "Transitive closure over a 3-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,c)]"
+   },
+   {
+    "query": "reach(b, c)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(c, b)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "8",
+   "hidden": "13",
+   "edges": "33",
+   "strata": "1",
+   "active": "2",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 24,
+  "title": "Transitive closure over a 3-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, c).\nedge(c, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,c)]"
+   },
+   {
+    "query": "reach(b, a)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(a, b)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "8",
+   "hidden": "14",
+   "edges": "34",
+   "strata": "1",
+   "active": "6",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 25,
+  "title": "Transitive closure over a 4-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(a, d).\nedge(b, c).\nedge(c, b).\nedge(c, d).\nedge(d, a).\nedge(d, b).\nedge(d, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b),reach(a,c),reach(a,d)]"
+   },
+   {
+    "query": "reach(d, b)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(b, d)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "87",
+   "edges": "231",
+   "strata": "1",
+   "active": "23",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 26,
+  "title": "Transitive closure over a 6-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, e).\nedge(b, e).\nedge(d, a).\nedge(e, d).\nedge(f, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,d),reach(a,e)]"
+   },
+   {
+    "query": "reach(d, b)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(b, d)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "257",
+   "edges": "725",
+   "strata": "1",
+   "active": "18",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 27,
+  "title": "Transitive closure over a 6-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(b, d).\nedge(b, f).\nedge(c, e).\nedge(c, f).\nedge(d, e).\nedge(f, e).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(e, d)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(d, e)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "156",
+   "edges": "431",
+   "strata": "1",
+   "active": "13",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 28,
+  "title": "Transitive closure over a 5-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, d).\nedge(c, d).\nedge(d, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,d)]"
+   },
+   {
+    "query": "reach(c, a)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, c)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "39",
+   "edges": "102",
+   "strata": "1",
+   "active": "9",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 29,
+  "title": "Transitive closure over a 3-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(a, c).\nedge(b, a).\nedge(b, c).\nedge(c, a).\nedge(c, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b),reach(a,c)]"
+   },
+   {
+    "query": "reach(b, a)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, b)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "41",
+   "edges": "104",
+   "strata": "1",
+   "active": "14",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 30,
+  "title": "Transitive closure over a 5-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, c).\nedge(a, d).\nedge(c, b).\nedge(e, b).\nedge(e, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,b),reach(a,c),reach(a,d)]"
+   },
+   {
+    "query": "reach(b, c)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(c, b)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "155",
+   "edges": "430",
+   "strata": "1",
+   "active": "11",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 31,
+  "title": "Transitive closure over a 5-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, d).\nedge(b, a).\nedge(c, b).\nedge(e, d).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,d)]"
+   },
+   {
+    "query": "reach(c, b)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(b, c)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "154",
+   "edges": "429",
+   "strata": "1",
+   "active": "11",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 32,
+  "title": "Transitive closure over a 4-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(c, d).\nedge(d, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(a, d)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(d, a)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "38",
+   "edges": "101",
+   "strata": "1",
+   "active": "5",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 33,
+  "title": "Transitive closure over a 6-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(b, d).\nedge(c, a).\nedge(c, f).\nedge(e, f).\nedge(f, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(a, c)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(c, a)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "257",
+   "edges": "725",
+   "strata": "1",
+   "active": "11",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 34,
+  "title": "Transitive closure over a 4-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, b).\nedge(a, d).\nedge(b, a).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b),reach(a,d)]"
+   },
+   {
+    "query": "reach(c, a)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(a, c)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "39",
+   "edges": "102",
+   "strata": "1",
+   "active": "9",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 35,
+  "title": "Transitive closure over a 3-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(b, a).\nedge(c, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[]"
+   },
+   {
+    "query": "reach(c, b)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(b, c)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "38",
+   "edges": "101",
+   "strata": "1",
+   "active": "5",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 36,
+  "title": "Transitive closure over a 4-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, b).\nedge(b, c).\nedge(d, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,b),reach(a,c)]"
+   },
+   {
+    "query": "reach(d, a)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(a, d)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "83",
+   "edges": "227",
+   "strata": "1",
+   "active": "7",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 37,
+  "title": "Transitive closure over a 4-node directed graph with a cycle",
+  "category": "recursion/reachability",
+  "program": "edge(a, d).\nedge(c, d).\nedge(d, a).\nedge(d, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,c),reach(a,d)]"
+   },
+   {
+    "query": "reach(c, a)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, c)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(a, a)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "40",
+   "edges": "103",
+   "strata": "1",
+   "active": "13",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 38,
+  "title": "Transitive closure over a 6-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, b).\nedge(b, e).\nedge(c, e).\nedge(e, f).\nedge(f, c).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,b),reach(a,c),reach(a,e),reach(a,f)]"
+   },
+   {
+    "query": "reach(e, f)",
+    "answer": "true"
+   },
+   {
+    "query": "reach(f, e)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "155",
+   "edges": "430",
+   "strata": "1",
+   "active": "21",
+   "rounds": "6",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 39,
+  "title": "Transitive closure over a 3-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, b).\nedge(c, a).\nedge(c, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,b)]"
+   },
+   {
+    "query": "reach(b, a)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(a, b)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "39",
+   "edges": "102",
+   "strata": "1",
+   "active": "6",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 40,
+  "title": "Transitive closure over a 4-node directed graph",
+  "category": "recursion/reachability",
+  "program": "edge(a, d).\nedge(c, d).\nedge(d, b).\n\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,b),reach(a,d)]"
+   },
+   {
+    "query": "reach(b, a)",
+    "answer": "false"
+   },
+   {
+    "query": "reach(a, b)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "83",
+   "edges": "227",
+   "strata": "1",
+   "active": "8",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 41,
+  "title": "Family tree: recursive ancestor relation",
+  "category": "relations/family",
+  "program": "parent(fay, dee).\nparent(dee, cy).\nparent(fay, ann).\nparent(cy, ivy).\nparent(dee, jo).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "ancestor(fay, X)",
+    "answer": "[ancestor(fay,ann),ancestor(fay,cy),ancestor(fay,dee),ancestor(fay,ivy),ancestor(fay,jo)]"
+   },
+   {
+    "query": "ancestor(X, jo)",
+    "answer": "[ancestor(dee,jo),ancestor(fay,jo)]"
+   },
+   {
+    "query": "ancestor(jo, fay)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "257",
+   "edges": "725",
+   "strata": "1",
+   "active": "14",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 42,
+  "title": "Family tree: grandparent relation (two-step join)",
+  "category": "relations/family",
+  "program": "parent(fay, ivy).\nparent(ivy, gus).\nparent(fay, ann).\nparent(fay, jo).\n\ngrandparent(X, Y) :- parent(X, Z), parent(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "grandparent(X, Y)",
+    "answer": "[grandparent(fay,gus)]"
+   },
+   {
+    "query": "grandparent(fay, jo)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "129",
+   "edges": "379",
+   "strata": "1",
+   "active": "5",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 43,
+  "title": "Family tree: sibling relation with disequality",
+  "category": "relations/family",
+  "program": "parent(ann, cy).\nparent(cy, gus).\nparent(cy, fay).\nparent(fay, dee).\nparent(cy, jo).\nparent(ann, hal).\nparent(jo, ivy).\n\nsibling(X, Y) :- parent(P, X), parent(P, Y), X \\= Y.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "sibling(X, Y)",
+    "answer": "[sibling(cy,hal),sibling(fay,gus),sibling(fay,jo),sibling(gus,fay),sibling(gus,jo),sibling(hal,cy),sibling(jo,fay),sibling(jo,gus)]"
+   },
+   {
+    "query": "sibling(cy, gus)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "120",
+   "hidden": "455",
+   "edges": "1351",
+   "strata": "1",
+   "active": "15",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 44,
+  "title": "Family tree: recursive ancestor relation",
+  "category": "relations/family",
+  "program": "parent(hal, bob).\nparent(hal, gus).\nparent(bob, cy).\nparent(cy, ivy).\nparent(cy, ann).\nparent(cy, eli).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "ancestor(hal, X)",
+    "answer": "[ancestor(hal,ann),ancestor(hal,bob),ancestor(hal,cy),ancestor(hal,eli),ancestor(hal,gus),ancestor(hal,ivy)]"
+   },
+   {
+    "query": "ancestor(X, eli)",
+    "answer": "[ancestor(bob,eli),ancestor(cy,eli),ancestor(hal,eli)]"
+   },
+   {
+    "query": "ancestor(eli, hal)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "98",
+   "hidden": "398",
+   "edges": "1133",
+   "strata": "1",
+   "active": "19",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 45,
+  "title": "Family tree: grandparent relation (two-step join)",
+  "category": "relations/family",
+  "program": "parent(dee, gus).\nparent(dee, hal).\nparent(hal, ann).\nparent(ann, ivy).\nparent(ann, cy).\nparent(dee, eli).\nparent(ann, fay).\n\ngrandparent(X, Y) :- parent(X, Z), parent(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "grandparent(X, Y)",
+    "answer": "[grandparent(dee,ann),grandparent(hal,cy),grandparent(hal,fay),grandparent(hal,ivy)]"
+   },
+   {
+    "query": "grandparent(dee, fay)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "128",
+   "hidden": "519",
+   "edges": "1543",
+   "strata": "1",
+   "active": "11",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 46,
+  "title": "Family tree: sibling relation with disequality",
+  "category": "relations/family",
+  "program": "parent(gus, ivy).\nparent(gus, jo).\nparent(jo, ann).\nparent(jo, bob).\n\nsibling(X, Y) :- parent(P, X), parent(P, Y), X \\= Y.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "sibling(X, Y)",
+    "answer": "[sibling(ann,bob),sibling(bob,ann),sibling(ivy,jo),sibling(jo,ivy)]"
+   },
+   {
+    "query": "sibling(ivy, jo)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "45",
+   "hidden": "104",
+   "edges": "304",
+   "strata": "1",
+   "active": "8",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 47,
+  "title": "Family tree: recursive ancestor relation",
+  "category": "relations/family",
+  "program": "parent(ann, cy).\nparent(cy, ivy).\nparent(cy, fay).\nparent(ann, hal).\nparent(ivy, gus).\nparent(cy, dee).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "ancestor(ann, X)",
+    "answer": "[ancestor(ann,cy),ancestor(ann,dee),ancestor(ann,fay),ancestor(ann,gus),ancestor(ann,hal),ancestor(ann,ivy)]"
+   },
+   {
+    "query": "ancestor(X, dee)",
+    "answer": "[ancestor(ann,dee),ancestor(cy,dee)]"
+   },
+   {
+    "query": "ancestor(dee, ann)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "98",
+   "hidden": "398",
+   "edges": "1133",
+   "strata": "1",
+   "active": "17",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 48,
+  "title": "Family tree: grandparent relation (two-step join)",
+  "category": "relations/family",
+  "program": "parent(dee, ann).\nparent(dee, hal).\nparent(ann, bob).\nparent(ann, jo).\n\ngrandparent(X, Y) :- parent(X, Z), parent(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "grandparent(X, Y)",
+    "answer": "[grandparent(dee,bob),grandparent(dee,jo)]"
+   },
+   {
+    "query": "grandparent(dee, jo)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "129",
+   "edges": "379",
+   "strata": "1",
+   "active": "6",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 49,
+  "title": "Family tree: sibling relation with disequality",
+  "category": "relations/family",
+  "program": "parent(cy, ivy).\nparent(ivy, gus).\nparent(ivy, jo).\nparent(jo, ann).\n\nsibling(X, Y) :- parent(P, X), parent(P, Y), X \\= Y.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "sibling(X, Y)",
+    "answer": "[sibling(gus,jo),sibling(jo,gus)]"
+   },
+   {
+    "query": "sibling(ivy, gus)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "45",
+   "hidden": "104",
+   "edges": "304",
+   "strata": "1",
+   "active": "6",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 50,
+  "title": "Family tree: recursive ancestor relation",
+  "category": "relations/family",
+  "program": "parent(fay, dee).\nparent(dee, ivy).\nparent(ivy, jo).\nparent(dee, hal).\nparent(fay, cy).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "ancestor(fay, X)",
+    "answer": "[ancestor(fay,cy),ancestor(fay,dee),ancestor(fay,hal),ancestor(fay,ivy),ancestor(fay,jo)]"
+   },
+   {
+    "query": "ancestor(X, cy)",
+    "answer": "[ancestor(fay,cy)]"
+   },
+   {
+    "query": "ancestor(cy, fay)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "257",
+   "edges": "725",
+   "strata": "1",
+   "active": "14",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 51,
+  "title": "Family tree: grandparent relation (two-step join)",
+  "category": "relations/family",
+  "program": "parent(fay, ivy).\nparent(fay, cy).\nparent(ivy, gus).\nparent(cy, eli).\nparent(gus, ann).\nparent(ann, bob).\nparent(ivy, dee).\n\ngrandparent(X, Y) :- parent(X, Z), parent(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "grandparent(X, Y)",
+    "answer": "[grandparent(fay,dee),grandparent(fay,eli),grandparent(fay,gus),grandparent(gus,bob),grandparent(ivy,ann)]"
+   },
+   {
+    "query": "grandparent(fay, dee)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "128",
+   "hidden": "519",
+   "edges": "1543",
+   "strata": "1",
+   "active": "12",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 52,
+  "title": "Family tree: sibling relation with disequality",
+  "category": "relations/family",
+  "program": "parent(ann, dee).\nparent(dee, cy).\nparent(ann, hal).\nparent(hal, jo).\nparent(cy, fay).\n\nsibling(X, Y) :- parent(P, X), parent(P, Y), X \\= Y.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "sibling(X, Y)",
+    "answer": "[sibling(dee,hal),sibling(hal,dee)]"
+   },
+   {
+    "query": "sibling(dee, cy)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "66",
+   "hidden": "185",
+   "edges": "545",
+   "strata": "1",
+   "active": "7",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 53,
+  "title": "Family tree: recursive ancestor relation",
+  "category": "relations/family",
+  "program": "parent(dee, ivy).\nparent(ivy, hal).\nparent(ivy, bob).\nparent(hal, jo).\nparent(hal, eli).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "ancestor(dee, X)",
+    "answer": "[ancestor(dee,bob),ancestor(dee,eli),ancestor(dee,hal),ancestor(dee,ivy),ancestor(dee,jo)]"
+   },
+   {
+    "query": "ancestor(X, eli)",
+    "answer": "[ancestor(dee,eli),ancestor(hal,eli),ancestor(ivy,eli)]"
+   },
+   {
+    "query": "ancestor(eli, dee)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "257",
+   "edges": "725",
+   "strata": "1",
+   "active": "16",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 54,
+  "title": "Family tree: grandparent relation (two-step join)",
+  "category": "relations/family",
+  "program": "parent(cy, ann).\nparent(ann, fay).\nparent(cy, hal).\nparent(fay, ivy).\nparent(ann, bob).\n\ngrandparent(X, Y) :- parent(X, Z), parent(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "grandparent(X, Y)",
+    "answer": "[grandparent(ann,ivy),grandparent(cy,bob),grandparent(cy,fay)]"
+   },
+   {
+    "query": "grandparent(cy, bob)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "72",
+   "hidden": "221",
+   "edges": "653",
+   "strata": "1",
+   "active": "8",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 55,
+  "title": "Family tree: sibling relation with disequality",
+  "category": "relations/family",
+  "program": "parent(ann, eli).\nparent(ann, ivy).\nparent(ivy, gus).\nparent(ivy, jo).\n\nsibling(X, Y) :- parent(P, X), parent(P, Y), X \\= Y.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "sibling(X, Y)",
+    "answer": "[sibling(eli,ivy),sibling(gus,jo),sibling(ivy,eli),sibling(jo,gus)]"
+   },
+   {
+    "query": "sibling(eli, ivy)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "45",
+   "hidden": "104",
+   "edges": "304",
+   "strata": "1",
+   "active": "8",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 56,
+  "title": "Family tree: recursive ancestor relation",
+  "category": "relations/family",
+  "program": "parent(gus, hal).\nparent(hal, ann).\nparent(ann, fay).\nparent(ann, jo).\nparent(fay, ivy).\nparent(jo, cy).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "ancestor(gus, X)",
+    "answer": "[ancestor(gus,ann),ancestor(gus,cy),ancestor(gus,fay),ancestor(gus,hal),ancestor(gus,ivy),ancestor(gus,jo)]"
+   },
+   {
+    "query": "ancestor(X, cy)",
+    "answer": "[ancestor(ann,cy),ancestor(gus,cy),ancestor(hal,cy),ancestor(jo,cy)]"
+   },
+   {
+    "query": "ancestor(cy, gus)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "98",
+   "hidden": "398",
+   "edges": "1133",
+   "strata": "1",
+   "active": "23",
+   "rounds": "6",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 57,
+  "title": "Family tree: grandparent relation (two-step join)",
+  "category": "relations/family",
+  "program": "parent(ann, jo).\nparent(ann, bob).\nparent(ann, eli).\nparent(eli, hal).\nparent(bob, ivy).\nparent(hal, fay).\nparent(fay, cy).\n\ngrandparent(X, Y) :- parent(X, Z), parent(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "grandparent(X, Y)",
+    "answer": "[grandparent(ann,hal),grandparent(ann,ivy),grandparent(eli,fay),grandparent(hal,cy)]"
+   },
+   {
+    "query": "grandparent(ann, cy)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "128",
+   "hidden": "519",
+   "edges": "1543",
+   "strata": "1",
+   "active": "11",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 58,
+  "title": "Family tree: sibling relation with disequality",
+  "category": "relations/family",
+  "program": "parent(fay, cy).\nparent(cy, dee).\nparent(fay, eli).\nparent(eli, hal).\nparent(cy, ann).\nparent(hal, bob).\nparent(cy, jo).\n\nsibling(X, Y) :- parent(P, X), parent(P, Y), X \\= Y.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "sibling(X, Y)",
+    "answer": "[sibling(ann,dee),sibling(ann,jo),sibling(cy,eli),sibling(dee,ann),sibling(dee,jo),sibling(eli,cy),sibling(jo,ann),sibling(jo,dee)]"
+   },
+   {
+    "query": "sibling(cy, dee)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "120",
+   "hidden": "455",
+   "edges": "1351",
+   "strata": "1",
+   "active": "15",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 59,
+  "title": "Family tree: recursive ancestor relation",
+  "category": "relations/family",
+  "program": "parent(eli, cy).\nparent(eli, jo).\nparent(jo, hal).\nparent(eli, dee).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "ancestor(eli, X)",
+    "answer": "[ancestor(eli,cy),ancestor(eli,dee),ancestor(eli,hal),ancestor(eli,jo)]"
+   },
+   {
+    "query": "ancestor(X, dee)",
+    "answer": "[ancestor(eli,dee)]"
+   },
+   {
+    "query": "ancestor(dee, eli)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "50",
+   "hidden": "154",
+   "edges": "429",
+   "strata": "1",
+   "active": "9",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 60,
+  "title": "Family tree: grandparent relation (two-step join)",
+  "category": "relations/family",
+  "program": "parent(ivy, gus).\nparent(gus, dee).\nparent(gus, hal).\nparent(dee, fay).\nparent(ivy, cy).\nparent(dee, bob).\nparent(hal, eli).\n\ngrandparent(X, Y) :- parent(X, Z), parent(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "grandparent(X, Y)",
+    "answer": "[grandparent(gus,bob),grandparent(gus,eli),grandparent(gus,fay),grandparent(ivy,dee),grandparent(ivy,hal)]"
+   },
+   {
+    "query": "grandparent(ivy, eli)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "128",
+   "hidden": "519",
+   "edges": "1543",
+   "strata": "1",
+   "active": "12",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 61,
+  "title": "Family tree: sibling relation with disequality",
+  "category": "relations/family",
+  "program": "parent(bob, dee).\nparent(dee, ann).\nparent(ann, cy).\nparent(dee, hal).\nparent(bob, ivy).\nparent(ann, gus).\n\nsibling(X, Y) :- parent(P, X), parent(P, Y), X \\= Y.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "sibling(X, Y)",
+    "answer": "[sibling(ann,hal),sibling(cy,gus),sibling(dee,ivy),sibling(gus,cy),sibling(hal,ann),sibling(ivy,dee)]"
+   },
+   {
+    "query": "sibling(dee, ann)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "91",
+   "hidden": "300",
+   "edges": "888",
+   "strata": "1",
+   "active": "12",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 62,
+  "title": "Family tree: recursive ancestor relation",
+  "category": "relations/family",
+  "program": "parent(gus, fay).\nparent(fay, eli).\nparent(gus, ivy).\nparent(ivy, ann).\nparent(gus, jo).\nparent(jo, bob).\nparent(jo, dee).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "ancestor(gus, X)",
+    "answer": "[ancestor(gus,ann),ancestor(gus,bob),ancestor(gus,dee),ancestor(gus,eli),ancestor(gus,fay),ancestor(gus,ivy),ancestor(gus,jo)]"
+   },
+   {
+    "query": "ancestor(X, dee)",
+    "answer": "[ancestor(gus,dee),ancestor(jo,dee)]"
+   },
+   {
+    "query": "ancestor(dee, gus)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "128",
+   "hidden": "583",
+   "edges": "1671",
+   "strata": "1",
+   "active": "18",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 63,
+  "title": "Family tree: grandparent relation (two-step join)",
+  "category": "relations/family",
+  "program": "parent(gus, ann).\nparent(ann, ivy).\nparent(gus, hal).\nparent(ann, eli).\nparent(ivy, cy).\nparent(eli, jo).\nparent(eli, dee).\n\ngrandparent(X, Y) :- parent(X, Z), parent(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "grandparent(X, Y)",
+    "answer": "[grandparent(ann,cy),grandparent(ann,dee),grandparent(ann,jo),grandparent(gus,eli),grandparent(gus,ivy)]"
+   },
+   {
+    "query": "grandparent(gus, dee)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "128",
+   "hidden": "519",
+   "edges": "1543",
+   "strata": "1",
+   "active": "12",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 64,
+  "title": "Family tree: sibling relation with disequality",
+  "category": "relations/family",
+  "program": "parent(hal, jo).\nparent(hal, cy).\nparent(cy, fay).\nparent(hal, bob).\nparent(cy, gus).\n\nsibling(X, Y) :- parent(P, X), parent(P, Y), X \\= Y.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "sibling(X, Y)",
+    "answer": "[sibling(bob,cy),sibling(bob,jo),sibling(cy,bob),sibling(cy,jo),sibling(fay,gus),sibling(gus,fay),sibling(jo,bob),sibling(jo,cy)]"
+   },
+   {
+    "query": "sibling(jo, cy)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "66",
+   "hidden": "185",
+   "edges": "545",
+   "strata": "1",
+   "active": "13",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 65,
+  "title": "Family tree: recursive ancestor relation",
+  "category": "relations/family",
+  "program": "parent(jo, ann).\nparent(ann, gus).\nparent(gus, dee).\nparent(jo, eli).\nparent(dee, ivy).\nparent(jo, hal).\nparent(gus, fay).\n\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "ancestor(jo, X)",
+    "answer": "[ancestor(jo,ann),ancestor(jo,dee),ancestor(jo,eli),ancestor(jo,fay),ancestor(jo,gus),ancestor(jo,hal),ancestor(jo,ivy)]"
+   },
+   {
+    "query": "ancestor(X, fay)",
+    "answer": "[ancestor(ann,fay),ancestor(gus,fay),ancestor(jo,fay)]"
+   },
+   {
+    "query": "ancestor(fay, jo)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "128",
+   "hidden": "583",
+   "edges": "1671",
+   "strata": "1",
+   "active": "22",
+   "rounds": "6",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 66,
+  "title": "AND gate as a step network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nand(X, Y) :- bit(X), bit(Y), X = 1, Y = 1.\n",
+  "domain": null,
+  "options": "--mode step",
+  "queries": [
+   {
+    "query": "and(X, Y)",
+    "answer": "[and(1,1)]"
+   },
+   {
+    "query": "and(1, 1)",
+    "answer": "true"
+   },
+   {
+    "query": "and(0, 1)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "3",
+   "hidden": "3",
+   "edges": "5",
+   "strata": "1",
+   "active": "3",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 67,
+  "title": "OR gate as a step network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nor(X, Y) :- bit(X), bit(Y), X = 1.\nor(X, Y) :- bit(X), bit(Y), Y = 1.\n",
+  "domain": null,
+  "options": "--mode step",
+  "queries": [
+   {
+    "query": "or(X, Y)",
+    "answer": "[or(0,1),or(1,0),or(1,1)]"
+   },
+   {
+    "query": "or(1, 1)",
+    "answer": "true"
+   },
+   {
+    "query": "or(0, 1)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "6",
+   "edges": "14",
+   "strata": "1",
+   "active": "5",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 68,
+  "title": "NAND gate as a step network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nboth(X, Y) :- bit(X), bit(Y), X = 1, Y = 1.\nnand(X, Y) :- bit(X), bit(Y), \\+ both(X, Y).\n",
+  "domain": null,
+  "options": "--mode step",
+  "queries": [
+   {
+    "query": "nand(X, Y)",
+    "answer": "[nand(0,0),nand(0,1),nand(1,0)]"
+   },
+   {
+    "query": "nand(1, 1)",
+    "answer": "false"
+   },
+   {
+    "query": "nand(0, 1)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "7",
+   "edges": "21",
+   "strata": "2",
+   "active": "6",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 69,
+  "title": "NOR gate as a step network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nany(X, Y) :- bit(X), bit(Y), X = 1.\nany(X, Y) :- bit(X), bit(Y), Y = 1.\nnor(X, Y) :- bit(X), bit(Y), \\+ any(X, Y).\n",
+  "domain": null,
+  "options": "--mode step",
+  "queries": [
+   {
+    "query": "nor(X, Y)",
+    "answer": "[nor(0,0)]"
+   },
+   {
+    "query": "nor(1, 1)",
+    "answer": "false"
+   },
+   {
+    "query": "nor(0, 1)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "10",
+   "edges": "30",
+   "strata": "2",
+   "active": "6",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 70,
+  "title": "XOR gate as a step network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nsame(X, Y) :- bit(X), bit(Y), X = Y.\nxor(X, Y) :- bit(X), bit(Y), \\+ same(X, Y).\n",
+  "domain": null,
+  "options": "--mode step",
+  "queries": [
+   {
+    "query": "xor(X, Y)",
+    "answer": "[xor(0,1),xor(1,0)]"
+   },
+   {
+    "query": "xor(1, 1)",
+    "answer": "false"
+   },
+   {
+    "query": "xor(0, 1)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "8",
+   "edges": "24",
+   "strata": "2",
+   "active": "6",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 71,
+  "title": "XNOR gate as a step network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nxnor(X, Y) :- bit(X), bit(Y), X = Y.\n",
+  "domain": null,
+  "options": "--mode step",
+  "queries": [
+   {
+    "query": "xnor(X, Y)",
+    "answer": "[xnor(0,0),xnor(1,1)]"
+   },
+   {
+    "query": "xnor(1, 1)",
+    "answer": "true"
+   },
+   {
+    "query": "xnor(0, 1)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "4",
+   "hidden": "4",
+   "edges": "8",
+   "strata": "1",
+   "active": "4",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 72,
+  "title": "AND gate as a sigmoid network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nand(X, Y) :- bit(X), bit(Y), X = 1, Y = 1.\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "and(X, Y)",
+    "answer": "[and(1,1)]"
+   },
+   {
+    "query": "and(1, 1)",
+    "answer": "true"
+   },
+   {
+    "query": "and(0, 1)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "3",
+   "hidden": "3",
+   "edges": "5",
+   "strata": "1",
+   "active": "3",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 73,
+  "title": "OR gate as a sigmoid network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nor(X, Y) :- bit(X), bit(Y), X = 1.\nor(X, Y) :- bit(X), bit(Y), Y = 1.\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "or(X, Y)",
+    "answer": "[or(0,1),or(1,0),or(1,1)]"
+   },
+   {
+    "query": "or(1, 1)",
+    "answer": "true"
+   },
+   {
+    "query": "or(0, 1)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "6",
+   "edges": "14",
+   "strata": "1",
+   "active": "5",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 74,
+  "title": "NAND gate as a sigmoid network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nboth(X, Y) :- bit(X), bit(Y), X = 1, Y = 1.\nnand(X, Y) :- bit(X), bit(Y), \\+ both(X, Y).\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "nand(X, Y)",
+    "answer": "[nand(0,0),nand(0,1),nand(1,0)]"
+   },
+   {
+    "query": "nand(1, 1)",
+    "answer": "false"
+   },
+   {
+    "query": "nand(0, 1)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "7",
+   "edges": "21",
+   "strata": "2",
+   "active": "6",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 75,
+  "title": "NOR gate as a sigmoid network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nany(X, Y) :- bit(X), bit(Y), X = 1.\nany(X, Y) :- bit(X), bit(Y), Y = 1.\nnor(X, Y) :- bit(X), bit(Y), \\+ any(X, Y).\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "nor(X, Y)",
+    "answer": "[nor(0,0)]"
+   },
+   {
+    "query": "nor(1, 1)",
+    "answer": "false"
+   },
+   {
+    "query": "nor(0, 1)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "10",
+   "edges": "30",
+   "strata": "2",
+   "active": "6",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 76,
+  "title": "XOR gate as a sigmoid network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nsame(X, Y) :- bit(X), bit(Y), X = Y.\nxor(X, Y) :- bit(X), bit(Y), \\+ same(X, Y).\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "xor(X, Y)",
+    "answer": "[xor(0,1),xor(1,0)]"
+   },
+   {
+    "query": "xor(1, 1)",
+    "answer": "false"
+   },
+   {
+    "query": "xor(0, 1)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "8",
+   "edges": "24",
+   "strata": "2",
+   "active": "6",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 77,
+  "title": "XNOR gate as a sigmoid network",
+  "category": "logic/gates",
+  "program": "bit(0).\nbit(1).\n\nxnor(X, Y) :- bit(X), bit(Y), X = Y.\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "xnor(X, Y)",
+    "answer": "[xnor(0,0),xnor(1,1)]"
+   },
+   {
+    "query": "xnor(1, 1)",
+    "answer": "true"
+   },
+   {
+    "query": "xnor(0, 1)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "4",
+   "hidden": "4",
+   "edges": "8",
+   "strata": "1",
+   "active": "4",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 78,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(pingu).\nbird(tweety).\nbird(opus).\nbird(polly).\nbird(emu).\nbird(robin).\npenguin(emu).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(opus),flies(pingu),flies(polly),flies(robin),flies(tweety)]"
+   },
+   {
+    "query": "flies(emu)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "13",
+   "edges": "25",
+   "strata": "2",
+   "active": "12",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 79,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(tweety).\nbird(robin).\nbird(opus).\nbird(emu).\npenguin(emu).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(opus),flies(robin),flies(tweety)]"
+   },
+   {
+    "query": "flies(emu)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "12",
+   "hidden": "9",
+   "edges": "17",
+   "strata": "2",
+   "active": "8",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 80,
+  "title": "Stratified negation: two exceptions (penguin, injured) via an abnormal/1 stratum",
+  "category": "negation/stratified",
+  "program": "bird(opus).\nbird(emu).\nbird(tweety).\nbird(polly).\npenguin(polly).\n\ninjured(tweety).\nabnormal(X) :- penguin(X).\nabnormal(X) :- injured(X).\nflies(X) :- bird(X), \\+ abnormal(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(emu),flies(opus)]"
+   },
+   {
+    "query": "flies(polly)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "20",
+   "hidden": "18",
+   "edges": "34",
+   "strata": "2",
+   "active": "10",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 81,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(opus).\nbird(pingu).\nbird(robin).\nbird(emu).\nbird(kiwi).\npenguin(opus).\npenguin(emu).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(kiwi),flies(pingu),flies(robin)]"
+   },
+   {
+    "query": "flies(opus)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "15",
+   "hidden": "12",
+   "edges": "22",
+   "strata": "2",
+   "active": "10",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 82,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(tweety).\nbird(pingu).\nbird(robin).\nbird(kiwi).\nbird(emu).\npenguin(tweety).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(emu),flies(kiwi),flies(pingu),flies(robin)]"
+   },
+   {
+    "query": "flies(tweety)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "15",
+   "hidden": "11",
+   "edges": "21",
+   "strata": "2",
+   "active": "10",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 83,
+  "title": "Stratified negation: two exceptions (penguin, injured) via an abnormal/1 stratum",
+  "category": "negation/stratified",
+  "program": "bird(pingu).\nbird(opus).\nbird(robin).\npenguin(opus).\npenguin(pingu).\n\ninjured(robin).\nabnormal(X) :- penguin(X).\nabnormal(X) :- injured(X).\nflies(X) :- bird(X), \\+ abnormal(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[]"
+   },
+   {
+    "query": "flies(opus)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "15",
+   "hidden": "15",
+   "edges": "27",
+   "strata": "2",
+   "active": "9",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 84,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(tweety).\nbird(emu).\nbird(kiwi).\nbird(robin).\npenguin(tweety).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(emu),flies(kiwi),flies(robin)]"
+   },
+   {
+    "query": "flies(tweety)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "12",
+   "hidden": "9",
+   "edges": "17",
+   "strata": "2",
+   "active": "8",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 85,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(robin).\nbird(kiwi).\nbird(polly).\npenguin(kiwi).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(polly),flies(robin)]"
+   },
+   {
+    "query": "flies(kiwi)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "9",
+   "hidden": "7",
+   "edges": "13",
+   "strata": "2",
+   "active": "6",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 86,
+  "title": "Stratified negation: two exceptions (penguin, injured) via an abnormal/1 stratum",
+  "category": "negation/stratified",
+  "program": "bird(emu).\nbird(kiwi).\nbird(tweety).\nbird(polly).\nbird(robin).\nbird(opus).\npenguin(robin).\n\ninjured(opus).\nabnormal(X) :- penguin(X).\nabnormal(X) :- injured(X).\nflies(X) :- bird(X), \\+ abnormal(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(emu),flies(kiwi),flies(polly),flies(tweety)]"
+   },
+   {
+    "query": "flies(robin)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "30",
+   "hidden": "26",
+   "edges": "50",
+   "strata": "2",
+   "active": "14",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 87,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(opus).\nbird(tweety).\nbird(polly).\nbird(emu).\nbird(robin).\npenguin(polly).\npenguin(emu).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(opus),flies(robin),flies(tweety)]"
+   },
+   {
+    "query": "flies(polly)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "15",
+   "hidden": "12",
+   "edges": "22",
+   "strata": "2",
+   "active": "10",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 88,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(kiwi).\nbird(tweety).\nbird(opus).\nbird(emu).\nbird(pingu).\npenguin(pingu).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(emu),flies(kiwi),flies(opus),flies(tweety)]"
+   },
+   {
+    "query": "flies(pingu)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "15",
+   "hidden": "11",
+   "edges": "21",
+   "strata": "2",
+   "active": "10",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 89,
+  "title": "Stratified negation: two exceptions (penguin, injured) via an abnormal/1 stratum",
+  "category": "negation/stratified",
+  "program": "bird(robin).\nbird(kiwi).\nbird(polly).\nbird(opus).\nbird(pingu).\nbird(emu).\npenguin(kiwi).\n\ninjured(robin).\nabnormal(X) :- penguin(X).\nabnormal(X) :- injured(X).\nflies(X) :- bird(X), \\+ abnormal(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(emu),flies(opus),flies(pingu),flies(polly)]"
+   },
+   {
+    "query": "flies(kiwi)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "30",
+   "hidden": "26",
+   "edges": "50",
+   "strata": "2",
+   "active": "14",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 90,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(kiwi).\nbird(emu).\nbird(pingu).\npenguin(emu).\npenguin(kiwi).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(pingu)]"
+   },
+   {
+    "query": "flies(emu)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "9",
+   "hidden": "8",
+   "edges": "14",
+   "strata": "2",
+   "active": "6",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 91,
+  "title": "Stratified negation: default rule with one exception",
+  "category": "negation/stratified",
+  "program": "bird(tweety).\nbird(pingu).\nbird(kiwi).\nbird(opus).\nbird(emu).\npenguin(pingu).\npenguin(emu).\n\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(kiwi),flies(opus),flies(tweety)]"
+   },
+   {
+    "query": "flies(pingu)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "15",
+   "hidden": "12",
+   "edges": "22",
+   "strata": "2",
+   "active": "10",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 92,
+  "title": "Stratified negation: two exceptions (penguin, injured) via an abnormal/1 stratum",
+  "category": "negation/stratified",
+  "program": "bird(pingu).\nbird(robin).\nbird(emu).\nbird(polly).\nbird(tweety).\nbird(kiwi).\npenguin(polly).\npenguin(pingu).\n\ninjured(kiwi).\nabnormal(X) :- penguin(X).\nabnormal(X) :- injured(X).\nflies(X) :- bird(X), \\+ abnormal(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(emu),flies(robin),flies(tweety)]"
+   },
+   {
+    "query": "flies(polly)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "30",
+   "hidden": "27",
+   "edges": "51",
+   "strata": "2",
+   "active": "15",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 93,
+  "title": "Mutual recursion even/odd over range 0..4",
+  "category": "arithmetic/mutual-recursion",
+  "program": "even(0).\neven(N) :- odd(M), N is M + 1.\nodd(N) :- even(M), N is M + 1.\n",
+  "domain": "range(n, 0, 4).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "even(X)",
+    "answer": "[even(0),even(2),even(4)]"
+   },
+   {
+    "query": "odd(3)",
+    "answer": "true"
+   },
+   {
+    "query": "even(3)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "9",
+   "edges": "17",
+   "strata": "1",
+   "active": "5",
+   "rounds": "6",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 94,
+  "title": "Mutual recursion even/odd over range 0..6",
+  "category": "arithmetic/mutual-recursion",
+  "program": "even(0).\neven(N) :- odd(M), N is M + 1.\nodd(N) :- even(M), N is M + 1.\n",
+  "domain": "range(n, 0, 6).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "even(X)",
+    "answer": "[even(0),even(2),even(4),even(6)]"
+   },
+   {
+    "query": "odd(5)",
+    "answer": "true"
+   },
+   {
+    "query": "even(5)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "14",
+   "hidden": "13",
+   "edges": "25",
+   "strata": "1",
+   "active": "7",
+   "rounds": "8",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 95,
+  "title": "Mutual recursion even/odd over range 0..8",
+  "category": "arithmetic/mutual-recursion",
+  "program": "even(0).\neven(N) :- odd(M), N is M + 1.\nodd(N) :- even(M), N is M + 1.\n",
+  "domain": "range(n, 0, 8).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "even(X)",
+    "answer": "[even(0),even(2),even(4),even(6),even(8)]"
+   },
+   {
+    "query": "odd(7)",
+    "answer": "true"
+   },
+   {
+    "query": "even(7)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "17",
+   "edges": "33",
+   "strata": "1",
+   "active": "9",
+   "rounds": "10",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 96,
+  "title": "Mutual recursion even/odd over range 0..10",
+  "category": "arithmetic/mutual-recursion",
+  "program": "even(0).\neven(N) :- odd(M), N is M + 1.\nodd(N) :- even(M), N is M + 1.\n",
+  "domain": "range(n, 0, 10).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "even(X)",
+    "answer": "[even(0),even(2),even(4),even(6),even(8),even(10)]"
+   },
+   {
+    "query": "odd(9)",
+    "answer": "true"
+   },
+   {
+    "query": "even(9)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "22",
+   "hidden": "21",
+   "edges": "41",
+   "strata": "1",
+   "active": "11",
+   "rounds": "12",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 97,
+  "title": "Mutual recursion even/odd over range 0..12",
+  "category": "arithmetic/mutual-recursion",
+  "program": "even(0).\neven(N) :- odd(M), N is M + 1.\nodd(N) :- even(M), N is M + 1.\n",
+  "domain": "range(n, 0, 12).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "even(X)",
+    "answer": "[even(0),even(2),even(4),even(6),even(8),even(10),even(12)]"
+   },
+   {
+    "query": "odd(11)",
+    "answer": "true"
+   },
+   {
+    "query": "even(11)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "26",
+   "hidden": "25",
+   "edges": "49",
+   "strata": "1",
+   "active": "13",
+   "rounds": "14",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 98,
+  "title": "Bounded is/2: squares within 0..5",
+  "category": "arithmetic/bounded-is",
+  "program": "num(N) :- N >= 0.\nsquare(N, S) :- num(N), S is N * N.\n",
+  "domain": "range(n, 0, 5).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "square(X, Y)",
+    "answer": "[square(0,0),square(1,1),square(2,4)]"
+   },
+   {
+    "query": "square(2, 4)",
+    "answer": "true"
+   },
+   {
+    "query": "square(3, 8)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "9",
+   "hidden": "9",
+   "edges": "12",
+   "strata": "1",
+   "active": "9",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 99,
+  "title": "Bounded is/2: squares within 0..7",
+  "category": "arithmetic/bounded-is",
+  "program": "num(N) :- N >= 0.\nsquare(N, S) :- num(N), S is N * N.\n",
+  "domain": "range(n, 0, 7).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "square(X, Y)",
+    "answer": "[square(0,0),square(1,1),square(2,4)]"
+   },
+   {
+    "query": "square(2, 4)",
+    "answer": "true"
+   },
+   {
+    "query": "square(3, 8)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "11",
+   "hidden": "11",
+   "edges": "14",
+   "strata": "1",
+   "active": "11",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 100,
+  "title": "Bounded is/2: squares within 0..9",
+  "category": "arithmetic/bounded-is",
+  "program": "num(N) :- N >= 0.\nsquare(N, S) :- num(N), S is N * N.\n",
+  "domain": "range(n, 0, 9).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "square(X, Y)",
+    "answer": "[square(0,0),square(1,1),square(2,4),square(3,9)]"
+   },
+   {
+    "query": "square(2, 4)",
+    "answer": "true"
+   },
+   {
+    "query": "square(3, 8)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "14",
+   "hidden": "14",
+   "edges": "18",
+   "strata": "1",
+   "active": "14",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 101,
+  "title": "Bounded is/2: squares within 0..11",
+  "category": "arithmetic/bounded-is",
+  "program": "num(N) :- N >= 0.\nsquare(N, S) :- num(N), S is N * N.\n",
+  "domain": "range(n, 0, 11).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "square(X, Y)",
+    "answer": "[square(0,0),square(1,1),square(2,4),square(3,9)]"
+   },
+   {
+    "query": "square(2, 4)",
+    "answer": "true"
+   },
+   {
+    "query": "square(3, 8)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "16",
+   "hidden": "16",
+   "edges": "20",
+   "strata": "1",
+   "active": "16",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 102,
+  "title": "Bounded is/2: squares within 0..15",
+  "category": "arithmetic/bounded-is",
+  "program": "num(N) :- N >= 0.\nsquare(N, S) :- num(N), S is N * N.\n",
+  "domain": "range(n, 0, 15).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "square(X, Y)",
+    "answer": "[square(0,0),square(1,1),square(2,4),square(3,9)]"
+   },
+   {
+    "query": "square(2, 4)",
+    "answer": "true"
+   },
+   {
+    "query": "square(3, 8)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "20",
+   "hidden": "20",
+   "edges": "24",
+   "strata": "1",
+   "active": "20",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 103,
+  "title": "Integer comparisons: pairs X < Y summing to 6 over 0..6",
+  "category": "arithmetic/comparison",
+  "program": "pair(X, Y) :- num(X), num(Y), X < Y, S is X + Y, S =:= 6.\nnum(X) :- X >= 0.\n",
+  "domain": "range(n, 0, 6).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "pair(X, Y)",
+    "answer": "[pair(0,6),pair(1,5),pair(2,4)]"
+   },
+   {
+    "query": "pair(1, 5)",
+    "answer": "true"
+   },
+   {
+    "query": "pair(3, 3)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "10",
+   "edges": "16",
+   "strata": "1",
+   "active": "10",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 104,
+  "title": "Integer comparisons: pairs X < Y summing to 6 over 0..8",
+  "category": "arithmetic/comparison",
+  "program": "pair(X, Y) :- num(X), num(Y), X < Y, S is X + Y, S =:= 6.\nnum(X) :- X >= 0.\n",
+  "domain": "range(n, 0, 8).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "pair(X, Y)",
+    "answer": "[pair(0,6),pair(1,5),pair(2,4)]"
+   },
+   {
+    "query": "pair(1, 5)",
+    "answer": "true"
+   },
+   {
+    "query": "pair(3, 3)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "12",
+   "hidden": "12",
+   "edges": "18",
+   "strata": "1",
+   "active": "12",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 105,
+  "title": "Integer comparisons: pairs X < Y summing to 6 over 0..10",
+  "category": "arithmetic/comparison",
+  "program": "pair(X, Y) :- num(X), num(Y), X < Y, S is X + Y, S =:= 6.\nnum(X) :- X >= 0.\n",
+  "domain": "range(n, 0, 10).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "pair(X, Y)",
+    "answer": "[pair(0,6),pair(1,5),pair(2,4)]"
+   },
+   {
+    "query": "pair(1, 5)",
+    "answer": "true"
+   },
+   {
+    "query": "pair(3, 3)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "14",
+   "hidden": "14",
+   "edges": "20",
+   "strata": "1",
+   "active": "14",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 106,
+  "title": "Integer comparisons: pairs X < Y summing to 6 over 0..12",
+  "category": "arithmetic/comparison",
+  "program": "pair(X, Y) :- num(X), num(Y), X < Y, S is X + Y, S =:= 6.\nnum(X) :- X >= 0.\n",
+  "domain": "range(n, 0, 12).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "pair(X, Y)",
+    "answer": "[pair(0,6),pair(1,5),pair(2,4)]"
+   },
+   {
+    "query": "pair(1, 5)",
+    "answer": "true"
+   },
+   {
+    "query": "pair(3, 3)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "16",
+   "hidden": "16",
+   "edges": "22",
+   "strata": "1",
+   "active": "16",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 107,
+  "title": "Integer comparisons: pairs X < Y summing to 6 over 0..20",
+  "category": "arithmetic/comparison",
+  "program": "pair(X, Y) :- num(X), num(Y), X < Y, S is X + Y, S =:= 6.\nnum(X) :- X >= 0.\n",
+  "domain": "range(n, 0, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "pair(X, Y)",
+    "answer": "[pair(0,6),pair(1,5),pair(2,4)]"
+   },
+   {
+    "query": "pair(1, 5)",
+    "answer": "true"
+   },
+   {
+    "query": "pair(3, 3)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "24",
+   "hidden": "24",
+   "edges": "30",
+   "strata": "1",
+   "active": "24",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 108,
+  "title": "Divisibility by 2 over 1..20 using mod",
+  "category": "arithmetic/modulo",
+  "program": "num(X) :- X >= 1.\ndiv2(X) :- num(X), 0 =:= X mod 2.\n",
+  "domain": "range(n, 1, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "div2(X)",
+    "answer": "[div2(2),div2(4),div2(6),div2(8),div2(10),div2(12),div2(14),div2(16),div2(18),div2(20)]"
+   },
+   {
+    "query": "div2(6)",
+    "answer": "true"
+   },
+   {
+    "query": "div2(7)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "31",
+   "edges": "42",
+   "strata": "1",
+   "active": "30",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 109,
+  "title": "Divisibility by 3 over 1..20 using mod",
+  "category": "arithmetic/modulo",
+  "program": "num(X) :- X >= 1.\ndiv3(X) :- num(X), 0 =:= X mod 3.\n",
+  "domain": "range(n, 1, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "div3(X)",
+    "answer": "[div3(3),div3(6),div3(9),div3(12),div3(15),div3(18)]"
+   },
+   {
+    "query": "div3(9)",
+    "answer": "true"
+   },
+   {
+    "query": "div3(10)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "28",
+   "hidden": "27",
+   "edges": "34",
+   "strata": "1",
+   "active": "26",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 110,
+  "title": "Divisibility by 4 over 1..20 using mod",
+  "category": "arithmetic/modulo",
+  "program": "num(X) :- X >= 1.\ndiv4(X) :- num(X), 0 =:= X mod 4.\n",
+  "domain": "range(n, 1, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "div4(X)",
+    "answer": "[div4(4),div4(8),div4(12),div4(16),div4(20)]"
+   },
+   {
+    "query": "div4(12)",
+    "answer": "true"
+   },
+   {
+    "query": "div4(13)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "27",
+   "hidden": "26",
+   "edges": "32",
+   "strata": "1",
+   "active": "25",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 111,
+  "title": "Divisibility by 5 over 1..20 using mod",
+  "category": "arithmetic/modulo",
+  "program": "num(X) :- X >= 1.\ndiv5(X) :- num(X), 0 =:= X mod 5.\n",
+  "domain": "range(n, 1, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "div5(X)",
+    "answer": "[div5(5),div5(10),div5(15),div5(20)]"
+   },
+   {
+    "query": "div5(15)",
+    "answer": "true"
+   },
+   {
+    "query": "div5(16)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "26",
+   "hidden": "25",
+   "edges": "30",
+   "strata": "1",
+   "active": "24",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 112,
+  "title": "Divisibility by 6 over 1..20 using mod",
+  "category": "arithmetic/modulo",
+  "program": "num(X) :- X >= 1.\ndiv6(X) :- num(X), 0 =:= X mod 6.\n",
+  "domain": "range(n, 1, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "div6(X)",
+    "answer": "[div6(6),div6(12),div6(18)]"
+   },
+   {
+    "query": "div6(18)",
+    "answer": "true"
+   },
+   {
+    "query": "div6(19)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "25",
+   "hidden": "24",
+   "edges": "28",
+   "strata": "1",
+   "active": "23",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 113,
+  "title": "Counting chain with step 1: reachable numbers from 0 within 0..20",
+  "category": "arithmetic/chain",
+  "program": "count(0).\ncount(N) :- count(M), N is M + 1.\n",
+  "domain": "range(n, 0, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "count(X)",
+    "answer": "[count(0),count(1),count(2),count(3),count(4),count(5),count(6),count(7),count(8),count(9),count(10),count(11),count(12),count(13),count(14),count(15),count(16),count(17),count(18),count(19),count(20)]"
+   },
+   {
+    "query": "count(4)",
+    "answer": "true"
+   },
+   {
+    "query": "count(5)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "41",
+   "strata": "1",
+   "active": "21",
+   "rounds": "22",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 114,
+  "title": "Counting chain with step 2: reachable numbers from 0 within 0..20",
+  "category": "arithmetic/chain",
+  "program": "count(0).\ncount(N) :- count(M), N is M + 2.\n",
+  "domain": "range(n, 0, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "count(X)",
+    "answer": "[count(0),count(2),count(4),count(6),count(8),count(10),count(12),count(14),count(16),count(18),count(20)]"
+   },
+   {
+    "query": "count(8)",
+    "answer": "true"
+   },
+   {
+    "query": "count(9)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "20",
+   "edges": "39",
+   "strata": "1",
+   "active": "11",
+   "rounds": "12",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 115,
+  "title": "Counting chain with step 3: reachable numbers from 0 within 0..20",
+  "category": "arithmetic/chain",
+  "program": "count(0).\ncount(N) :- count(M), N is M + 3.\n",
+  "domain": "range(n, 0, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "count(X)",
+    "answer": "[count(0),count(3),count(6),count(9),count(12),count(15),count(18)]"
+   },
+   {
+    "query": "count(12)",
+    "answer": "true"
+   },
+   {
+    "query": "count(13)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "19",
+   "edges": "37",
+   "strata": "1",
+   "active": "7",
+   "rounds": "8",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 116,
+  "title": "Counting chain with step 4: reachable numbers from 0 within 0..20",
+  "category": "arithmetic/chain",
+  "program": "count(0).\ncount(N) :- count(M), N is M + 4.\n",
+  "domain": "range(n, 0, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "count(X)",
+    "answer": "[count(0),count(4),count(8),count(12),count(16),count(20)]"
+   },
+   {
+    "query": "count(16)",
+    "answer": "true"
+   },
+   {
+    "query": "count(17)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "18",
+   "edges": "35",
+   "strata": "1",
+   "active": "6",
+   "rounds": "7",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 117,
+  "title": "Counting chain with step 5: reachable numbers from 0 within 0..20",
+  "category": "arithmetic/chain",
+  "program": "count(0).\ncount(N) :- count(M), N is M + 5.\n",
+  "domain": "range(n, 0, 20).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "count(X)",
+    "answer": "[count(0),count(5),count(10),count(15),count(20)]"
+   },
+   {
+    "query": "count(20)",
+    "answer": "true"
+   },
+   {
+    "query": "count(21)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "17",
+   "edges": "33",
+   "strata": "1",
+   "active": "5",
+   "rounds": "6",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 118,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(bob, gold).\nlikes(hal, gold).\nlikes(fay, green).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [bob, hal, fay, cy]).\ndomain(colour, [green, gold, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(gold),liked(green)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(purple)]"
+   },
+   {
+    "query": "likes(cy, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 119,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(fay, red).\nlikes(cy, blue).\nlikes(bob, blue).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [fay, cy, bob, jo]).\ndomain(colour, [blue, red, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(blue),liked(red)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(purple)]"
+   },
+   {
+    "query": "likes(jo, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 120,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(jo, gold).\nlikes(fay, green).\nlikes(gus, green).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [jo, fay, gus, bob]).\ndomain(colour, [gold, green, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(gold),liked(green)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(purple)]"
+   },
+   {
+    "query": "likes(bob, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 121,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(eli, green).\nlikes(gus, green).\nlikes(cy, green).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [eli, gus, cy, fay]).\ndomain(colour, [green, red, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(green)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(purple),unliked(red)]"
+   },
+   {
+    "query": "likes(fay, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 122,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(eli, red).\nlikes(fay, red).\nlikes(ivy, red).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [eli, fay, ivy, gus]).\ndomain(colour, [red, gold, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(red)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(gold),unliked(purple)]"
+   },
+   {
+    "query": "likes(gus, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 123,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(ann, blue).\nlikes(hal, gold).\nlikes(eli, blue).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [ann, hal, eli, dee]).\ndomain(colour, [blue, gold, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(blue),liked(gold)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(purple)]"
+   },
+   {
+    "query": "likes(dee, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 124,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(gus, gold).\nlikes(eli, gold).\nlikes(cy, gold).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [gus, eli, cy, ivy]).\ndomain(colour, [gold, red, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(gold)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(purple),unliked(red)]"
+   },
+   {
+    "query": "likes(ivy, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 125,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(ivy, red).\nlikes(ann, green).\nlikes(gus, red).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [ivy, ann, gus, jo]).\ndomain(colour, [green, red, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(green),liked(red)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(purple)]"
+   },
+   {
+    "query": "likes(jo, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 126,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(ivy, gold).\nlikes(dee, gold).\nlikes(jo, red).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [ivy, dee, jo, bob]).\ndomain(colour, [gold, red, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(gold),liked(red)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(purple)]"
+   },
+   {
+    "query": "likes(bob, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 127,
+  "title": "Typed finite domains restrict variable grounding",
+  "category": "domains/typed",
+  "program": "likes(fay, gold).\nlikes(gus, gold).\nlikes(bob, red).\n\nunliked(C) :- colour(C), \\+ liked(C).\nliked(C) :- likes(_, C).\ncolour(C) :- C = C.\n",
+  "domain": "domain(person, [fay, gus, bob, ivy]).\ndomain(colour, [gold, red, purple]).\ntype(likes/2, 1, person).\ntype(likes/2, 2, colour).\ntype(liked/1, 1, colour).\ntype(unliked/1, 1, colour).\ntype(colour/1, 1, colour).\n",
+  "options": "",
+  "queries": [
+   {
+    "query": "liked(C)",
+    "answer": "[liked(gold),liked(red)]"
+   },
+   {
+    "query": "unliked(C)",
+    "answer": "[unliked(purple)]"
+   },
+   {
+    "query": "likes(ivy, C)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "21",
+   "hidden": "21",
+   "edges": "39",
+   "strata": "2",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 128,
+  "title": "Peano-style successor terms with --term-depth 1",
+  "category": "terms/bounded-depth",
+  "program": "nat(z).\nnat(s(X)) :- nat(X).\n",
+  "domain": null,
+  "options": "--term-depth 1",
+  "queries": [
+   {
+    "query": "nat(X)",
+    "answer": "[nat(z),nat(s(z))]"
+   },
+   {
+    "query": "nat(s(s(z)))",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "2",
+   "hidden": "2",
+   "edges": "3",
+   "strata": "1",
+   "active": "2",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 129,
+  "title": "Peano-style successor terms with --term-depth 2",
+  "category": "terms/bounded-depth",
+  "program": "nat(z).\nnat(s(X)) :- nat(X).\n",
+  "domain": null,
+  "options": "--term-depth 2",
+  "queries": [
+   {
+    "query": "nat(X)",
+    "answer": "[nat(z),nat(s(z)),nat(s(s(z)))]"
+   },
+   {
+    "query": "nat(s(s(z)))",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "3",
+   "hidden": "3",
+   "edges": "5",
+   "strata": "1",
+   "active": "3",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 130,
+  "title": "Peano-style successor terms with --term-depth 3",
+  "category": "terms/bounded-depth",
+  "program": "nat(z).\nnat(s(X)) :- nat(X).\n",
+  "domain": null,
+  "options": "--term-depth 3",
+  "queries": [
+   {
+    "query": "nat(X)",
+    "answer": "[nat(z),nat(s(z)),nat(s(s(z))),nat(s(s(s(z))))]"
+   },
+   {
+    "query": "nat(s(s(z)))",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "4",
+   "hidden": "4",
+   "edges": "7",
+   "strata": "1",
+   "active": "4",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 131,
+  "title": "Wrapped values f(...) with depth 1",
+  "category": "terms/bounded-depth",
+  "program": "p(a).\np(f(X)) :- p(X).\n",
+  "domain": null,
+  "options": "--term-depth 1",
+  "queries": [
+   {
+    "query": "p(X)",
+    "answer": "[p(a),p(f(a))]"
+   },
+   {
+    "query": "p(f(f(f(a))))",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "2",
+   "hidden": "2",
+   "edges": "3",
+   "strata": "1",
+   "active": "2",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 132,
+  "title": "Wrapped values f(...) with depth 2",
+  "category": "terms/bounded-depth",
+  "program": "p(a).\np(f(X)) :- p(X).\n",
+  "domain": null,
+  "options": "--term-depth 2",
+  "queries": [
+   {
+    "query": "p(X)",
+    "answer": "[p(a),p(f(a)),p(f(f(a)))]"
+   },
+   {
+    "query": "p(f(f(f(a))))",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "3",
+   "hidden": "3",
+   "edges": "5",
+   "strata": "1",
+   "active": "3",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 133,
+  "title": "Wrapped values f(...) with depth 3",
+  "category": "terms/bounded-depth",
+  "program": "p(a).\np(f(X)) :- p(X).\n",
+  "domain": null,
+  "options": "--term-depth 3",
+  "queries": [
+   {
+    "query": "p(X)",
+    "answer": "[p(a),p(f(a)),p(f(f(a))),p(f(f(f(a))))]"
+   },
+   {
+    "query": "p(f(f(f(a))))",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "4",
+   "hidden": "4",
+   "edges": "7",
+   "strata": "1",
+   "active": "4",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 134,
+  "title": "Bounded list membership with --term-depth 2",
+  "category": "terms/lists",
+  "program": "item(a).\nitem(b).\nlst([]).\nlst([H|T]) :- item(H), lst(T).\n",
+  "domain": null,
+  "options": "--term-depth 2",
+  "queries": [
+   {
+    "query": "lst([a])",
+    "answer": "true"
+   },
+   {
+    "query": "lst([a, b])",
+    "answer": "true"
+   },
+   {
+    "query": "lst([b, a, b])",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "159",
+   "hidden": "147",
+   "edges": "435",
+   "strata": "1",
+   "active": "9",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 135,
+  "title": "Depth-3 list generation exceeds --term-limit 500",
+  "category": "terms/lists",
+  "program": "item(a).\nitem(b).\nlst([]).\nlst([H|T]) :- item(H), lst(T).\n",
+  "domain": null,
+  "options": "--term-depth 3 --term-limit 500",
+  "queries": [],
+  "network": null,
+  "error": "term_generation_limit(21612,500)"
+ },
+ {
+  "id": 136,
+  "title": "Explicit compound domain values; constants nested inside them do not enter the untyped universe, so leaf/1 is empty",
+  "category": "terms/explicit-domain",
+  "program": "item(X) :- X = X.\nleaf(Y) :- item(node(Y)).\n",
+  "domain": "domain(term, [node(a), node(b), [a, b]]).\ntype(item/1, 1, term).\ntype(boxed/1, 1, term).\n",
+  "options": "--term-depth 2",
+  "queries": [
+   {
+    "query": "item(X)",
+    "answer": "[item(node(a)),item(node(b)),item([a,b])]"
+   },
+   {
+    "query": "leaf(Y)",
+    "answer": "[]"
+   }
+  ],
+  "network": {
+   "atoms": "7",
+   "hidden": "5",
+   "edges": "7",
+   "strata": "1",
+   "active": "3",
+   "rounds": "2",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 137,
+  "title": "Fact deeper than the configured term depth is rejected",
+  "category": "terms/depth-overflow",
+  "program": "p(f(f(a))).\n",
+  "domain": null,
+  "options": "--term-depth 1",
+  "queries": [],
+  "network": null,
+  "error": "term_depth_exceeded(2,1) at line 1"
+ },
+ {
+  "id": 138,
+  "title": "ancestor example in sigmoid mode",
+  "category": "modes/activation",
+  "program": "parent(ann, bob).\nparent(bob, cy).\nparent(cy, dee).\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "ancestor(ann, X)",
+    "answer": "[ancestor(ann,bob),ancestor(ann,cy),ancestor(ann,dee)]"
+   },
+   {
+    "query": "ancestor(dee, ann)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "83",
+   "edges": "227",
+   "strata": "1",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 139,
+  "title": "ancestor example in tanh mode",
+  "category": "modes/activation",
+  "program": "parent(ann, bob).\nparent(bob, cy).\nparent(cy, dee).\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "--mode tanh",
+  "queries": [
+   {
+    "query": "ancestor(ann, X)",
+    "answer": "[ancestor(ann,bob),ancestor(ann,cy),ancestor(ann,dee)]"
+   },
+   {
+    "query": "ancestor(dee, ann)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "83",
+   "edges": "227",
+   "strata": "1",
+   "active": "9",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 140,
+  "title": "ancestor example in step with --step-limit 1 mode",
+  "category": "modes/activation",
+  "program": "parent(ann, bob).\nparent(bob, cy).\nparent(cy, dee).\nancestor(X, Y) :- parent(X, Y).\nancestor(X, Y) :- parent(X, Z), ancestor(Z, Y).\n",
+  "domain": null,
+  "options": "--step-limit 1",
+  "queries": [
+   {
+    "query": "ancestor(ann, X)",
+    "answer": "error: error(no_fixpoint(1),_58120)"
+   },
+   {
+    "query": "ancestor(dee, ann)",
+    "answer": "error: error(no_fixpoint(1),_72462)"
+   }
+  ],
+  "network": {
+   "atoms": "32",
+   "hidden": "83",
+   "edges": "227",
+   "strata": "1",
+   "active": "3",
+   "rounds": "1",
+   "fixpoint": "false"
+  },
+  "error": null
+ },
+ {
+  "id": 141,
+  "title": "reach-cycle example in sigmoid mode",
+  "category": "modes/activation",
+  "program": "edge(a, b).\nedge(b, c).\nedge(c, a).\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b),reach(a,c)]"
+   },
+   {
+    "query": "reach(b, b)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "39",
+   "edges": "102",
+   "strata": "1",
+   "active": "12",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 142,
+  "title": "reach-cycle example in tanh mode",
+  "category": "modes/activation",
+  "program": "edge(a, b).\nedge(b, c).\nedge(c, a).\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "--mode tanh",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "[reach(a,a),reach(a,b),reach(a,c)]"
+   },
+   {
+    "query": "reach(b, b)",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "39",
+   "edges": "102",
+   "strata": "1",
+   "active": "12",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 143,
+  "title": "reach-cycle example in step with --step-limit 1 mode",
+  "category": "modes/activation",
+  "program": "edge(a, b).\nedge(b, c).\nedge(c, a).\nreach(X, Y) :- edge(X, Y).\nreach(X, Y) :- edge(X, Z), reach(Z, Y).\n",
+  "domain": null,
+  "options": "--step-limit 1",
+  "queries": [
+   {
+    "query": "reach(a, X)",
+    "answer": "error: error(no_fixpoint(1),_28520)"
+   },
+   {
+    "query": "reach(b, b)",
+    "answer": "error: error(no_fixpoint(1),_35872)"
+   }
+  ],
+  "network": {
+   "atoms": "18",
+   "hidden": "39",
+   "edges": "102",
+   "strata": "1",
+   "active": "3",
+   "rounds": "1",
+   "fixpoint": "false"
+  },
+  "error": null
+ },
+ {
+  "id": 144,
+  "title": "flies example in sigmoid mode",
+  "category": "modes/activation",
+  "program": "bird(tweety).\nbird(polly).\nbird(pingu).\npenguin(pingu).\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(polly),flies(tweety)]"
+   },
+   {
+    "query": "flies(pingu)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "9",
+   "hidden": "7",
+   "edges": "13",
+   "strata": "2",
+   "active": "6",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 145,
+  "title": "flies example in tanh mode",
+  "category": "modes/activation",
+  "program": "bird(tweety).\nbird(polly).\nbird(pingu).\npenguin(pingu).\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "--mode tanh",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "[flies(polly),flies(tweety)]"
+   },
+   {
+    "query": "flies(pingu)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "9",
+   "hidden": "7",
+   "edges": "13",
+   "strata": "2",
+   "active": "6",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 146,
+  "title": "flies example in step with --step-limit 1 mode",
+  "category": "modes/activation",
+  "program": "bird(tweety).\nbird(polly).\nbird(pingu).\npenguin(pingu).\nflies(X) :- bird(X), \\+ penguin(X).\n",
+  "domain": null,
+  "options": "--step-limit 1",
+  "queries": [
+   {
+    "query": "flies(X)",
+    "answer": "error: error(no_fixpoint(1),_7604)"
+   },
+   {
+    "query": "flies(pingu)",
+    "answer": "error: error(no_fixpoint(1),_9994)"
+   }
+  ],
+  "network": {
+   "atoms": "9",
+   "hidden": "7",
+   "edges": "13",
+   "strata": "2",
+   "active": "4",
+   "rounds": "1",
+   "fixpoint": "false"
+  },
+  "error": null
+ },
+ {
+  "id": 147,
+  "title": "disjunction example in sigmoid mode",
+  "category": "modes/activation",
+  "program": "a(1).\nb(2).\nc(3).\nab(X) :- ( a(X) ; b(X) ).\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight auto",
+  "queries": [
+   {
+    "query": "ab(X)",
+    "answer": "[ab(1),ab(2)]"
+   },
+   {
+    "query": "ab(3)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "9",
+   "edges": "15",
+   "strata": "1",
+   "active": "5",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 148,
+  "title": "disjunction example in tanh mode",
+  "category": "modes/activation",
+  "program": "a(1).\nb(2).\nc(3).\nab(X) :- ( a(X) ; b(X) ).\n",
+  "domain": null,
+  "options": "--mode tanh",
+  "queries": [
+   {
+    "query": "ab(X)",
+    "answer": "[ab(1),ab(2)]"
+   },
+   {
+    "query": "ab(3)",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "9",
+   "edges": "15",
+   "strata": "1",
+   "active": "5",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 149,
+  "title": "disjunction example in step with --step-limit 1 mode",
+  "category": "modes/activation",
+  "program": "a(1).\nb(2).\nc(3).\nab(X) :- ( a(X) ; b(X) ).\n",
+  "domain": null,
+  "options": "--step-limit 1",
+  "queries": [
+   {
+    "query": "ab(X)",
+    "answer": "error: error(no_fixpoint(1),_8308)"
+   },
+   {
+    "query": "ab(3)",
+    "answer": "error: error(no_fixpoint(1),_10872)"
+   }
+  ],
+  "network": {
+   "atoms": "10",
+   "hidden": "9",
+   "edges": "15",
+   "strata": "1",
+   "active": "3",
+   "rounds": "1",
+   "fixpoint": "false"
+  },
+  "error": null
+ },
+ {
+  "id": 150,
+  "title": "Rejects unsupported construct: cut",
+  "category": "errors/rejection",
+  "program": "keep_first([X|_], X) :- !.\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(!) at line 1"
+ },
+ {
+  "id": 151,
+  "title": "Rejects unsupported construct: assert",
+  "category": "errors/rejection",
+  "program": "p(X) :- assertz(q(X)).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(assert) at line 1"
+ },
+ {
+  "id": 152,
+  "title": "Rejects unsupported construct: retract",
+  "category": "errors/rejection",
+  "program": "p(X) :- retract(q(X)).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(retract) at line 1"
+ },
+ {
+  "id": 153,
+  "title": "Rejects unsupported construct: findall",
+  "category": "errors/rejection",
+  "program": "p(Xs) :- findall(Y, q(Y), Xs).\nq(1).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(findall) at line 1"
+ },
+ {
+  "id": 154,
+  "title": "Rejects unsupported construct: I/O",
+  "category": "errors/rejection",
+  "program": "p(X) :- write(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(io) at line 1"
+ },
+ {
+  "id": 155,
+  "title": "Rejects unsupported construct: if-then",
+  "category": "errors/rejection",
+  "program": "p(X) :- ( q(X) -> r(X) ).\nq(1).\nr(1).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(conditional) at line 1"
+ },
+ {
+  "id": 156,
+  "title": "Rejects unsupported construct: soft-cut",
+  "category": "errors/rejection",
+  "program": "p(X) :- ( q(X) *-> r(X) ).\nq(1).\nr(1).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(conditional) at line 1"
+ },
+ {
+  "id": 157,
+  "title": "Rejects unsupported construct: meta-call",
+  "category": "errors/rejection",
+  "program": "p(X) :- call(q(X)).\nq(1).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(meta_call) at line 1"
+ },
+ {
+  "id": 158,
+  "title": "Rejects unsupported construct: negated conjunction",
+  "category": "errors/rejection",
+  "program": "p(X) :- q(X), \\+ (r(X), s(X)).\nq(1).\nr(1).\ns(1).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(negated_compound_goal) at line 1"
+ },
+ {
+  "id": 159,
+  "title": "Rejects non-stratified win (non-stratified negation)",
+  "category": "errors/rejection",
+  "program": "move(a, b).\nmove(b, a).\nwin(X) :- move(X, Y), \\+ win(Y).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "non_stratified_negation([win/1]) at line 3"
+ },
+ {
+  "id": 160,
+  "title": "Rejects negative self-loop (non-stratified negation)",
+  "category": "errors/rejection",
+  "program": "p :- \\+ p.\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "non_stratified_negation([p/0]) at line 1"
+ },
+ {
+  "id": 161,
+  "title": "Rejects negative mutual cycle (non-stratified negation)",
+  "category": "errors/rejection",
+  "program": "a(1).\np(X) :- a(X), \\+ q(X).\nq(X) :- a(X), \\+ p(X).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "non_stratified_negation([p/1,q/1]) at line 2"
+ },
+ {
+  "id": 162,
+  "title": "Rejects unsupported construct: unsupported arithmetic",
+  "category": "errors/rejection",
+  "program": "p(X) :- num(X), Y is sqrt(X), Y > 1.\nnum(4).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(_620 is sqrt(_626)) at line 1"
+ },
+ {
+  "id": 163,
+  "title": "Rejects unsupported construct: assert on line 3 (error reports the line)",
+  "category": "errors/rejection",
+  "program": "ok(a).\nok(b).\np(X) :- ok(X), assertz(seen(X)).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(assert) at line 3"
+ },
+ {
+  "id": 164,
+  "title": "Rejects unsupported construct: bagof",
+  "category": "errors/rejection",
+  "program": "p(L) :- bagof(X, q(X), L).\nq(1).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(bagof) at line 1"
+ },
+ {
+  "id": 165,
+  "title": "Rejects unsupported construct: format I/O",
+  "category": "errors/rejection",
+  "program": "hello :- format(\"hi~n\").\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(io) at line 1"
+ },
+ {
+  "id": 166,
+  "title": "Rejects unsupported construct: nb_setval",
+  "category": "errors/rejection",
+  "program": "p :- nb_setval(k, 1).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(nb_setval(k,1)) at line 1"
+ },
+ {
+  "id": 167,
+  "title": "Rejects unsupported construct: setof",
+  "category": "errors/rejection",
+  "program": "p(L) :- setof(X, q(X), L).\nq(2).\nq(1).\n",
+  "domain": null,
+  "options": "",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_construct(setof) at line 1"
+ },
+ {
+  "id": 168,
+  "title": "Herbrand base exceeds --limit 5",
+  "category": "errors/limits",
+  "program": "n(1).\nn(2).\nn(3).\npair(X, Y) :- n(X), n(Y).\n",
+  "domain": null,
+  "options": "--limit 5",
+  "queries": [],
+  "network": null,
+  "error": "herbrand_base_limit(12,5)"
+ },
+ {
+  "id": 169,
+  "title": "Sigmoid weight below the derived bound is rejected",
+  "category": "errors/limits",
+  "program": "a.\nb :- a.\n",
+  "domain": null,
+  "options": "--mode sigmoid --weight 0.1",
+  "queries": [],
+  "network": null,
+  "error": "weight_below_bound(0.1,2.1972245773362196)"
+ },
+ {
+  "id": 170,
+  "title": "Tanh weight must be positive",
+  "category": "errors/limits",
+  "program": "a.\nb :- a.\n",
+  "domain": null,
+  "options": "--mode tanh --weight 0",
+  "queries": [],
+  "network": null,
+  "error": "domain_error(positive_weight,0)"
+ },
+ {
+  "id": 171,
+  "title": "Unknown mode is rejected",
+  "category": "errors/limits",
+  "program": "a.\n",
+  "domain": null,
+  "options": "--mode relu",
+  "queries": [],
+  "network": null,
+  "error": "unsupported_mode(relu)"
+ },
+ {
+  "id": 172,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "s.\nv.\nt :- v, \\+ s.\nw :- t, v.\nu :- v, \\+ s.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "false"
+   },
+   {
+    "query": "u",
+    "answer": "false"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   },
+   {
+    "query": "w",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "11",
+   "strata": "2",
+   "active": "2",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 173,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "r.\ns.\nw :- u.\nw :- t.\nt :- s, w.\nu :- r.\nu :- t.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "w",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "7",
+   "edges": "13",
+   "strata": "1",
+   "active": "5",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 174,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "v.\nu.\ns :- u, v.\nq :- u, v.\nr :- s, \\+ v.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "false"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "11",
+   "strata": "2",
+   "active": "4",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 175,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "t.\np.\ns :- t.\ns :- q.\nq :- p.\nq :- t.\nu :- s, q.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "7",
+   "edges": "13",
+   "strata": "1",
+   "active": "5",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 176,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "p.\nu.\nw :- p.\nq :- u, p.\ns :- \\+ p.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "w",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "2",
+   "active": "4",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 177,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "w.\nv.\np :- u, w.\ns :- p.\nu :- s.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "false"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "u",
+    "answer": "false"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   },
+   {
+    "query": "w",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "1",
+   "active": "2",
+   "rounds": "2",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 178,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "p.\nt.\nr :- \\+ t.\nu :- \\+ p.\ns :- u, p.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "false"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "2",
+   "active": "2",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 179,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "q.\ns.\nt :- s, q.\nt :- s.\nv :- q, s.\np :- v.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "6",
+   "edges": "12",
+   "strata": "1",
+   "active": "5",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 180,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "s.\nq.\nu :- s.\nt :- \\+ s.\nr :- q, \\+ t.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "false"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "3",
+   "active": "4",
+   "rounds": "6",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 181,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "w.\np.\nu :- s, v.\ns :- w, u.\ns :- v.\nv :- w, u.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "u",
+    "answer": "false"
+   },
+   {
+    "query": "v",
+    "answer": "false"
+   },
+   {
+    "query": "w",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "6",
+   "edges": "13",
+   "strata": "1",
+   "active": "2",
+   "rounds": "2",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 182,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "t.\np.\nr :- t, \\+ p.\nu :- t.\ns :- t, \\+ p.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "false"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "10",
+   "strata": "2",
+   "active": "3",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 183,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "t.\nq.\nw :- t.\nu :- r.\nr :- t, u.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "false"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "false"
+   },
+   {
+    "query": "w",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "1",
+   "active": "3",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 184,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "r.\ns.\nt :- \\+ r.\nw :- t, s.\nq :- \\+ w.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "false"
+   },
+   {
+    "query": "w",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "3",
+   "active": "3",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 185,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "v.\nq.\ns :- t.\nt :- s.\nu :- t.\nu :- q.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "t",
+    "answer": "false"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "6",
+   "edges": "10",
+   "strata": "1",
+   "active": "3",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 186,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "u.\np.\nq :- \\+ p.\nr :- \\+ u.\nv :- p, u.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "q",
+    "answer": "false"
+   },
+   {
+    "query": "r",
+    "answer": "false"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "2",
+   "active": "3",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 187,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "v.\nq.\nu :- v.\np :- v.\np :- v.\nr :- v, p.\nr :- p.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "7",
+   "edges": "13",
+   "strata": "1",
+   "active": "5",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 188,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "u.\nr.\nv :- \\+ r.\nt :- v.\ns :- u, \\+ v.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "false"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "v",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "3",
+   "active": "3",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 189,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "p.\nq.\nv :- u, w.\nv :- u.\nu :- v, q.\nu :- v.\nw :- q, u.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "false"
+   },
+   {
+    "query": "v",
+    "answer": "false"
+   },
+   {
+    "query": "w",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "7",
+   "edges": "15",
+   "strata": "1",
+   "active": "2",
+   "rounds": "2",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 190,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "t.\nv.\nr :- t.\np :- v, \\+ r.\ns :- \\+ v.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "false"
+   },
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "2",
+   "active": "3",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 191,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "s.\nt.\nq :- r, t.\nr :- t, q.\nu :- s.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "q",
+    "answer": "false"
+   },
+   {
+    "query": "r",
+    "answer": "false"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "10",
+   "strata": "1",
+   "active": "3",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 192,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "t.\nr.\nq :- t.\ns :- q, r.\nu :- t.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "1",
+   "active": "5",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 193,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "r.\np.\nq :- u, r.\nv :- p.\nu :- p.\nu :- v.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "6",
+   "edges": "11",
+   "strata": "1",
+   "active": "5",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 194,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "v.\nq.\nr :- q, \\+ v.\ns :- r.\nw :- q, s.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "false"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   },
+   {
+    "query": "w",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "10",
+   "strata": "2",
+   "active": "2",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 195,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "u.\nw.\nt :- u, w.\np :- r, t.\nr :- t, u.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "w",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "11",
+   "strata": "1",
+   "active": "5",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 196,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "t.\nq.\ns :- \\+ t.\nu :- \\+ q.\nv :- u, \\+ s.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "false"
+   },
+   {
+    "query": "v",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "3",
+   "active": "2",
+   "rounds": "4",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 197,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "u.\ns.\nr :- v.\np :- u.\nv :- s, p.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "r",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "v",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "9",
+   "strata": "1",
+   "active": "5",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 198,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "s.\nu.\nq :- \\+ u.\nw :- u, \\+ q.\np :- q, w.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "false"
+   },
+   {
+    "query": "q",
+    "answer": "false"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "w",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "10",
+   "strata": "3",
+   "active": "3",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 199,
+  "title": "Propositional program with positive (possibly cyclic) rules",
+  "category": "propositional/random",
+  "program": "u.\np.\nw :- s, q.\ns :- u, p.\ns :- p.\nq :- p, s.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "true"
+   },
+   {
+    "query": "q",
+    "answer": "true"
+   },
+   {
+    "query": "s",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "w",
+    "answer": "true"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "6",
+   "edges": "13",
+   "strata": "1",
+   "active": "5",
+   "rounds": "5",
+   "fixpoint": "true"
+  },
+  "error": null
+ },
+ {
+  "id": 200,
+  "title": "Propositional program with stratified negation",
+  "category": "propositional/random",
+  "program": "u.\nt.\nw :- u, \\+ t.\np :- \\+ t.\ns :- w, u.\n",
+  "domain": null,
+  "options": "",
+  "queries": [
+   {
+    "query": "p",
+    "answer": "false"
+   },
+   {
+    "query": "s",
+    "answer": "false"
+   },
+   {
+    "query": "t",
+    "answer": "true"
+   },
+   {
+    "query": "u",
+    "answer": "true"
+   },
+   {
+    "query": "w",
+    "answer": "false"
+   }
+  ],
+  "network": {
+   "atoms": "5",
+   "hidden": "5",
+   "edges": "10",
+   "strata": "2",
+   "active": "2",
+   "rounds": "3",
+   "fixpoint": "true"
+  },
+  "error": null
+ }
+]

@@ -1,0 +1,1586 @@
+{
+ "cases": [
+  {
+   "base": "reach",
+   "op": "dup_clause",
+   "original": [
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)",
+    "reach(X,Y):-edge(X,Y)"
+   ],
+   "optimised": [
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)"
+   ],
+   "hidden": 179,
+   "match": "proved(same_ground_clauses(154))",
+   "inverse": {
+    "recovered": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "original_input": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([dup_clause((reach(_32,_34):-[edge(_32,_34)]))]))"
+  },
+  {
+   "base": "reach",
+   "op": "dup_literal",
+   "original": [
+    "reach(X,Y):-edge(X,Y),edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)"
+   ],
+   "optimised": [
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)"
+   ],
+   "hidden": 154,
+   "match": "proved(same_ground_clauses(154))",
+   "inverse": {
+    "recovered": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "original_input": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([dup_literal((reach(_32,_34):-[edge(_32,_34),edge(_32,_34)]))]))"
+  },
+  {
+   "base": "reach",
+   "op": "subsumed_clause",
+   "original": [
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)",
+    "reach(X,Y):-edge(X,Y),edge(Y,X)"
+   ],
+   "optimised": [
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)"
+   ],
+   "hidden": 179,
+   "match": "proved(same_ground_clauses(179))",
+   "inverse": {
+    "recovered": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "original_input": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([subsumed((reach(_32,_34):-[edge(_32,_34),edge(_34,_32)]),by((reach(_32,_34):-[edge(_32,_34)])))]))"
+  },
+  {
+   "base": "reach",
+   "op": "unfolded_clause",
+   "original": [
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),edge(Z,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)"
+   ],
+   "optimised": [
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)"
+   ],
+   "hidden": 279,
+   "match": "proved(same_ground_clauses(279))",
+   "inverse": {
+    "recovered": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "original_input": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(exhaustive(512))"
+  },
+  {
+   "base": "reach",
+   "op": "dup_then_subsumed",
+   "original": [
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)",
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Y),edge(Y,X)"
+   ],
+   "optimised": [
+    "reach(X,Y):-edge(X,Y)",
+    "reach(X,Y):-edge(X,Z),reach(Z,Y)"
+   ],
+   "hidden": 204,
+   "match": "proved(same_ground_clauses(179))",
+   "inverse": {
+    "recovered": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "original_input": [
+     "edge(a,b)",
+     "edge(b,c)",
+     "edge(b,e)",
+     "edge(c,d)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "reach(A,B):- edge(A,B)",
+     "reach(A,B):- edge(C,B),reach(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "reach(X,Y):-edge(X,Y)",
+     "reach(A,B):-edge(C,B),reach(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([dup_clause((reach(_32,_34):-[edge(_32,_34)])),subsumed((reach(_32,_34):-[edge(_32,_34),edge(_34,_32)]),by((reach(_32,_34):-[edge(_32,_34)])))]))"
+  },
+  {
+   "base": "ancestor",
+   "op": "dup_clause",
+   "original": [
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)",
+    "ancestor(X,Y):-parent(X,Y)"
+   ],
+   "optimised": [
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)"
+   ],
+   "hidden": 179,
+   "match": "proved(same_ground_clauses(154))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([dup_clause((ancestor(_32,_34):-[parent(_32,_34)]))]))"
+  },
+  {
+   "base": "ancestor",
+   "op": "dup_literal",
+   "original": [
+    "ancestor(X,Y):-parent(X,Y),parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)"
+   ],
+   "optimised": [
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)"
+   ],
+   "hidden": 154,
+   "match": "proved(same_ground_clauses(154))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([dup_literal((ancestor(_32,_34):-[parent(_32,_34),parent(_32,_34)]))]))"
+  },
+  {
+   "base": "ancestor",
+   "op": "subsumed_clause",
+   "original": [
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)",
+    "ancestor(X,Y):-parent(X,Y),parent(Y,X)"
+   ],
+   "optimised": [
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)"
+   ],
+   "hidden": 179,
+   "match": "proved(same_ground_clauses(179))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([subsumed((ancestor(_32,_34):-[parent(_32,_34),parent(_34,_32)]),by((ancestor(_32,_34):-[parent(_32,_34)])))]))"
+  },
+  {
+   "base": "ancestor",
+   "op": "unfolded_clause",
+   "original": [
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),parent(Z,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)"
+   ],
+   "optimised": [
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)"
+   ],
+   "hidden": 279,
+   "match": "proved(same_ground_clauses(279))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(exhaustive(512))"
+  },
+  {
+   "base": "ancestor",
+   "op": "dup_then_subsumed",
+   "original": [
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)",
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Y),parent(Y,X)"
+   ],
+   "optimised": [
+    "ancestor(X,Y):-parent(X,Y)",
+    "ancestor(X,Y):-parent(X,Z),ancestor(Z,Y)"
+   ],
+   "hidden": 204,
+   "match": "proved(same_ground_clauses(179))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(bob,cy)",
+     "parent(bob,eli)",
+     "parent(cy,dee)"
+    ],
+    "n_minimal": 1,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "ancestor(A,B):- parent(A,B)",
+     "ancestor(A,B):- parent(C,B),ancestor(A,C)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "ancestor(X,Y):-parent(X,Y)",
+     "ancestor(A,B):-parent(C,B),ancestor(A,C)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([dup_clause((ancestor(_32,_34):-[parent(_32,_34)])),subsumed((ancestor(_32,_34):-[parent(_32,_34),parent(_34,_32)]),by((ancestor(_32,_34):-[parent(_32,_34)])))]))"
+  },
+  {
+   "base": "grandparent",
+   "op": "dup_clause",
+   "original": [
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+   ],
+   "optimised": [
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+   ],
+   "hidden": 254,
+   "match": "proved(same_ground_clauses(129))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,dee)",
+     "parent(dee,cy)",
+     "parent(dee,eli)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(ann,dee)",
+     "parent(bob,cy)",
+     "parent(dee,eli)"
+    ],
+    "n_minimal": 2,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "grandparent(A,B):- parent(A,C),parent(C,B)"
+    ],
+    "vs_optimised": "proved(syntactic([]))",
+    "aligned_to_optimised": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "exact_after_alignment": true
+   },
+   "popper_original": {
+    "code": [
+     "grandparent(A,B):- parent(A,C),parent(C,B)"
+    ],
+    "vs_optimised": "proved(syntactic([]))",
+    "aligned_to_optimised": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "exact_after_alignment": true
+   },
+   "original_vs_optimised": "proved(syntactic([dup_clause((grandparent(_32,_34):-[parent(_32,_40),parent(_40,_34)]))]))"
+  },
+  {
+   "base": "grandparent",
+   "op": "dup_literal",
+   "original": [
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(X,Z)"
+   ],
+   "optimised": [
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+   ],
+   "hidden": 129,
+   "match": "proved(same_ground_clauses(129))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,dee)",
+     "parent(dee,cy)",
+     "parent(dee,eli)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(ann,dee)",
+     "parent(bob,cy)",
+     "parent(dee,eli)"
+    ],
+    "n_minimal": 2,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "grandparent(A,B):- parent(A,C),parent(C,B)"
+    ],
+    "vs_optimised": "proved(syntactic([]))",
+    "aligned_to_optimised": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "exact_after_alignment": true
+   },
+   "popper_original": {
+    "code": [
+     "grandparent(A,B):- parent(C,B),parent(A,C)"
+    ],
+    "vs_optimised": "proved(syntactic([]))",
+    "aligned_to_optimised": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "exact_after_alignment": true
+   },
+   "original_vs_optimised": "proved(syntactic([dup_literal((grandparent(_32,_34):-[parent(_32,_40),parent(_40,_34),parent(_32,_40)]))]))"
+  },
+  {
+   "base": "grandparent",
+   "op": "subsumed_clause",
+   "original": [
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(Y,X)"
+   ],
+   "optimised": [
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+   ],
+   "hidden": 254,
+   "match": "proved(same_ground_clauses(254))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,dee)",
+     "parent(dee,cy)",
+     "parent(dee,eli)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(ann,dee)",
+     "parent(bob,cy)",
+     "parent(dee,eli)"
+    ],
+    "n_minimal": 2,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "grandparent(A,B):- parent(C,B),parent(A,C)"
+    ],
+    "vs_optimised": "proved(syntactic([]))",
+    "aligned_to_optimised": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "exact_after_alignment": true
+   },
+   "popper_original": {
+    "code": [
+     "grandparent(A,B):- parent(C,B),parent(A,C)"
+    ],
+    "vs_optimised": "proved(syntactic([]))",
+    "aligned_to_optimised": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "exact_after_alignment": true
+   },
+   "original_vs_optimised": "proved(syntactic([subsumed((grandparent(_32,_34):-[parent(_32,_40),parent(_40,_34),parent(_34,_32)]),by((grandparent(_32,_34):-[parent(_32,_40),parent(_40,_34)])))]))"
+  },
+  {
+   "base": "grandparent",
+   "op": "dup_then_subsumed",
+   "original": [
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(Y,X)"
+   ],
+   "optimised": [
+    "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+   ],
+   "hidden": 379,
+   "match": "proved(same_ground_clauses(254))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,dee)",
+     "parent(dee,cy)",
+     "parent(dee,eli)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(ann,dee)",
+     "parent(bob,cy)",
+     "parent(dee,eli)"
+    ],
+    "n_minimal": 2,
+    "proof": "proved(all_observed_literals_hold(25))"
+   },
+   "popper_recovered": {
+    "code": [
+     "grandparent(A,B):- parent(A,C),parent(C,B)"
+    ],
+    "vs_optimised": "proved(syntactic([]))",
+    "aligned_to_optimised": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "exact_after_alignment": true
+   },
+   "popper_original": {
+    "code": [
+     "grandparent(A,B):- parent(C,B),parent(A,C)"
+    ],
+    "vs_optimised": "proved(syntactic([]))",
+    "aligned_to_optimised": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "exact_after_alignment": true
+   },
+   "original_vs_optimised": "proved(syntactic([dup_clause((grandparent(_32,_34):-[parent(_32,_40),parent(_40,_34)])),subsumed((grandparent(_32,_34):-[parent(_32,_40),parent(_40,_34),parent(_34,_32)]),by((grandparent(_32,_34):-[parent(_32,_40),parent(_40,_34)])))]))"
+  },
+  {
+   "base": "sibling",
+   "op": "dup_clause",
+   "original": [
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+   ],
+   "optimised": [
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+   ],
+   "hidden": 99,
+   "match": "proved(same_ground_clauses(51))",
+   "inverse": {
+    "recovered": [
+     "parent(dee,bob)",
+     "parent(dee,cy)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(ann,cy)",
+     "parent(bob,dee)"
+    ],
+    "n_minimal": 4,
+    "proof": "proved(all_observed_literals_hold(12))"
+   },
+   "popper_recovered": {
+    "code": [
+     "sibling(A,B):- neq(B,A),parent(C,B),parent(C,A)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "sibling(A,B):-neq(B,A),parent(C,B),parent(C,A)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "sibling(A,B):- parent(C,A),neq(B,A),parent(C,B)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "sibling(A,B):-parent(C,A),neq(B,A),parent(C,B)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([dup_clause((sibling(_32,_34):-[parent(_38,_32),parent(_38,_34),_32\\=_34]))]))"
+  },
+  {
+   "base": "sibling",
+   "op": "dup_literal",
+   "original": [
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(P,X)"
+   ],
+   "optimised": [
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+   ],
+   "hidden": 51,
+   "match": "proved(same_ground_clauses(51))",
+   "inverse": {
+    "recovered": [
+     "parent(dee,bob)",
+     "parent(dee,cy)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(ann,cy)",
+     "parent(bob,dee)"
+    ],
+    "n_minimal": 4,
+    "proof": "proved(all_observed_literals_hold(12))"
+   },
+   "popper_recovered": {
+    "code": [
+     "sibling(A,B):- parent(C,B),parent(C,A),neq(B,A)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "sibling(A,B):-parent(C,B),parent(C,A),neq(B,A)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "sibling(A,B):- neq(B,A),parent(C,B),parent(C,A)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "sibling(A,B):-neq(B,A),parent(C,B),parent(C,A)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([dup_literal((sibling(_32,_34):-[parent(_38,_32),parent(_38,_34),_32\\=_34,parent(_38,_32)]))]))"
+  },
+  {
+   "base": "sibling",
+   "op": "subsumed_clause",
+   "original": [
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(Y,X)"
+   ],
+   "optimised": [
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+   ],
+   "hidden": 99,
+   "match": "proved(same_ground_clauses(99))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,bob)",
+     "parent(ann,cy)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(ann,cy)",
+     "parent(bob,dee)"
+    ],
+    "n_minimal": 4,
+    "proof": "proved(all_observed_literals_hold(12))"
+   },
+   "popper_recovered": {
+    "code": [
+     "sibling(A,B):- neq(B,A),parent(C,A),parent(C,B)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "sibling(A,B):-neq(B,A),parent(C,A),parent(C,B)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "sibling(A,B):- neq(B,A),parent(C,B),parent(C,A)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "sibling(A,B):-neq(B,A),parent(C,B),parent(C,A)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([subsumed((sibling(_32,_34):-[parent(_38,_32),parent(_38,_34),_32\\=_34,parent(_34,_32)]),by((sibling(_32,_34):-[parent(_38,_32),parent(_38,_34),_32\\=_34])))]))"
+  },
+  {
+   "base": "sibling",
+   "op": "dup_then_subsumed",
+   "original": [
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(Y,X)"
+   ],
+   "optimised": [
+    "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+   ],
+   "hidden": 147,
+   "match": "proved(same_ground_clauses(99))",
+   "inverse": {
+    "recovered": [
+     "parent(ann,bob)",
+     "parent(ann,cy)"
+    ],
+    "original_input": [
+     "parent(ann,bob)",
+     "parent(ann,cy)",
+     "parent(bob,dee)"
+    ],
+    "n_minimal": 4,
+    "proof": "proved(all_observed_literals_hold(12))"
+   },
+   "popper_recovered": {
+    "code": [
+     "sibling(A,B):- parent(C,A),neq(B,A),parent(C,B)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "sibling(A,B):-parent(C,A),neq(B,A),parent(C,B)"
+    ],
+    "exact_after_alignment": false
+   },
+   "popper_original": {
+    "code": [
+     "sibling(A,B):- neq(B,A),parent(C,A),parent(C,B)"
+    ],
+    "vs_optimised": "proved(exhaustive(512))",
+    "aligned_to_optimised": [
+     "sibling(A,B):-neq(B,A),parent(C,A),parent(C,B)"
+    ],
+    "exact_after_alignment": false
+   },
+   "original_vs_optimised": "proved(syntactic([dup_clause((sibling(_32,_34):-[parent(_38,_32),parent(_38,_34),_32\\=_34])),subsumed((sibling(_32,_34):-[parent(_38,_32),parent(_38,_34),_32\\=_34,parent(_34,_32)]),by((sibling(_32,_34):-[parent(_38,_32),parent(_38,_34),_32\\=_34])))]))"
+  }
+ ],
+ "s2a": {
+  "dup_clause": {
+   "literal": {
+    "algorithm": "\"opt_core_dup_clause_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\",\\\"[\\\",'C1','C2',\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,6]]],[[1,3],[[1,3]]],[[1,6],[[1,2],[1,6]]],[[1,7],[[1,7]]],[[1,8],[[1,8]]],[[1,11],[[1,2],[1,6]]],[[1,12],[[1,3]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)",
+       "path(X,Y):-link(X,Y)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(syntactic([dup_clause((path(_32,_34):-[link(_32,_34)]))]))"
+     },
+     {
+      "test": "different shape: grandparent",
+      "input": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "output": null,
+      "expected": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "exact": false
+     },
+     {
+      "test": "different shape: sibling",
+      "input": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "output": null,
+      "expected": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "exact": false
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_core_dup_clause_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\"],[output,[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,10],[1,16]]],[[1,5],[[1,5],[1,13]]],[[1,10],[[1,2],[1,10],[1,16]]],[[1,13],[[1,5],[1,13]]],[[1,16],[[1,2],[1,10],[1,16]]],[[1,21],[[1,2],[1,10],[1,16]]],[[1,24],[[1,5],[1,13]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)",
+       "path(X,Y):-link(X,Y)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(syntactic([dup_clause((path(_32,_34):-[link(_32,_34)]))]))"
+     },
+     {
+      "test": "different shape: grandparent",
+      "input": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "output": null,
+      "expected": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "exact": false
+     },
+     {
+      "test": "different shape: sibling",
+      "input": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "output": null,
+      "expected": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "exact": false
+     }
+    ]
+   }
+  },
+  "dup_literal": {
+   "literal": {
+    "algorithm": "\"opt_core_dup_literal_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',['&r',['C2']],\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,6]]],[[1,3,2,1],[[1,3]]],[[1,6],[[1,2],[1,6]]],[[1,7],[[1,7]]],[[1,8],[[1,8]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y),link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(syntactic([dup_literal((path(_32,_34):-[link(_32,_34),link(_32,_34)]))]))"
+     },
+     {
+      "test": "different shape: grandparent",
+      "input": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(X,Z)"
+      ],
+      "output": null,
+      "expected": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "exact": false
+     },
+     {
+      "test": "different shape: sibling",
+      "input": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(P,X)"
+      ],
+      "output": null,
+      "expected": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "exact": false
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_core_dup_literal_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,vy,['&r',['C2',vx,vy]],\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\"],[output,[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,10],[1,16]]],[[1,5,2,1],[[1,5],[1,13]]],[[1,8],[[1,2],[1,10],[1,16]]],[[1,11],[[1,5],[1,13]]],[[1,14],[[1,2],[1,10],[1,16]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y),link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(syntactic([dup_literal((path(_32,_34):-[link(_32,_34),link(_32,_34)]))]))"
+     },
+     {
+      "test": "different shape: grandparent",
+      "input": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(X,Z)"
+      ],
+      "output": null,
+      "expected": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "exact": false
+     },
+     {
+      "test": "different shape: sibling",
+      "input": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(P,X)"
+      ],
+      "output": null,
+      "expected": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "exact": false
+     }
+    ]
+   }
+  },
+  "subsumed_clause": {
+   "literal": {
+    "algorithm": "\"opt_core_subsumed_clause_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\",\\\"[\\\",'C1','C2','C5',\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,6]]],[[1,3],[[1,3]]],[[1,6],[[1,2],[1,6]]],[[1,7],[[1,7]]],[[1,8],[[1,8]]],[[1,11],[[1,2],[1,6]]],[[1,12],[[1,3]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)",
+       "path(X,Y):-link(X,Y),link(Y,X)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(syntactic([subsumed((path(_32,_34):-[link(_32,_34),link(_34,_32)]),by((path(_32,_34):-[link(_32,_34)])))]))"
+     },
+     {
+      "test": "different shape: grandparent",
+      "input": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(Y,X)"
+      ],
+      "output": null,
+      "expected": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "exact": false
+     },
+     {
+      "test": "different shape: sibling",
+      "input": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(Y,X)"
+      ],
+      "output": null,
+      "expected": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "exact": false
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_core_subsumed_clause_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\",\\\"[\\\",'C1',['&r',[vx,vy,'C2']],vy,vx,\\\"]\\\"],[output,[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,10],[1,16]]],[[1,5],[[1,5],[1,13]]],[[1,10],[[1,2],[1,10],[1,16]]],[[1,13],[[1,5],[1,13]]],[[1,16],[[1,2],[1,10],[1,16]]],[[1,21],[[1,2],[1,10],[1,16]]],[[1,22,2,3],[[1,5],[1,13]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)",
+       "path(X,Y):-link(X,Y),link(Y,X)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(syntactic([subsumed((path(_32,_34):-[link(_32,_34),link(_34,_32)]),by((path(_32,_34):-[link(_32,_34)])))]))"
+     },
+     {
+      "test": "different shape: grandparent",
+      "input": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(Y,X)"
+      ],
+      "output": null,
+      "expected": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "exact": false
+     },
+     {
+      "test": "different shape: sibling",
+      "input": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(Y,X)"
+      ],
+      "output": null,
+      "expected": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "exact": false
+     }
+    ]
+   }
+  },
+  "unfolded_clause": {
+   "literal": {
+    "algorithm": "\"opt_core_unfolded_clause_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\",\\\"[\\\",'C1','C3','C5',\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C5',\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,6]]],[[1,3],[[1,3]]],[[1,6],[[1,2],[1,6]]],[[1,7],[[1,7]]],[[1,11],[[1,2],[1,6]]],[[1,12],[[1,7]]],[[1,13],[[1,8]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),link(Z,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(exhaustive(512))"
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_core_unfolded_clause_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C2',vz,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\"],[output,[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,10],[1,16]]],[[1,5],[[1,5],[1,13]]],[[1,10],[[1,2],[1,10],[1,16]]],[[1,13],[[1,5],[1,13]]],[[1,16],[[1,5],[1,13]]],[[1,21],[[1,2],[1,10],[1,16]]],[[1,24],[[1,5],[1,13]]],[[1,27],[[1,2],[1,10],[1,16]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),link(Z,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(exhaustive(512))"
+     }
+    ]
+   }
+  },
+  "dup_then_subsumed": {
+   "literal": {
+    "algorithm": "\"opt_core_dup_then_subsumed_literal(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\",\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C2','C5',\\\"]\\\"],[output,[[\\\"[\\\",'C1','C2',\\\"]\\\",\\\"[\\\",'C1','C3','C4',\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,6]]],[[1,3],[[1,3]]],[[1,6],[[1,2],[1,6]]],[[1,7],[[1,7]]],[[1,8],[[1,8]]],[[1,11],[[1,2],[1,6]]],[[1,12],[[1,3]]],[[1,15],[[1,2],[1,6]]],[[1,16],[[1,3]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)",
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Y),link(Y,X)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(syntactic([dup_clause((path(_32,_34):-[link(_32,_34)])),subsumed((path(_32,_34):-[link(_32,_34),link(_34,_32)]),by((path(_32,_34):-[link(_32,_34)])))]))"
+     },
+     {
+      "test": "different shape: grandparent",
+      "input": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(Y,X)"
+      ],
+      "output": null,
+      "expected": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "exact": false
+     },
+     {
+      "test": "different shape: sibling",
+      "input": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(Y,X)"
+      ],
+      "output": null,
+      "expected": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "exact": false
+     }
+    ]
+   },
+   "flat": {
+    "algorithm": "\"opt_core_dup_then_subsumed_flat(In_vars,Out_var) :-\\nalgorithm([[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',['&r',[vx,vy,'C2']],vy,vx,\\\"]\\\"],[output,[[\\\"[\\\",'C1',vx,vy,'C2',vx,vy,\\\"]\\\",\\\"[\\\",'C1',vx,vy,'C2',vx,vz,'C1',vz,vy,\\\"]\\\"]]]]],[[[[1,2],[[1,2],[1,10],[1,16]]],[[1,5],[[1,5],[1,13]]],[[1,10],[[1,2],[1,10],[1,16]]],[[1,13],[[1,5],[1,13]]],[[1,16],[[1,2],[1,10],[1,16]]],[[1,21],[[1,2],[1,10],[1,16]]],[[1,24],[[1,5],[1,13]]],[[1,29],[[1,2],[1,10],[1,16]]],[[1,30,2,3],[[1,5],[1,13]]]]],In_vars,Out_var).\"",
+    "tests": [
+     {
+      "test": "same shape, renamed",
+      "input": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)",
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Y),link(Y,X)"
+      ],
+      "output": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "expected": [
+       "path(X,Y):-link(X,Y)",
+       "path(X,Y):-link(X,Z),path(Z,Y)"
+      ],
+      "exact": true,
+      "proof": "proved(syntactic([dup_clause((path(_32,_34):-[link(_32,_34)])),subsumed((path(_32,_34):-[link(_32,_34),link(_34,_32)]),by((path(_32,_34):-[link(_32,_34)])))]))"
+     },
+     {
+      "test": "different shape: grandparent",
+      "input": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(Y,X)"
+      ],
+      "output": null,
+      "expected": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "exact": false
+     },
+     {
+      "test": "different shape: sibling",
+      "input": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(Y,X)"
+      ],
+      "output": null,
+      "expected": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "exact": false
+     }
+    ]
+   }
+  }
+ },
+ "s2a_windowed": {
+  "dup_clause": [
+   {
+    "test": "grandparent",
+    "grain": "clause",
+    "input": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "output": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "expected": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "steps": [
+     {
+      "window": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "output": [
+       "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+      ],
+      "accepted": true
+     }
+    ],
+    "exact": true,
+    "proof": "proved(syntactic([dup_clause((grandparent(_32,_34):-[parent(_32,_40),parent(_40,_34)]))]))",
+    "with_prover_guard": {
+     "output": [
+      "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+     ],
+     "steps": [
+      {
+       "window": [
+        "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+        "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+       ],
+       "output": [
+        "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+       ],
+       "accepted": true
+      }
+     ],
+     "exact": true,
+     "proof": "proved(syntactic([dup_clause((grandparent(_32,_34):-[parent(_32,_40),parent(_40,_34)]))]))"
+    }
+   },
+   {
+    "test": "sibling",
+    "grain": "clause",
+    "input": [
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+    ],
+    "output": [
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+    ],
+    "expected": [
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+    ],
+    "steps": [
+     {
+      "window": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "output": [
+       "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+      ],
+      "accepted": true
+     }
+    ],
+    "exact": true,
+    "proof": "proved(syntactic([dup_clause((sibling(_32,_34):-[parent(_38,_32),parent(_38,_34),_32\\=_34]))]))",
+    "with_prover_guard": {
+     "output": [
+      "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+     ],
+     "steps": [
+      {
+       "window": [
+        "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+        "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+       ],
+       "output": [
+        "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+       ],
+       "accepted": true
+      }
+     ],
+     "exact": true,
+     "proof": "proved(syntactic([dup_clause((sibling(_32,_34):-[parent(_38,_32),parent(_38,_34),_32\\=_34]))]))"
+    }
+   }
+  ],
+  "dup_literal": [
+   {
+    "test": "grandparent",
+    "grain": "literal",
+    "input": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(X,Z)"
+    ],
+    "output": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(X,Z)"
+    ],
+    "expected": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "steps": [],
+    "exact": false,
+    "proof": "proved(syntactic([]))",
+    "with_prover_guard": {
+     "output": [
+      "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(X,Z)"
+     ],
+     "steps": [],
+     "exact": false,
+     "proof": "proved(syntactic([]))"
+    }
+   },
+   {
+    "test": "sibling",
+    "grain": "literal",
+    "input": [
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(P,X)"
+    ],
+    "output": [
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(P,X)"
+    ],
+    "expected": [
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+    ],
+    "steps": [],
+    "exact": false,
+    "proof": "proved(syntactic([]))",
+    "with_prover_guard": {
+     "output": [
+      "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(P,X)"
+     ],
+     "steps": [],
+     "exact": false,
+     "proof": "proved(syntactic([]))"
+    }
+   }
+  ],
+  "subsumed_clause": [
+   {
+    "test": "grandparent",
+    "grain": "literal",
+    "input": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(Y,X)"
+    ],
+    "output": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(Y,X)"
+    ],
+    "expected": [
+     "grandparent(X,Y):-parent(X,Z),parent(Z,Y)"
+    ],
+    "steps": [],
+    "exact": false,
+    "proof": "proved(syntactic([]))",
+    "with_prover_guard": {
+     "output": [
+      "grandparent(X,Y):-parent(X,Z),parent(Z,Y)",
+      "grandparent(X,Y):-parent(X,Z),parent(Z,Y),parent(Y,X)"
+     ],
+     "steps": [],
+     "exact": false,
+     "proof": "proved(syntactic([]))"
+    }
+   },
+   {
+    "test": "sibling",
+    "grain": "literal",
+    "input": [
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(Y,X)"
+    ],
+    "output": [
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(Y,X)"
+    ],
+    "expected": [
+     "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y"
+    ],
+    "steps": [],
+    "exact": false,
+    "proof": "proved(syntactic([]))",
+    "with_prover_guard": {
+     "output": [
+      "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y",
+      "sibling(X,Y):-parent(P,X),parent(P,Y),X\\=Y,parent(Y,X)"
+     ],
+     "steps": [],
+     "exact": false,
+     "proof": "proved(syntactic([]))"
+    }
+   }
+  ]
+ }
+}
