@@ -1,5 +1,5 @@
 /*  mnn_rules.pl -- run the full method on each MNN optimisation rule: S2A, Starlog, PID, loop2,
-    PLOp, AlgebraPLOp, Detlog, Piglog2.
+    PLOp, AlgebraPLOp, Detlog, Piglog2, and proof/types.
 
     For each rule: compile the ORIGINAL program with pl2ann; prove the net matches the Prolog; find
     the input from the net's output; let Popper learn code from that input and output; prove what
@@ -51,6 +51,11 @@ rule(piglog2, "Piglog2: group independent goals so they can run concurrently", n
       run("predicate invention on", ok/1, ["src/1", "wcheck/2", "wgood/1", "nccheck/2", "ngood/1"], "enable_pi.\nmax_vars(3).\nmax_body(3).\nmax_clauses(3).\n")],
      ["src/1", "wcheck/2", "wgood/1", "nccheck/2", "ngood/1"], [s1, w1, n1],
      [src, wcheck, wgood, nccheck, ngood, ok, words_ok, nums_ok], []).
+
+rule(proof_types, "proof/types: delete a type guard that a related variable proves", none, [grandparent/2, adult/1],
+     [run("type guard available", grandparent/2, ["parent/2", "person/1"], "max_vars(3).\nmax_body(3).\n"),
+      run("adult with its guard", adult/1, ["person/1", "age/2"], "max_vars(2).\nmax_body(2).\n")],
+     ["parent/2"], [ann, bob, cy], [parent, age, person, grandparent, adult], []).
 
 main :-
     current_prolog_flag(argv, Argv), path(results, R), ensure_dir(R),

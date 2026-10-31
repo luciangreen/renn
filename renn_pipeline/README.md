@@ -18,7 +18,8 @@ This is the code behind the report *Manual Neuronets: Exposing Black-Box Working
 | 2 | `datalog.pl` | A small stratified Datalog evaluator, and random-input agreement with a Mersenne Twister seeded exactly as Python's `random.Random`, so agreement figures match the earlier Python runs. |
 | 3 | `stage3_core.pl` | Unoptimised originals → full pipeline → Spec to Algorithm learns each rewrite; windowed driver guarded by the prover. |
 | 4 | `compose.pl` | Joins two networks by their shared atom neurons and learns the end-to-end rule. |
-| 5 | `mnn_rules.pl`, `rules/` | Runs the method on the eight MNN rules (S2A, Starlog, PID, loop2, PLOp, AlgebraPLOp, Detlog, Piglog2). |
+| 5 | `mnn_rules.pl`, `rules/` | Runs the method on the MNN rules (S2A, Starlog, PID, loop2, PLOp, AlgebraPLOp, Detlog, Piglog2, and proof/types). |
+| 5 | `types.pl`, `types_report.pl` | proof/types: proves which argument positions are the same type, contained in another or related through shared variables, with refinement and conversion templates and the type guards a related variable makes redundant (same file as in s2a2). |
 | 6 | `renn_bridge/renn_inverse.pl` | For RENN's real-valued networks; superseded by the [renn-inverse](https://github.com/luciangreen/renn-inverse) repository. |
 | — | `pipeline.pl` | Shared helpers: compiling, calling the prover, Popper and S2A, program text, token grains for S2A, the windowed driver. |
 
@@ -60,7 +61,7 @@ swipl stage1_run.pl && swipl stage1_summary.pl && swipl stage1_max.pl && swipl s
 swipl stage2_popper.pl && swipl stage2_pool.pl && swipl stage2_aleph.pl
 swipl stage3_core.pl
 swipl compose.pl
-swipl mnn_rules.pl && swipl stage2_aleph_mnn.pl
+swipl mnn_rules.pl && swipl stage2_aleph_mnn.pl && swipl types_report.pl
 (cd prover && NETS_DIR=$EXP_DIR/work/nets OUT=$RESULTS_DIR/net_program_match.txt swipl -q -g "batch,halt" -t halt batch_match.pl)
 ```
 
