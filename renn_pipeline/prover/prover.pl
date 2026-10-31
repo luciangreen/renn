@@ -318,9 +318,6 @@ builtins_hold([], []).
 builtins_hold([X \= Y|Gs], R) :- !, X \== Y, builtins_hold(Gs, R).
 builtins_hold([neq(X, Y)|Gs], R) :- !, X \== Y, builtins_hold(Gs, R).
 builtins_hold([X = Y|Gs], R) :- !, X == Y, builtins_hold(Gs, R).
-% an arithmetic error fails the goal; a time limit from an enclosing call is passed on
-arith_error(E) :- ( E = time_limit_exceeded ; E = time_limit_exceeded(_) ), !, throw(E).
-arith_error(_) :- fail.
 builtins_hold([G|Gs], R) :- arith(G), !, ground(G), catch(G, E, arith_error(E)), builtins_hold(Gs, R).
 builtins_hold([G|Gs], [G|R]) :- builtins_hold(Gs, R).
 
@@ -364,3 +361,7 @@ lits_of([G|Gs], Ls) :- ( G = (\+ L) -> Ls = [L|R] ; callable(G) -> Ls = [G|R] ; 
 arith_ready(_ is E) :- !, ground(E).
 arith_ready(between(L, H, _)) :- !, ground(L-H).
 arith_ready(G) :- ground(G).
+
+% an arithmetic error fails the goal; a time limit from an enclosing call is passed on
+arith_error(E) :- ( E = time_limit_exceeded ; E = time_limit_exceeded(_) ), !, throw(E).
+arith_error(_) :- fail.
