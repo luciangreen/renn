@@ -1,0 +1,672 @@
+[
+ {
+  "id": 78,
+  "mode": "smallest",
+  "input": [
+   "bird(opus)",
+   "bird(pingu)",
+   "bird(polly)",
+   "bird(robin)",
+   "bird(tweety)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 78,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(opus)",
+   "bird(pingu)",
+   "bird(polly)",
+   "bird(robin)",
+   "bird(tweety)",
+   "penguin(emu)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-not_penguin(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": true,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 79,
+  "mode": "smallest",
+  "input": [
+   "bird(opus)",
+   "bird(robin)",
+   "bird(tweety)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 79,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(opus)",
+   "bird(robin)",
+   "bird(tweety)",
+   "penguin(emu)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-not_penguin(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": true,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 80,
+  "mode": "smallest",
+  "input": [
+   "bird(emu)",
+   "bird(opus)",
+   "injured(polly)",
+   "penguin(tweety)"
+  ],
+  "theory": {
+   "abnormal": [
+    "(abnormal(A):-not_bird(A))"
+   ],
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 80,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(opus)",
+   "bird(polly)",
+   "bird(tweety)",
+   "injured(polly)",
+   "injured(tweety)",
+   "penguin(polly)",
+   "penguin(tweety)"
+  ],
+  "theory": {
+   "abnormal": [
+    "(abnormal(A):-injured(A))"
+   ],
+   "flies": [
+    "(flies(A):-not_injured(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 81,
+  "mode": "smallest",
+  "input": [
+   "bird(kiwi)",
+   "bird(pingu)",
+   "bird(robin)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 81,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(opus)",
+   "bird(pingu)",
+   "bird(robin)",
+   "penguin(emu)",
+   "penguin(opus)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-not_penguin(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": true,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 82,
+  "mode": "smallest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(pingu)",
+   "bird(robin)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 82,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(pingu)",
+   "bird(robin)",
+   "bird(tweety)",
+   "penguin(tweety)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-not_penguin(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": true,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 83,
+  "mode": "smallest",
+  "input": [
+   "injured(pingu)",
+   "injured(robin)",
+   "penguin(opus)"
+  ],
+  "theory": {
+   "abnormal": [
+    "abnormal(A)"
+   ],
+   "flies": []
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 83,
+  "mode": "largest",
+  "input": [
+   "bird(opus)",
+   "bird(pingu)",
+   "bird(robin)",
+   "injured(opus)",
+   "injured(pingu)",
+   "injured(robin)",
+   "penguin(opus)",
+   "penguin(pingu)",
+   "penguin(robin)"
+  ],
+  "theory": {
+   "abnormal": [
+    "abnormal(A)"
+   ],
+   "flies": []
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 84,
+  "mode": "smallest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(robin)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 84,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(robin)",
+   "bird(tweety)",
+   "penguin(tweety)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-not_penguin(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": true,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 85,
+  "mode": "smallest",
+  "input": [
+   "bird(polly)",
+   "bird(robin)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 85,
+  "mode": "largest",
+  "input": [
+   "bird(kiwi)",
+   "bird(polly)",
+   "bird(robin)",
+   "penguin(kiwi)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-not_penguin(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": true,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 86,
+  "mode": "smallest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(polly)",
+   "bird(tweety)",
+   "injured(opus)",
+   "penguin(robin)"
+  ],
+  "theory": {
+   "abnormal": [
+    "(abnormal(A):-not_bird(A))"
+   ],
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 86,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(opus)",
+   "bird(polly)",
+   "bird(robin)",
+   "bird(tweety)",
+   "injured(opus)",
+   "injured(robin)",
+   "penguin(opus)",
+   "penguin(robin)"
+  ],
+  "theory": {
+   "abnormal": [
+    "(abnormal(A):-injured(A))"
+   ],
+   "flies": [
+    "(flies(A):-not_injured(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 87,
+  "mode": "smallest",
+  "input": [
+   "bird(opus)",
+   "bird(robin)",
+   "bird(tweety)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 87,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(opus)",
+   "bird(polly)",
+   "bird(robin)",
+   "bird(tweety)",
+   "penguin(emu)",
+   "penguin(polly)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-not_penguin(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": true,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 88,
+  "mode": "smallest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(opus)",
+   "bird(tweety)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 88,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(opus)",
+   "bird(pingu)",
+   "bird(tweety)",
+   "penguin(pingu)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-not_penguin(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": true,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 89,
+  "mode": "smallest",
+  "input": [
+   "bird(emu)",
+   "bird(opus)",
+   "bird(pingu)",
+   "bird(polly)",
+   "injured(kiwi)",
+   "penguin(robin)"
+  ],
+  "theory": {
+   "abnormal": [
+    "(abnormal(A):-not_bird(A))"
+   ],
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 89,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(opus)",
+   "bird(pingu)",
+   "bird(polly)",
+   "bird(robin)",
+   "injured(kiwi)",
+   "injured(robin)",
+   "penguin(kiwi)",
+   "penguin(robin)"
+  ],
+  "theory": {
+   "abnormal": [
+    "(abnormal(A):-injured(A))"
+   ],
+   "flies": [
+    "(flies(A):-not_injured(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 90,
+  "mode": "smallest",
+  "input": [
+   "bird(pingu)"
+  ],
+  "theory": {
+   "flies": [
+    "flies(pingu)"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 90,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(pingu)",
+   "penguin(emu)",
+   "penguin(kiwi)"
+  ],
+  "theory": {
+   "flies": [
+    "flies(pingu)"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 91,
+  "mode": "smallest",
+  "input": [
+   "bird(kiwi)",
+   "bird(opus)",
+   "bird(tweety)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 91,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(opus)",
+   "bird(pingu)",
+   "bird(tweety)",
+   "penguin(emu)",
+   "penguin(pingu)"
+  ],
+  "theory": {
+   "flies": [
+    "(flies(A):-not_penguin(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": true,
+   "on_all_exception_sets": true,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 92,
+  "mode": "smallest",
+  "input": [
+   "bird(emu)",
+   "bird(robin)",
+   "bird(tweety)",
+   "injured(pingu)",
+   "injured(polly)",
+   "penguin(kiwi)"
+  ],
+  "theory": {
+   "abnormal": [
+    "(abnormal(A):-not_bird(A))"
+   ],
+   "flies": [
+    "(flies(A):-bird(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ },
+ {
+  "id": 92,
+  "mode": "largest",
+  "input": [
+   "bird(emu)",
+   "bird(kiwi)",
+   "bird(pingu)",
+   "bird(polly)",
+   "bird(robin)",
+   "bird(tweety)",
+   "injured(kiwi)",
+   "injured(pingu)",
+   "injured(polly)",
+   "penguin(kiwi)",
+   "penguin(pingu)",
+   "penguin(polly)"
+  ],
+  "theory": {
+   "abnormal": [
+    "(abnormal(A):-injured(A))"
+   ],
+   "flies": [
+    "(flies(A):-not_injured(A))"
+   ]
+  },
+  "equal_on_all_subsets": {
+   "on_input": false,
+   "on_all_exception_sets": false,
+   "on_all_subsets": false
+  }
+ }
+]
