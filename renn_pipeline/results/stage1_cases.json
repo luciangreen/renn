@@ -1,0 +1,361 @@
+[
+ {
+  "status": "sat",
+  "n_explanations": 1,
+  "capped": false,
+  "min_size": 1,
+  "explanations": [
+   [
+    "edge(a,b)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 1,
+  "orig_is_minimal_explanation": true,
+  "orig_unique": true,
+  "orig_consistent": true,
+  "case": "T1_single_edge",
+  "kind": "trivial",
+  "note": "one output, one input",
+  "observation": {
+   "reach(a,b)": true
+  },
+  "n_obs": 1,
+  "original_input": [
+   "edge(a,b)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 1,
+  "capped": false,
+  "min_size": 1,
+  "explanations": [
+   [
+    "bit(1)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 2,
+  "orig_is_minimal_explanation": false,
+  "orig_unique": false,
+  "orig_consistent": true,
+  "case": "T2_and_gate",
+  "kind": "trivial",
+  "note": "AND gate output needs bit(1) only",
+  "observation": {
+   "and(1,1)": true
+  },
+  "n_obs": 1,
+  "original_input": [
+   "bit(0)",
+   "bit(1)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 1,
+  "capped": false,
+  "min_size": 0,
+  "explanations": [
+   []
+  ],
+  "all_verified_forward": true,
+  "orig_size": 2,
+  "orig_is_minimal_explanation": false,
+  "orig_unique": false,
+  "orig_consistent": false,
+  "case": "E1_empty_output",
+  "kind": "edge",
+  "note": "nothing active: the empty input explains it",
+  "observation": {},
+  "n_obs": 9,
+  "original_input": [
+   "edge(a,b)",
+   "edge(b,c)"
+  ]
+ },
+ {
+  "status": "unsat",
+  "n_explanations": 0,
+  "capped": false,
+  "min_size": null,
+  "explanations": [],
+  "all_verified_forward": true,
+  "orig_size": 2,
+  "orig_is_minimal_explanation": false,
+  "orig_unique": false,
+  "orig_consistent": false,
+  "case": "E2_impossible_output",
+  "kind": "edge",
+  "note": "not transitively closed, so no input can produce it",
+  "observation": {
+   "reach(a,b)": true,
+   "reach(b,c)": true
+  },
+  "n_obs": 3,
+  "original_input": [
+   "edge(a,b)",
+   "edge(b,c)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 1,
+  "capped": false,
+  "min_size": 2,
+  "explanations": [
+   [
+    "edge(a,a)",
+    "edge(b,c)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 2,
+  "orig_is_minimal_explanation": true,
+  "orig_unique": true,
+  "orig_consistent": true,
+  "case": "E3_self_loop",
+  "kind": "edge",
+  "note": "a self-reach needs a cycle",
+  "observation": {
+   "reach(a,a)": true,
+   "reach(b,c)": true
+  },
+  "n_obs": 9,
+  "original_input": [
+   "edge(a,a)",
+   "edge(b,c)"
+  ]
+ },
+ {
+  "case": "E4_unknown_neuron",
+  "kind": "edge",
+  "note": "observation names an atom the network has no neuron for",
+  "status": "no such output neuron",
+  "missing": [
+   "reach(a,z)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 1,
+  "capped": false,
+  "min_size": 1,
+  "explanations": [
+   [
+    "bird(tweety)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 3,
+  "orig_is_minimal_explanation": false,
+  "orig_unique": false,
+  "orig_consistent": true,
+  "case": "E5_exception_hidden",
+  "kind": "edge",
+  "note": "negation: a silent exception is dropped by minimality",
+  "observation": {
+   "flies(tweety)": true
+  },
+  "n_obs": 2,
+  "original_input": [
+   "bird(pingu)",
+   "bird(tweety)",
+   "penguin(pingu)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 1,
+  "capped": false,
+  "min_size": 3,
+  "explanations": [
+   [
+    "bird(pingu)",
+    "bird(tweety)",
+    "penguin(pingu)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 3,
+  "orig_is_minimal_explanation": true,
+  "orig_unique": true,
+  "orig_consistent": true,
+  "case": "E6_exception_revealed",
+  "kind": "edge",
+  "note": "observing one input forces the exception back",
+  "observation": {
+   "flies(tweety)": true,
+   "bird(pingu)": true
+  },
+  "n_obs": 3,
+  "original_input": [
+   "bird(pingu)",
+   "bird(tweety)",
+   "penguin(pingu)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 1,
+  "capped": false,
+  "min_size": 1,
+  "explanations": [
+   [
+    "edge(a,c)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 2,
+  "orig_is_minimal_explanation": false,
+  "orig_unique": false,
+  "orig_consistent": true,
+  "case": "E7_step_limited",
+  "kind": "edge",
+  "note": "network built with --step-limit 1; weights carry no step limit",
+  "observation": {
+   "reach(a,c)": true
+  },
+  "n_obs": 1,
+  "original_input": [
+   "edge(a,b)",
+   "edge(b,c)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 1,
+  "capped": false,
+  "min_size": 2,
+  "explanations": [
+   [
+    "edge(a,b)",
+    "edge(b,c)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 3,
+  "orig_is_minimal_explanation": false,
+  "orig_unique": false,
+  "orig_consistent": true,
+  "case": "I1_shortcut_lost",
+  "kind": "interesting",
+  "note": "the shortcut edge is invisible in the output",
+  "observation": {
+   "reach(a,b)": true,
+   "reach(a,c)": true,
+   "reach(b,c)": true
+  },
+  "n_obs": 9,
+  "original_input": [
+   "edge(a,b)",
+   "edge(a,c)",
+   "edge(b,c)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 2,
+  "capped": false,
+  "min_size": 3,
+  "explanations": [
+   [
+    "edge(a,b)",
+    "edge(b,c)",
+    "edge(c,a)"
+   ],
+   [
+    "edge(a,c)",
+    "edge(b,a)",
+    "edge(c,b)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 3,
+  "orig_is_minimal_explanation": true,
+  "orig_unique": false,
+  "orig_consistent": true,
+  "case": "I2_cycle_ambiguity",
+  "kind": "interesting",
+  "note": "a full closure has several minimal cycles",
+  "observation": {
+   "reach(a,a)": true,
+   "reach(a,b)": true,
+   "reach(a,c)": true,
+   "reach(b,a)": true,
+   "reach(b,b)": true,
+   "reach(b,c)": true,
+   "reach(c,a)": true,
+   "reach(c,b)": true,
+   "reach(c,c)": true
+  },
+  "n_obs": 9,
+  "original_input": [
+   "edge(a,b)",
+   "edge(b,c)",
+   "edge(c,a)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 1,
+  "capped": false,
+  "min_size": 2,
+  "explanations": [
+   [
+    "bit(0)",
+    "bit(1)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 2,
+  "orig_is_minimal_explanation": true,
+  "orig_unique": true,
+  "orig_consistent": true,
+  "case": "I3_xor",
+  "kind": "interesting",
+  "note": "XOR true needs both bits present",
+  "observation": {
+   "xor(0,1)": true
+  },
+  "n_obs": 1,
+  "original_input": [
+   "bit(0)",
+   "bit(1)"
+  ]
+ },
+ {
+  "status": "sat",
+  "n_explanations": 2,
+  "capped": false,
+  "min_size": 2,
+  "explanations": [
+   [
+    "parent(ann,bob)",
+    "parent(bob,cy)"
+   ],
+   [
+    "parent(ann,dee)",
+    "parent(dee,cy)"
+   ]
+  ],
+  "all_verified_forward": true,
+  "orig_size": 3,
+  "orig_is_minimal_explanation": false,
+  "orig_unique": false,
+  "orig_consistent": true,
+  "case": "I4_grandparent",
+  "kind": "interesting",
+  "note": "the middle person must be invented",
+  "observation": {
+   "grandparent(ann,cy)": true
+  },
+  "n_obs": 16,
+  "original_input": [
+   "parent(ann,bob)",
+   "parent(ann,dee)",
+   "parent(bob,cy)"
+  ]
+ }
+]
