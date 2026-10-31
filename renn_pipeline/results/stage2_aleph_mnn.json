@@ -1,0 +1,58 @@
+{
+ "algebraplop_smallest": {
+  "input": [
+   "pos(1)",
+   "pos(2)",
+   "pos(3)",
+   "pos(4)"
+  ],
+  "theory": [
+   "(val(A,B):-mul(A,2,C),add(C,1,B))",
+   "val(0,1)"
+  ]
+ },
+ "algebraplop_largest": {
+  "input": [
+   "pos(0)",
+   "pos(1)",
+   "pos(2)",
+   "pos(3)",
+   "pos(4)",
+   "pos(5)",
+   "pos(6)",
+   "pos(7)",
+   "pos(8)",
+   "pos(9)"
+  ],
+  "theory": [
+   "(val(A,B):-mul(A,2,C),add(C,1,B))",
+   "val(0,1)"
+  ]
+ },
+ "detlog_smallest": {
+  "input": [
+   "num(-1)",
+   "num(-2)",
+   "num(0)",
+   "num(1)",
+   "num(2)"
+  ],
+  "theory": [
+   "(cls(A,pos):-gt(A,0))",
+   "(cls(A,nonpos):-le(A,0))"
+  ]
+ },
+ "detlog_largest": {
+  "input": [
+   "num(-1)",
+   "num(-2)",
+   "num(0)",
+   "num(1)",
+   "num(2)"
+  ],
+  "theory": [
+   "(cls(A,pos):-gt(A,0))",
+   "(cls(A,nonpos):-le(A,0))"
+  ]
+ }
+}

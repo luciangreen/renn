@@ -29,3 +29,15 @@ jobs:
         env:
           PL2ANN_DIR: ${{ github.workspace }}/pl2ann
         run: renn_pipeline/prover/run_tests.sh
+      - name: Rebuild the 176 networks and check the weights-only simulator (Prolog pipeline)
+        env:
+          PL2ANN_DIR: ${{ github.workspace }}/pl2ann
+          EXP_DIR: ${{ runner.temp }}/exp
+        run: |
+          cd renn_pipeline
+          swipl parse_pairs.pl pl2ann_io_pairs.md
+          swipl convert_all.pl | tee convert.log
+          grep -q "converted 176 failed 0" convert.log
+          swipl validate_sim.pl | tee validate.log
+          grep -q "network sizes reproduced: 176/176" validate.log
+          grep -q "query literals reproduced by weights-only simulator: 1669/1669" validate.log
