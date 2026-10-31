@@ -110,7 +110,7 @@ prove_body([neq(X, Y)|Gs], DB) :- !, X \== Y, prove_body(Gs, DB).
 prove_body([X = Y|Gs], DB) :- !, X = Y, prove_body(Gs, DB).
 % arithmetic: X is E needs E ground (X may be unbound); between/3 needs its bounds;
 % a comparison needs both sides ground
-prove_body([G|Gs], DB) :- arith(G), !, arith_ready(G), catch(G, _, fail), prove_body(Gs, DB).
+prove_body([G|Gs], DB) :- arith(G), !, arith_ready(G), catch(G, E, arith_error(E)), prove_body(Gs, DB).
 prove_body([G|Gs], DB) :- member(G, DB), prove_body(Gs, DB).
 
 % ---------------------------------------------------------------- claim 2
@@ -318,7 +318,10 @@ builtins_hold([], []).
 builtins_hold([X \= Y|Gs], R) :- !, X \== Y, builtins_hold(Gs, R).
 builtins_hold([neq(X, Y)|Gs], R) :- !, X \== Y, builtins_hold(Gs, R).
 builtins_hold([X = Y|Gs], R) :- !, X == Y, builtins_hold(Gs, R).
-builtins_hold([G|Gs], R) :- arith(G), !, ground(G), catch(G, _, fail), builtins_hold(Gs, R).
+% an arithmetic error fails the goal; a time limit from an enclosing call is passed on
+arith_error(E) :- ( E = time_limit_exceeded ; E = time_limit_exceeded(_) ), !, throw(E).
+arith_error(_) :- fail.
+builtins_hold([G|Gs], R) :- arith(G), !, ground(G), catch(G, E, arith_error(E)), builtins_hold(Gs, R).
 builtins_hold([G|Gs], [G|R]) :- builtins_hold(Gs, R).
 
 % Behavioural match for EVERY input over the net's input atoms (bounded proof).
