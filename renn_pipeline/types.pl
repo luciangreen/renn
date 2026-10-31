@@ -232,9 +232,13 @@ dimensions(prog(_, Rs), Decls, Result) :-
                         member(X-U, Env), X == V, S = K:I ), SU0), sort(SU0, SU), Result = ok(SU)
     ).
 clause_dims(H-B, Decls, Env) :-
-    findall(V-U, ( member(G, [H|B]), user_pos(G), key(G, K), arg(I, G, V), var(V), memberchk((K:I)-U, Decls) ), E0),
+    % not findall: it would copy the variables, and the units must stay on the clause's own ones
+    foldl(lit_decls(Decls), [H|B], [], E0),
     consistent(E0, [], Env0),
     foldl(arith_dims, B, Env0, Env).
+lit_decls(Decls, G, A0, A) :-
+    (   user_pos(G) -> key(G, K), K = _/N, numlist(1, N, Is) ; Is = [] ),
+    foldl({G, K, Decls}/[I, B0, B1]>>( arg(I, G, V), var(V), memberchk((K:I)-U, Decls) -> B1 = [V-U|B0] ; B1 = B0 ), Is, A0, A).
 consistent([], E, E).
 consistent([V-U|R], E0, E) :- norm(U, N), ( member(X-U0, E0), X == V -> U0 == N, E1 = E0 ; E1 = [V-N|E0] ), consistent(R, E1, E).
 arith_dims(W is Ex, E0, E) :- !, dim_of(Ex, E0, U), ( member(X-U0, E0), X == W -> U0 == U, E = E0 ; E = [W-U|E0] ).
