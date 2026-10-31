@@ -63,3 +63,14 @@ python3 compose.py
 python3 mnn_rules.py
 (cd prover && NETS_DIR=../work/nets OUT=../results/net_program_match.txt swipl -q -g "batch,halt" -t halt batch_match.pl)
 ```
+
+## Related repositories (Manual Neuronets pipeline)
+
+| Repository | Step |
+| --- | --- |
+| [pl2ann](https://github.com/luciangreen/pl2ann) | Prolog → threshold network |
+| [renn-inverse](https://github.com/luciangreen/renn-inverse) | the inputs of a RENN (real-valued) network from its output: exact for ReLU, exact last layer for softmax/sigmoid/tanh, certified boxes otherwise |
+| [ann2pl](https://github.com/luciangreen/ann2pl) | a pl2ann network → Prolog with variables, proved equal (176/176) |
+| [s2a2](https://github.com/luciangreen/s2a2) | learns the optimisation algorithm from (original, optimised) program pairs, on terms, with an MNN-ordered search |
+
+The prover in `prover/` is the same file in all of them. This copy now handles compound and list terms, typed domains and arithmetic (`net_matches_program/4`).

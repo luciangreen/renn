@@ -23,10 +23,11 @@
 */
 :- module(prover, [net_reproduces/4, program_reproduces/4, equivalent/5,
                    least_model/3, read_program/2, net_forward/3,
-                   net_matches_program/3, net_equivalent_program/5, net_clauses/2]).
+                   net_matches_program/3, net_matches_program/4, net_equivalent_program/5, net_clauses/2]).
 :- use_module(library(lists)).
 :- use_module(library(apply)).
 :- use_module(library(ordsets)).
+:- use_module(library(yall)).
 
 % ---------------------------------------------------------------- reading
 read_program(File, Clauses) :-
@@ -77,7 +78,7 @@ need(_, _, M, M).
 
 builtin(_ \= _). builtin(_ = _). builtin(neq(_, _)).
 builtin(G) :- arith(G).
-arith(_ is _). arith(_ =:= _). arith(_ < _). arith(_ > _). arith(_ >= _). arith(_ =< _). arith(_ =\= _).
+arith(_ is _). arith(between(_, _, _)). arith(_ =:= _). arith(_ < _). arith(_ > _). arith(_ >= _). arith(_ =< _). arith(_ =\= _).
 
 least_model(Clauses, Input, Model) :-
     strata(Clauses, Strata),
@@ -107,7 +108,9 @@ prove_body([\+ G|Gs], DB) :- !, \+ memberchk(G, DB), prove_body(Gs, DB).
 prove_body([X \= Y|Gs], DB) :- !, X \== Y, prove_body(Gs, DB).
 prove_body([neq(X, Y)|Gs], DB) :- !, X \== Y, prove_body(Gs, DB).
 prove_body([X = Y|Gs], DB) :- !, X = Y, prove_body(Gs, DB).
-prove_body([G|Gs], DB) :- arith(G), !, ground(G), catch(G, _, fail), prove_body(Gs, DB).
+% arithmetic: X is E needs E ground (X may be unbound); between/3 needs its bounds;
+% a comparison needs both sides ground
+prove_body([G|Gs], DB) :- arith(G), !, arith_ready(G), catch(G, _, fail), prove_body(Gs, DB).
 prove_body([G|Gs], DB) :- member(G, DB), prove_body(Gs, DB).
 
 % ---------------------------------------------------------------- claim 2
@@ -140,10 +143,7 @@ net_forward(NetFile, Input, Model) :-
     findall(S, member(_-S, Strata), Ss), max_list([0|Ss], Max), numlist(0, Max, Levels),
     foldl(net_stratum(NetM, InPreds, Strata), Levels, In, Model).
 
-% pl2ann's runtime library, which generated network modules load. Set PL2ANN_PROLOG to
-% the prolog/ folder of a pl2ann checkout. The prover reads only neuron/4, edge/3 and
-% recurrent/2, so without it the network still loads, with a warning about the runtime.
-:- ( getenv('PL2ANN_PROLOG', Dir) -> asserta(user:file_search_path(library, Dir)) ; true ).
+user:file_search_path(library, '/home/claude/pl2ann/prolog').
 net_module(File, M) :-
     setup_call_cleanup(open(File, read, S), read_term(S, (:- module(M, _)), []), close(S)),
     ( current_module(M) -> true ; load_files(File, [silent(true), imports([])]) ).
@@ -229,7 +229,7 @@ clause_variant(C, D) :-                 % variant up to the order of body goals
 
 % exhaustive check over every subset of the input atoms (small domains only)
 exhaustive(A, B, Targets, edb(Preds, Consts), Result) :-
-    findall(At, ( member(P/N, Preds), length(Args, N), maplist([X]>>member(X, Consts), Args),
+    findall(At, ( member(P/N, Preds), length(Args, N), maplist({Consts}/[X]>>member(X, Consts), Args),
                   At =.. [P|Args] ), Universe),
     length(Universe, U),
     (   U > 16 -> sampled(A, B, Targets, Universe, 2000, Result)
@@ -246,7 +246,7 @@ exhaustive(A, B, Targets, edb(Preds, Consts), Result) :-
 subset_of([], []).
 subset_of([X|Xs], [X|Ys]) :- subset_of(Xs, Ys).
 subset_of([_|Xs], Ys) :- subset_of(Xs, Ys).
-target_atoms(M, Targets, T) :- include([A]>>(pred_key(A, K), memberchk(K, Targets)), M, T0), sort(T0, T).
+target_atoms(M, Targets, T) :- include({Targets}/[A]>>(pred_key(A, K), memberchk(K, Targets)), M, T0), sort(T0, T).
 
 % ---------------------------------------------------------------- claim 4: Prolog <-> net
 % Structural match. Each hidden unit is decoded from its weights alone into a ground clause:
@@ -271,12 +271,21 @@ net_clauses(NetFile, Clauses) :-
     sort(Cs0, Clauses).
 
 net_matches_program(NetFile, Program, Result) :-
+    net_matches_program(NetFile, Program, [], Result).
+
+% Domain = the facts of a pl2ann domain file (domain/2, range/3, type/3), or []. A variable
+% at a typed argument position ranges over the intersection of its types' values, as pl2ann
+% grounds it; any other variable ranges over every argument term in the net.
+net_matches_program(NetFile, Program, Domain, Result) :-
     catch(net_clauses(NetFile, NetCs), E, (Result = refuted(E), !, fail)), !,
     net_module(NetFile, NetM),
     findall(A, NetM:neuron(out(A), output, _, _), Atoms),
-    findall(K, (member(A, Atoms), A =.. [_|As], member(K, As), atomic(K)), K0), sort(K0, Consts),
+    % the universe = every argument term of every atom and all of its subterms, so
+    % compound and list arguments (pl2ann --term-depth) are grounded too
+    findall(K, (member(A, Atoms), A =.. [_|As], member(T, As), sub_arg(T, K)), K0), sort(K0, Consts),
     findall(G, ( member(C, Program), copy_term(C, C1), clause_parts(C1, H, Gs),
-                 term_variables(C1-Gs, Vs), maplist([V]>>member(V, Consts), Vs),
+                 term_variables(C1-Gs, Vs), typed_ranges(Domain, H, Gs, Consts, Vs, Ranges),
+                 maplist([V-R]>>member(V, R), Ranges),
                  builtins_hold(Gs, Gs1), memberchk(H, Atoms),
                  forall(member(X, Gs1), (X = (\+ Y) -> memberchk(Y, Atoms) ; memberchk(X, Atoms))),
                  msort(Gs1, Body), G = (H :- Body) ), P0),
@@ -286,7 +295,24 @@ net_matches_program(NetFile, Program, Result) :-
     (   OnlyNet == [], OnlyProg == [] -> Result = proved(same_ground_clauses(N))
     ;   Result = refuted(only_in_net(OnlyNet), only_in_program(OnlyProg))
     ).
-net_matches_program(_, _, _).
+net_matches_program(_, _, _, _).
+
+typed_ranges(Domain, H, Gs, Consts, Vs, Ranges) :-
+    % no findall here: it would copy the literals and lose the link to Vs
+    lits_of([H|Gs], Lits),
+    maplist(var_range(Domain, Lits, Consts), Vs, Ranges).
+var_range(Domain, Lits, Consts, V, V-R) :-
+    findall(Vals, ( member(L, Lits), functor(L, P, A), between(1, A, I), arg(I, L, X), X == V,
+                    memberchk(type(P/A, I, T), Domain), type_values(Domain, T, Vals) ), Sets),
+    (   Sets = [] -> R = Consts
+    ;   foldl([S, Acc0, Acc]>>intersection(Acc0, S, Acc), Sets, Consts, R0),
+        Sets = [S0|_], intersection(S0, R0, R)
+    ).
+type_values(Domain, T, Vals) :-
+    (   memberchk(domain(T, Vals), Domain) -> true
+    ;   memberchk(range(T, Lo, Hi), Domain) -> numlist(Lo, Hi, Vals)
+    ;   Vals = []
+    ).
 
 builtins_hold([], []).
 builtins_hold([X \= Y|Gs], R) :- !, X \== Y, builtins_hold(Gs, R).
@@ -301,7 +327,7 @@ net_equivalent_program(NetFile, Program, Targets, MaxInputs, Result) :-
     findall(A, NetM:neuron(out(A), output, _, _), Atoms),
     findall(H-T, NetM:neuron(H, hidden, step, T), Hs),
     input_preds(NetM, Hs, Atoms, InPreds),
-    include([A]>>(pred_key(A, K), memberchk(K, InPreds)), Atoms, Universe),
+    include({InPreds}/[A]>>(pred_key(A, K), memberchk(K, InPreds)), Atoms, Universe),
     length(Universe, U),
     (   U > MaxInputs -> Result = unknown(too_many_inputs(U))
     ;   Total is 2 ** U,
@@ -325,3 +351,13 @@ sampled(A, B, Targets, Universe, N, Result) :-
         Result = refuted(input(Facts), only_in_a(OA), only_in_b(OB))
     ;   Result = passed_sample(N)
     ).
+
+sub_arg(T, T).
+sub_arg(T, S) :- compound(T), T =.. [_|As], member(A, As), sub_arg(A, S).
+
+lits_of([], []).
+lits_of([G|Gs], Ls) :- ( G = (\+ L) -> Ls = [L|R] ; callable(G) -> Ls = [G|R] ; Ls = R ), lits_of(Gs, R).
+
+arith_ready(_ is E) :- !, ground(E).
+arith_ready(between(L, H, _)) :- !, ground(L-H).
+arith_ready(G) :- ground(G).
