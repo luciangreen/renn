@@ -100,3 +100,7 @@ Two sources of run-to-run variation are outside the port. clingo's order of equa
 | [s2a2](https://github.com/luciangreen/s2a2) | learns the optimisation algorithm from (original, optimised) program pairs, on terms, with an MNN-ordered search |
 
 The prover in `prover/` is the same file in all of them. This copy now handles compound and list terms, typed domains and arithmetic (`net_matches_program/4`).
+
+## Input/output pairs
+
+[`io_pairs/io_pairs.md`](io_pairs/io_pairs.md) holds 200 input/output pairs, each produced by running the code (`io_pairs/generate.pl`). They cover the prover (program equivalence, least models, 66 networks proved equal to their programs), networks run forward from their weights, inputs recovered from 25 networks (smallest and largest, each checked by running the network forward), and the Datalog evaluator.

@@ -27,6 +27,7 @@ This directory holds the phase-one pipeline and the prover shared with ann2pl an
 | R9 | Time limits from callers are never swallowed inside the prover | done (arithmetic errors fail the goal; time limits are rethrown) |
 | R10 | The whole pipeline in SWI-Prolog | done: every stage is a `.pl` script; clingo, pl2ann and Popper are called as programs |
 | R11 | Agreement on random inputs reproducible across the Python and Prolog versions | done (`datalog.pl`: Mersenne Twister seeded as Python's `random.Random`) |
+| R12 | 200 input/output pairs produced by running the code | done (`io_pairs/`) |
 
 ## Related repositories
 
