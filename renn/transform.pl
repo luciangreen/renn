@@ -131,7 +131,7 @@ run_checker(Mnns, SourceBytes, OutBytes, Line, Fields) :-
     write_bytes(In, SourceBytes),
     swipl(Swipl),
     setup_call_cleanup(
-        process_create(Swipl, [Script, In, Out],
+        process_create(Swipl, [Script, '--', In, Out],
                        [stdout(pipe(S)), stderr(pipe(ES)), process(Pid)]),
         ( read_string(S, _, Stdout), read_string(ES, _, Stderr) ),
         ( close(S), close(ES) )),
