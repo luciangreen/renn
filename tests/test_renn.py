@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 import struct
 import shutil
 import subprocess
@@ -14,8 +15,10 @@ from renn.generator import (
     compare_runner,
     compare_reference,
     load_model,
+    recheck_proofs,
     reference_forward,
     run_prolog_verification,
+    transform_file,
     verify_artifacts,
 )
 from renn.safetensors import _read_safetensors, import_safetensors
@@ -770,3 +773,91 @@ class RENNBuildTests(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+FAKE_MNNS = """:- use_module(library(main)).
+:- initialization(main, main).
+main([In, Out]) :-
+    read_file_to_string(In, S, []),
+    string_concat(S, "\\n% rewritten by a fake checker\\n", T),
+    open(Out, write, O), write(O, T), close(O),
+    format("MNN_OPTIMISE ok changed=true size_before=2 size_after=1 plop=unchanged simplify=1 detlog=~w detlog_steps=1~n", ['{detlog}']).
+"""
+
+
+@unittest.skipUnless(shutil.which("swipl"), "SWI-Prolog is required for the proof gate")
+class ProofCarryingTransformTests(unittest.TestCase):
+    def setUp(self):
+        self.tempdir = tempfile.TemporaryDirectory()
+        self.addCleanup(self.tempdir.cleanup)
+        self.output = Path(self.tempdir.name) / "build"
+        build(EXAMPLE, self.output)
+
+    def fake_mnns(self, detlog="proved"):
+        directory = Path(self.tempdir.name) / f"mnns-{detlog}"
+        directory.mkdir()
+        (directory / "optimise.pl").write_text(FAKE_MNNS.replace("{detlog}", detlog))
+        return directory
+
+    def snapshot(self):
+        return {p.name: p.read_bytes() for p in self.output.iterdir()}
+
+    def test_build_starts_with_an_empty_transformation_ledger(self):
+        verification = json.loads((self.output / "verification.json").read_text())
+        self.assertEqual(verification["transformations"], [])
+        self.assertEqual(verify_artifacts(self.output)["transformations"], 0)
+
+    def test_transform_records_a_checked_proof_and_rechecks_it(self):
+        line = transform_file(self.output, "ops.pl", self.fake_mnns())
+        self.assertIn("RENN_TRANSFORM changed ops.pl", line)
+        self.assertTrue((self.output / "before-1-ops.pl").is_file())
+        self.assertIn("fake checker", (self.output / "ops.pl").read_text())
+        result = verify_artifacts(self.output)
+        self.assertEqual(result["transformations"], 1)
+        verification = json.loads((self.output / "verification.json").read_text())
+        entry = verification["transformations"][0]
+        self.assertEqual(entry["checker"], "mnns optimise")
+        self.assertEqual(entry["stages"]["detlog"], "proved")
+        self.assertIn("RENN_PROOFS ok 1 rechecked", recheck_proofs(self.output, Path(self.tempdir.name) / "mnns-proved"))
+        run_prolog_verification(self.output)
+
+    def test_unproved_stage_is_rejected_and_files_restored(self):
+        before = self.snapshot()
+        with self.assertRaisesRegex(BuildError, "stage_not_proved"):
+            transform_file(self.output, "ops.pl", self.fake_mnns("unproved"))
+        self.assertEqual(self.snapshot(), before)
+
+    def test_ledger_entry_without_checked_proof_fails_verification(self):
+        transform_file(self.output, "ops.pl", self.fake_mnns())
+        verification_path = self.output / "verification.json"
+        verification = json.loads(verification_path.read_text())
+        verification["transformations"][0]["checker"] = "none"
+        verification_path.write_text(json.dumps(verification))
+        manifest_path = self.output / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["files"]["verification.json"] = hashlib.sha256(verification_path.read_bytes()).hexdigest()
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(BuildError, "no_checked_proof"):
+            verify_artifacts(self.output)
+
+    def test_file_changed_after_its_proof_fails_verification(self):
+        transform_file(self.output, "ops.pl", self.fake_mnns())
+        ops = self.output / "ops.pl"
+        ops.write_text(ops.read_text() + "% edited by hand\n")
+        manifest_path = self.output / "manifest.json"
+        manifest = json.loads(manifest_path.read_text())
+        manifest["files"]["ops.pl"] = hashlib.sha256(ops.read_bytes()).hexdigest()
+        manifest_path.write_text(json.dumps(manifest))
+        with self.assertRaisesRegex(BuildError, "changed_after_checked_transformation"):
+            verify_artifacts(self.output)
+
+    @unittest.skipUnless(os.environ.get("MNNS_DIR"), "set MNNS_DIR to an mnns checkout")
+    def test_real_mnns_keeps_build_valid(self):
+        before = self.snapshot()
+        try:
+            transform_file(self.output, "ops.pl", os.environ["MNNS_DIR"])
+        except BuildError:
+            self.assertEqual(self.snapshot(), before)
+        else:
+            verify_artifacts(self.output)
+            run_prolog_verification(self.output)

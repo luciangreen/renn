@@ -338,7 +338,9 @@ unwrap([X], N) :- is_list(X), X = [Y|_], is_list(Y), !, unwrap(X, N).
 unwrap(N, N).
 
 % windowed driver: slide a window over the program; where the learned rewrite fires, splice its
-% output in. With a check (the prover) a proposed rewrite is kept only if it is proved.
+% output in. A proposed rewrite is kept only if the check (the prover) proves it; with Check = none
+% nothing is applied, and each proposal is traced as accepted:unchecked, so no rewrite is ever kept
+% without a checked proof.
 windows(Prog, 1, Ws) :- !, findall([C], member(C, Prog), Ws).
 windows(Prog, 2, Ws) :- findall([A, B], ( nth0(I, Prog, A), nth0(J, Prog, B), I \== J ), Ws).
 splice(Prog, [W], [O|_], 1, New) :- !, maplist({W, O}/[C, D]>>( C == W -> D = O ; D = C ), Prog, New).
@@ -366,7 +368,7 @@ try_windows(_, [], P, _, _, P, false, T, T) :- !.
 try_windows([W|Ws], [O|Os], P0, Size, Check, P, Applied, T0, T) :-
     (   ( O == none ; O == W ) -> try_windows(Ws, Os, P0, Size, Check, P, Applied, T0, T)
     ;   splice(P0, W, O, Size, Cand),
-        ( Check == none -> Ok = true ; ( call(Check, P0, Cand) -> Ok = true ; Ok = false ) ),
+        ( Check == none -> Ok = unchecked ; ( call(Check, P0, Cand) -> Ok = true ; Ok = false ) ),
         T1 = [_{window:W, output:O, accepted:Ok}|T0],
         (   Ok == true -> P = Cand, Applied = true, T = T1
         ;   try_windows(Ws, Os, P0, Size, Check, P, Applied, T1, T)

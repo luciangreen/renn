@@ -356,11 +356,58 @@ def verify_artifacts(build_path):
         if actual_hash != expected_hash:
             raise BuildError(f"SHA-256 mismatch for artifact {name!r}")
 
+    transformations = 0
+    if "verification.json" in files:
+        try:
+            verification = loads_strict_json((build_path / "verification.json").read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, UnicodeDecodeError, ValueError) as exc:
+            raise BuildError(f"invalid verification.json: {exc}") from exc
+        ledger = verification.get("transformations", []) if isinstance(verification, dict) else None
+        if not isinstance(ledger, list):
+            raise BuildError("verification.json transformations must be a list")
+        transformations = len(ledger)
+    if transformations or any(name.startswith("before-") for name in files):
+        # Transformed files are accepted only with checked proofs (renn/transform.pl).
+        run_proof_gate("check", build_path)
+
     return {
         "model_id": manifest.get("model_id"),
         "files_verified": len(files),
         "verified_files": sorted(files),
+        "transformations": transformations,
     }
+
+
+PROOF_GATE = Path(__file__).resolve().with_name("transform.pl")
+
+
+def run_proof_gate(command, build_path, *args):
+    """Run renn/transform.pl (check, recheck or transform); return its last output line."""
+    swipl = shutil.which("swipl")
+    if not swipl:
+        raise BuildError("SWI-Prolog is required to check transformation proofs")
+    result = subprocess.run(
+        [swipl, str(PROOF_GATE), command, str(Path(build_path).resolve()), *map(str, args)],
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    lines = [line for line in result.stdout.splitlines() if line.startswith(("RENN_PROOFS", "RENN_TRANSFORM"))]
+    line = lines[-1] if lines else (result.stderr.strip() or f"exit code {result.returncode}")
+    if result.returncode != 0:
+        raise BuildError(f"transformation proof check failed: {line}")
+    return line
+
+
+def transform_file(build_path, name, mnns_dir):
+    """Rewrite one generated file with mnns, keeping it only with a checked proof."""
+    return run_proof_gate("transform", build_path, name, Path(mnns_dir).resolve())
+
+
+def recheck_proofs(build_path, mnns_dir):
+    """Re-run the mnns checker for every recorded transformation."""
+    verify_artifacts(build_path)
+    return run_proof_gate("recheck", build_path, Path(mnns_dir).resolve())
 
 
 def run_prolog_verification(build_path):
@@ -768,6 +815,7 @@ def _build_model(model, output_path, source_hash, architecture_hash):
         "absolute_tolerance": ABS_TOLERANCE,
         "relative_tolerance": REL_TOLERANCE,
         "approximation_ledger": [],
+        "transformations": [],
     }
     swipl = shutil.which("swipl")
     verification_error = None

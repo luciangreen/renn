@@ -1,6 +1,6 @@
 **Prolog Neural Network Reverse-Engineering Agent — Requirements**  
 Version for Doctoral Research  
-27 October 2026
+27 October 2026 (revised 8 November 2026: checked proofs for every transformation)
 
 ### 1. Purpose and Scope
 
@@ -20,7 +20,7 @@ The Prolog version is accepted only if three conditions hold:
 
 1. **Complete** — Every weight tensor from the original checkpoint is present, with matching shapes and counts.  
 2. **Exact** — The Prolog program produces the same outputs as the original (within declared numeric tolerance).  
-3. **Undoctored** — No silent simplification, pruning, or rounding. Every change is recorded in an approximation ledger with its measured effect on accuracy.
+3. **Undoctored** — No silent simplification, pruning, or rounding. Every change is recorded in an approximation ledger with its measured effect on accuracy, and every transformation of a Prolog program carries a proof that an independent checker has accepted (VR-10).
 
 ### 2. Fidelity Tiers
 
@@ -36,7 +36,7 @@ Tier 0 is the source of truth. Tiers 1 and 2 are derived from it and must cite t
 
 ### 3. System Architecture and Workflow
 
-The agent runs in eight stages. A verification gate sits between generation and any output the user sees. If verification fails, a discrepancy log is returned to the generator. Interpretation (Tiers 1 and 2) runs only on a verified Tier 0 facsimile.
+The agent runs in eight stages. A verification gate sits between generation and any output the user sees. If verification fails, a discrepancy log is returned to the generator. A second gate, the proof gate, sits in front of every transformation: a rewrite of any Prolog file (optimisation, simplification, rule extraction, a learned rewrite) is kept only when an independent proof checker accepts its proof; otherwise the file is left as it was. Interpretation (Tiers 1 and 2) runs only on a verified Tier 0 facsimile.
 
 ### 4. Functional Requirements
 
@@ -79,6 +79,8 @@ The program is split into five modules so facts, mathematics, and explanations c
 | ops.pl | Operator predicates, `forward/3`, `trace/3` |
 | interpret.pl | Tier 1 circuits, Tier 2 rules, `explain/3` |
 
+The transformation ledger and its checked proofs (VR-10) are kept with the verification report, and each pre-transformation file is kept beside the module it was rewritten from.
+
 ### 6. Training-Configuration Inference
 
 Weights tell us what the model computes, not how it was trained. The agent reconstructs training details only as far as the evidence allows and labels every claim clearly.
@@ -103,11 +105,12 @@ A facsimile is accepted only when an independent harness (not the generator) con
 - VR-2 Layer-wise differential testing — compare every intermediate activation, not just the final output.  
 - VR-3 End-to-end numeric tolerance — exact equality for integer and quantised paths; declared maximum relative error for floating-point (set per data type).  
 - VR-4 Behavioural match — for language models, greedy decoding produces the same tokens as the reference on a fixed prompt suite.  
-- VR-5 Approximation ledger — every transformation is logged with its location and measured fidelity cost. An empty ledger is the expected result for a pure Tier 0.  
+- VR-5 Approximation ledger — every transformation is logged with its location and measured fidelity cost. An empty ledger is the expected result for a pure Tier 0. A ledger entry is valid only with the checked proof required by VR-10.  
 - VR-6 Reproducible build — pinned tool versions; regenerating from the same revision yields byte-identical Prolog files.  
 - VR-7 Signed manifest — lists every output file, its hash, the source revision, and the verification results.  
 - VR-8 Adversarial verification — include inputs deliberately chosen to maximise intermediate differences.  
 - VR-9 Statistical testing — layer-wise discrepancies are tested across a large random input set with appropriate multiple-comparison correction.
+- VR-10 Proof-carrying transformations — no transformation is kept without a proof that an independent checker accepts. This covers every rewrite of a generated Prolog file, every optimisation (for example PLOp, the AIOC simplifier, and Detlog's cut and `once/1` rewrites), every Tier 1 and Tier 2 simplification, and every learned rewrite. The checker is not the component that proposed the rewrite; in this system it is the MNN proof checker (`mnns`), whose rules each change exactly one occurrence and are re-applied and compared, not trusted. For each transformation the ledger records the file, the rule or tool, the checker and its revision, the hashes before and after, and the checker's report. The pre-transformation file is kept so the proof can be re-checked by re-running the checker. A rewrite whose proof is rejected, unsupported or missing is discarded, not approximated, and the differential tests (VR-2 to VR-4) must still pass after it.
 
 ### 8. Complete Benchmark Suite
 
@@ -198,7 +201,8 @@ Results may be submitted for publication only when they meet all of the followin
 - Tier 0 facsimile of a small open-weight transformer passes all verification requirements, including greedy-decode match.  
 - Tier 2 rules for the reference MLP meet the pre-registered agreement target.  
 - At least one Tier 1 circuit report is produced for a named behaviour, with full causal metrics.  
-- `training_config.pl` contains no untagged claims.  
+- `training_config.pl` contains no untagged claims.
+- Every transformation in the build has a ledger entry with an accepted proof from the independent checker, and re-running the checker reproduces each transformed file.  
 - The agent opens a pull request that includes outputs and a passing continuous-integration run.
 
 ### 12. Core Research Questions the System Is Designed to Answer
@@ -207,6 +211,6 @@ Results may be submitted for publication only when they meet all of the followin
 2. How does the quality of recovered circuits change as models grow larger and as superposition increases?  
 3. What fraction of commonly studied behaviours in modern language models admit compact, high-recovery circuits?  
 4. How much of a model’s training configuration can be reliably recovered from weights and repository artefacts alone?  
-5. Can the Prolog representation enable new analyses (formal verification of properties, symbolic reasoning about circuits, compositional tests) that are difficult in the original framework?
+5. Can the Prolog representation enable new analyses (formal verification of properties, symbolic reasoning about circuits, compositional tests) that are difficult in the original framework? In particular, how far can a Tier 0 facsimile be optimised or simplified while every step stays covered by a checked proof?
 
 These requirements turn the agent into a research platform capable of producing reliable, publishable results while keeping every complex idea stated as clearly as possible.

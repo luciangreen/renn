@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Check out mnns (the independent proof checker)
+        uses: actions/checkout@v4
+        with:
+          repository: luciangreen/mnns
+          path: mnns
       - uses: actions/setup-python@v5
         with:
           python-version: "3.10"
@@ -18,4 +23,6 @@ jobs:
           sudo apt-get update
           sudo apt-get install --yes swi-prolog-nox
       - name: Run unit and Prolog integration tests
+        env:
+          MNNS_DIR: ${{ github.workspace }}/mnns
         run: python -m unittest discover -s tests -v

@@ -8,6 +8,8 @@ from renn.generator import (
     build,
     compare_runner,
     compare_reference,
+    recheck_proofs,
+    transform_file,
     run_prolog_verification,
     verify_artifacts,
 )
@@ -27,6 +29,19 @@ def main(argv=None):
         action="store_true",
         help="execute the generated differential verification cases (requires SWI-Prolog)",
     )
+    verify_parser.add_argument(
+        "--recheck-proofs",
+        type=Path,
+        metavar="MNNS",
+        help="re-run the mnns proof checker (repository at MNNS) for every recorded transformation",
+    )
+    transform_parser = subparsers.add_parser(
+        "transform",
+        help="optimise one generated Prolog file with mnns, keeping it only with a checked proof",
+    )
+    transform_parser.add_argument("directory", type=Path, help="generated build directory")
+    transform_parser.add_argument("file", help="generated Prolog file, e.g. ops.pl")
+    transform_parser.add_argument("--mnns", required=True, type=Path, help="mnns repository containing optimise.pl")
     compare_parser = subparsers.add_parser(
         "compare",
         help="compare generated Prolog with independent reference outputs",
@@ -66,6 +81,10 @@ def main(argv=None):
                 if args.run_prolog
                 else verify_artifacts(args.directory)
             )
+            if args.recheck_proofs:
+                result["recheck"] = recheck_proofs(args.directory, args.recheck_proofs)
+        elif args.command == "transform":
+            result = transform_file(args.directory, args.file, args.mnns)
         elif args.command == "compare":
             result = compare_reference(args.directory, args.reference)
         elif args.command == "compare-runner":
@@ -82,6 +101,11 @@ def main(argv=None):
         print("Manifest hashes detect accidental changes; they do not authenticate the source.")
         if args.run_prolog:
             print(result["stdout"])
+        if args.recheck_proofs:
+            print(result["recheck"])
+        return 0
+    if args.command == "transform":
+        print(result)
         return 0
     if args.command == "compare":
         print(f"Compared {result['cases']} independent reference cases for {result['model_id']}.")
