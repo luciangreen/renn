@@ -131,13 +131,16 @@ run_checker(Mnns, SourceBytes, OutBytes, Line, Fields) :-
     write_bytes(In, SourceBytes),
     swipl(Swipl),
     setup_call_cleanup(
-        process_create(Swipl, [Script, In, Out], [stdout(pipe(S)), stderr(null), process(Pid)]),
-        read_string(S, _, Stdout),
-        close(S)),
+        process_create(Swipl, [Script, In, Out],
+                       [stdout(pipe(S)), stderr(pipe(ES)), process(Pid)]),
+        ( read_string(S, _, Stdout), read_string(ES, _, Stderr) ),
+        ( close(S), close(ES) )),
     process_wait(Pid, exit(Code)),
     split_string(Stdout, "\n", "\r", Lines),
     (   include([L]>>sub_string(L, 0, _, _, "MNN_OPTIMISE"), Lines, Found), last(Found, Line) -> true
-    ;   Line = "(no checker output)"
+    ;   split_string(Stderr, "\n", " \r", ELines), exclude(==(""), ELines, NonEmpty),
+        ( NonEmpty = [First|_] -> format(string(Line), "(no checker output; stderr: ~w)", [First])
+        ; Line = "(no checker output)" )
     ),
     (   Code =:= 0 -> true ; throw(renn(checker_failed(Line))) ),
     parse_report(Line, Fields),

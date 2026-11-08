@@ -775,7 +775,8 @@ if __name__ == "__main__":
     unittest.main()
 
 
-FAKE_MNNS = """:- initialization(main, main).
+FAKE_MNNS = """:- use_module(library(main)).
+:- initialization(main, main).
 main([In, Out]) :-
     read_file_to_string(In, S, []),
     string_concat(S, "\\n% rewritten by a fake checker\\n", T),
