@@ -98,12 +98,25 @@ The build directory contains:
 | `training_config.pl` | Training facts with explicit value and evidence tags |
 | `training_report.md` | Human-readable account of unknown training details and why they cannot be reconstructed |
 | `verification_cases.pl` | Input/output cases for the supplied validation inputs |
-| `verification.json` | Reference layer activations, comparison tolerances, and verification status |
+| `verification.json` | Reference layer activations, comparison tolerances, verification status, and the transformation ledger with each checked proof |
 | `manifest.json` | SHA-256 hashes for every other generated artifact |
 
 `architecture.pl` exports `layer/6` for the network structure and `layer_evidence/5` for audit metadata. The latter is shaped as `layer_evidence(Model, Index, Attribute, Tag, Source)`: layer names and activations are `stated` from the validated input description, while input and output sizes are `derived` from its weight-matrix shape. The existing `layer/6` predicate remains available to generated operators and downstream consumers.
 
 Generated files are deterministic for identical input bytes in the same runtime environment. If SWI-Prolog is installed, the CLI runs the emitted verifier and records `passed`; otherwise it records `generated_not_executed`. The verifier checks every layer activation and final output. The approximation ledger is empty: this input format performs no deliberate compression or rounding, although normal conversion of JSON numbers to runtime floating-point values still applies.
+
+### Transform with a checked proof
+
+Every transformation of a generated Prolog file must carry a proof accepted by an independent checker ([`pr1.md`](pr1.md), VR-10). The proof gate is written in Prolog, [`renn/transform.pl`](renn/transform.pl), and uses [mnns](https://github.com/luciangreen/mnns) as the checker:
+
+```sh
+python3 -m renn transform build/tiny-mlp ops.pl --mnns ../mnns
+python3 -m renn verify build/tiny-mlp --recheck-proofs ../mnns
+```
+
+`transform` runs `swipl optimise.pl` from mnns, whose PLOp, AIOC simplifier and Detlog stages each keep a rewrite only when mnns' proof checker accepts it. The new file is kept only if the checker reports success for every stage, the manifest still verifies, and the generated differential cases still pass; otherwise every file is restored. The original is kept as `before-N-<file>` and the change is added to `transformations` in `verification.json`, with the checker revision, hashes before and after, and the checker's report. `renn verify` rejects a build whose transformations lack an accepted report or no longer match the current files, and `--recheck-proofs` re-runs the checker on each `before-N` file to confirm it reproduces the recorded output. The gate can also be run directly: `swipl renn/transform.pl check BUILD`.
+
+In `renn_pipeline`, learned window rewrites are likewise kept only when the prover proves them; without a check they are traced as `unchecked` and not applied.
 
 Check that build artifacts still match their manifest:
 
@@ -207,6 +220,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - Input/checkpoint and architecture descriptor hashes, declared revision/license, evidence-tagged unknown training facts and an underdetermination report, deterministic output hashes, and supplied-input differential cases.
 - CLI integrity verification of generated artifacts against the unsigned manifest.
 - Optional `renn verify --run-prolog` execution of the generated differential cases after manifest verification.
+- Proof-carrying transformations: `renn transform` keeps an mnns rewrite only with an accepted proof, records it in the ledger, and `renn verify --recheck-proofs` re-runs the checker (Prolog proof gate in `renn/transform.pl`).
 - CLI comparison of emitted Prolog against independently supplied outputs and optional layer traces.
 - CLI execution of a trusted user-supplied reference runner with output and layer-trace comparison.
 - GitHub Actions CI for the Python suite and SWI-Prolog integration tests.
