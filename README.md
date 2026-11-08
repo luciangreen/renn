@@ -235,3 +235,7 @@ To run the full suite locally, install SWI-Prolog 9.x first; without it, the Pro
 - Automatic branch creation and pull request creation by the CLI.
 
 The requirements and research acceptance criteria are maintained in [`pr1.md`](pr1.md). In particular, this prototype does not meet the stated acceptance criteria for transformer facsimiles, circuits, rule extraction, or publication results. Remaining milestones are framework-specific independent reference adapters and checkpoint-to-framework layer mapping; broader safe checkpoint support (large-model sidecars, quantization, and additional formats); additional operators, transformer support, and tokenizer reproduction; then circuit discovery, rule extraction, and benchmark/publication evaluation. Acquisition, revision/license-policy handling, and sandboxing are also unimplemented prerequisites for automatic model fetching or repository-code inspection.
+
+## Inputs and outputs
+
+`io/ios.txt` lists 200 inputs and the outputs they give, from real runs of this repo's predicates (which predicates, and how the inputs are made, is in `io/cases.pl`; the inputs are made the same way every time). `swipl io/check_ios.pl` runs them again and fails if any output changed; the "Inputs and outputs" workflow does the same on every push. If a change is meant, run `swipl io/make_ios.pl` and check the diff.
